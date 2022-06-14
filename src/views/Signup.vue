@@ -86,7 +86,6 @@ export default {
       user: {
         email: "",
         password : "",
-        consent: null
         // type: 'info'
       },
       match: "",

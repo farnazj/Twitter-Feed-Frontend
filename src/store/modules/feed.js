@@ -33,8 +33,9 @@ export default {
             return new Promise((resolve, reject) => {
                 feedServices.getFeed(
                     {
-                        offset: context.state.offset,
-                        limit: context.state.limit
+                      limit: context.state.limit,
+                      offset: context.state.offset
+                        
                     },
                     {
                     pre: context.state.preTask

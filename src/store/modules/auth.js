@@ -6,7 +6,7 @@ export default {
     namespaced: true,
     state: {
       status: '',
-      token: JSON.parse(localStorage.getItem('token')) || ''
+      token: JSON.parse(localStorage.getItem('feedUserToken')) || ''
     },
     getters: {
   
