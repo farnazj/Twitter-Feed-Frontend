@@ -1,7 +1,11 @@
+import Vue from 'vue'
+import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import Feed from './views/Feed.vue'
 import store from './store/store'
+
+Vue.use(Router);
 
 let router = new Router({
     mode: 'history',
@@ -22,7 +26,7 @@ let router = new Router({
         },
         {
             path: '/signup',
-            name: 'signupNoMode',
+            name: 'signup',
             component: Signup
         },
         {
@@ -44,4 +48,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  })
+})
+
+export default router;

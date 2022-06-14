@@ -18,6 +18,6 @@ module.exports = {
       'vue/return-in-computed-property': 'off'
     },
     parserOptions: {
-      parser: 'babel-eslint'
+      parser: '@babel/eslint-parser'
     }
   }

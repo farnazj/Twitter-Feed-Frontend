@@ -1,7 +1,7 @@
 <template>
   <v-container>
 
-    <custom-toolbar></custom-toolbar>
+    <!-- <custom-toolbar></custom-toolbar> -->
 
     <v-row justify="center" align="center" fill-height class="mt-12 full-height">
       <v-col xs="10" sm="8" md="6" lg="4" align-self="center">
@@ -69,11 +69,12 @@
 </template>
 
 <script>
-import customToolbar from '@/components/CustomToolbar'
+// import customToolbar from '@/components/CustomToolbar'
 import consts from '@/services/constants'
 export default {
+  name: 'signup-view',
   components: {
-    'custom-toolbar': customToolbar
+    // 'custom-toolbar': customToolbar
   },
   props: {
     mode: {

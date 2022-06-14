@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="px-0">
-    <custom-toolbar></custom-toolbar>
+    <!-- <custom-toolbar></custom-toolbar> -->
 
     <v-row class="pt-8 full-height-login" justify="center" align="center" no-gutters fill-height >
 
@@ -70,10 +70,11 @@
 </template>
 
 <script>
-import customToolbar from '@/components/CustomToolbar'
+// import customToolbar from '@/components/CustomToolbar'
 export default {
+  name: 'login-view',
   components: {
-    'custom-toolbar': customToolbar
+    // 'custom-toolbar': customToolbar
   },
   data(){
     return {

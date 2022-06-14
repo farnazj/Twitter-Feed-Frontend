@@ -1,0 +1,8 @@
+.interactable {
+    cursor: pointer;
+  }
+  
+  .frozen {
+    position: fixed !important;
+  }
+  
