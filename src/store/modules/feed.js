@@ -50,11 +50,13 @@ export default {
         },
 
         getMoreTweets: (context) => {
-            // context.dispatch('loader/setLoading', true, { root: true });
+            context.dispatch('loader/setLoading', true, { root: true });
             return new Promise((resolve, reject) => {
       
+              console.log('inja')
               context.dispatch('getTweets')
               .then(tweets => {
+                console.log('tweets', tweets)
                 context.commit('append_tweets', tweets);
                 resolve();
               })
@@ -62,7 +64,7 @@ export default {
                 reject(error);
               })
               .finally(() => {
-                // context.dispatch('loader/setLoading', false, { root: true });
+                context.dispatch('loader/setLoading', false, { root: true });
               })
       
             })
@@ -70,7 +72,7 @@ export default {
 
         refreshTweets: (context) => {
 
-            // context.dispatch('loader/setLoading', true, { root: true });
+            context.dispatch('loader/setLoading', true, { root: true });
             context.commit('refresh_tweets');
             context.commit('set_fetch_status', false);
             return new Promise((resolve, reject) => {
@@ -83,7 +85,7 @@ export default {
                 reject(err);
               })
               .finally(() => {
-                // context.dispatch('loader/setLoading', false, { root: true });
+                context.dispatch('loader/setLoading', false, { root: true });
                 context.commit('set_fetch_status', true);
               })
             })

@@ -10,7 +10,8 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-                <v-list-item-title>{{tweet.TweetSource.name}}</v-list-item-title>
+                <v-list-item-title class="custom-list-title mr-1">{{tweet.TweetSource.name}}</v-list-item-title>
+                <v-list-item-subtitle>@{{tweet.TweetSource.username}}</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
         <v-card-text class="body-2">
@@ -35,7 +36,7 @@ export default {
     }
     },
     computed: {
-        
+
     }
 }
   </script>
@@ -45,5 +46,11 @@ export default {
     border: 1px #ECEFF1 solid;
     border-bottom: initial;
     width: 100%;
+  }
+
+  .custom-list-title {
+    display: inline-block;
+    flex: initial;
+    
   }
   </style>
