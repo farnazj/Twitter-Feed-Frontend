@@ -9,7 +9,7 @@ export default {
       scroll () {
         window.onscroll = () => {
           let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= (document.documentElement.offsetHeight - 250);
-  
+          console.log('bottom of window?')
           if (!this.scrollDisabled && !this.endOfResults && bottomOfWindow) {
             console.log('bottom of window')
             this.scrollDisabled = true;
@@ -24,5 +24,6 @@ export default {
     },
     mounted() {
       this.scroll();
+      console.log('chis dho')
     }
   }

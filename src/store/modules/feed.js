@@ -8,7 +8,7 @@ export default {
       preTask: true,
       tweets: [],
       offset: 0,
-      limit: 5,
+      limit: 6,
       tweetsFetched: false
     },
     mutations: {
@@ -33,6 +33,10 @@ export default {
         let newTweet = state.tweets[tweetIndex];
         newTweet.AccuracyLabel = data.label;
         Vue.set(state.tweets, tweetIndex, newTweet)
+      },
+
+      change_task_status: (state) => {
+        state.preTask = false;
       }
       
     },
@@ -45,9 +49,10 @@ export default {
                     offset: context.state.offset
                   },
                   {
-                  pre: context.state.preTask
+                  pretask: context.state.preTask
               })
               .then(response => {
+                console.log(response.data, 'resp')
                   resolve(response.data);
               }).catch(error => {
                   reject(error);
@@ -120,6 +125,23 @@ export default {
           .catch(error => {
             reject(error);
           })
+        })
+      },
+
+      proceedToMainTask: (context, assessments) => {
+        return new Promise((resolve, reject) => {
+
+          labelServices.postBulkAccuracyLabels( {
+            labels: assessments
+          })
+          .then(() => {
+            context.commit('change_task_status');
+            resolve()
+          })
+          .catch(error => {
+            reject(error);
+          })
+          
         })
       }
     }

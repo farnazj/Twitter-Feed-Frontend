@@ -2,7 +2,7 @@
 <v-row no-gutters>
     <v-col cols="9">
         <v-card rounded="0" flat class="custom-tweet">
-            <v-list-item>
+            <v-list-item v-if="tweet.TweetSource">
                 <v-list-item-avatar color="grey darken-3">
                     <v-img
                         class="elevation-6"
@@ -76,7 +76,8 @@ export default {
                     this.userLabel = newValue;
                     this.$emit('assessed', {
                         value: newValue,
-                        id: this.tweet.id });
+                        reason: this.reason,
+                        tweetId: this.tweet.id });
                 }
                 else {
                     this.updateAccuracyLabel({

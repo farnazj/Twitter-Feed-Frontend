@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import Feed from './views/Feed.vue'
+import WaitingPage from './views/WaitingPage'
 import store from './store/store'
 
 Vue.use(Router);
@@ -28,6 +29,11 @@ let router = new Router({
             path: '/signup',
             name: 'signup',
             component: Signup
+        },
+        {
+          path: '/standby',
+          name: 'waitingPage',
+          component: WaitingPage
         },
         {
             path: '*',

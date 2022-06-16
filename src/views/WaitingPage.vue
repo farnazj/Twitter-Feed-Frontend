@@ -25,7 +25,6 @@ export default {
   },
   methods: {
  
-  },
-  mixins: [infiniteScroll]
+  }
 }
 </script>
