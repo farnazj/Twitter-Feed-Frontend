@@ -37,16 +37,32 @@ export default {
     }
   },
   created() {
-      this.refreshTweets()
-      .then((tweets) => {
-        if (this.preTask) {
-          for (let tweet of tweets) {
-            this.preTaskTweetAssessments[tweet.id] = {};
-          }
 
-        }
-        
+    this.updateUser()
+    .then(() => {
+      let prom;
+      if (this.user.completedPreTask) {
+        prom = this.endPreTask()
+      }
+      else
+          prom = new Promise((resolve)=> resolve());
+      
+      prom
+      .then(() => {
+        this.refreshTweets()
+        .then((tweets) => {
+          if (this.preTask) {
+            for (let tweet of tweets) {
+              this.preTaskTweetAssessments[tweet.id] = {};
+            }
+
+          }
+          
+        })
       })
+      })
+
+
   },
   computed: {
 
@@ -106,10 +122,15 @@ export default {
       })
     },
 
+    ...mapActions('auth', [
+      'updateUser'
+    ]),
+
     ...mapActions('feed', [
         'getMoreTweets',
         'refreshTweets',
-        'proceedToMainTask'
+        'proceedToMainTask',
+        'endPreTask'
     ])
   },
   mixins: [infiniteScroll]

@@ -30,6 +30,7 @@ export default {
     ...mapActions('websocket', [
       'establishConnection'
     ]),
+  
     logout: function () {
       this.$store.dispatch['auth/logout']
       .then(() => {
