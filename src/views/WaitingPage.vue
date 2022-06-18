@@ -9,6 +9,7 @@
 
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'feed-view',
@@ -19,12 +20,24 @@ export default {
     }
   },
   created() {
+    this.endPreTask();
   },
   computed: {
-
+    ...mapState('feed', [
+        'waiting'
+    ])
   },
   methods: {
- 
+    ...mapActions('feed', [
+        'endPreTask'
+    ])
+  },
+  watch: {
+    waiting: function(newVal) {
+        if (!newVal) {
+            this.$router.push({ name: 'feed' });
+        }
+    }
   }
 }
 </script>

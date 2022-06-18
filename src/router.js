@@ -12,14 +12,7 @@ let router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
-        {
-          path: '/',
-          name: 'feed',
-          component: Feed,
-          meta: {
-            requiresAuth: true
-          }
-        },
+        
         {
             path: '/login',
             name: 'login',
@@ -33,17 +26,32 @@ let router = new Router({
         {
           path: '/standby',
           name: 'waitingPage',
-          component: WaitingPage
+          component: WaitingPage,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/',
+          name: 'feed',
+          component: Feed,
+          meta: {
+            requiresAuth: true
+          }
         },
         {
             path: '*',
-            component: Feed
+            component: Feed,
+            meta: {
+              requiresAuth: true
+            }
         }
     ]
 })
 
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {
+      console.log('to', to, 'from', from, store.getters['auth/isLoggedIn'])
       if (store.getters['auth/isLoggedIn']) {
         next();
         window.scrollTo(0, 0);

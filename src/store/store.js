@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from './modules/auth'
 import feed from './modules/feed'
 import loader from './modules/loader'
+import websocket from './modules/websocket'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ let store = new Vuex.Store({
   modules: {
     auth,
     feed,
-    loader
+    loader,
+    websocket
   }
 });
 

@@ -76,6 +76,7 @@ export default {
             const user = resp.data.user;
             context.commit('auth_success');
             context.commit('update_user', user);
+            context.dispatch('websocket/establishConnection', true, {root: true});
   
             resolve(resp);
           })

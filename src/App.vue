@@ -6,6 +6,8 @@
 
 <script>
 //import axios from 'axios'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'App',
   components: {
@@ -14,12 +16,20 @@ export default {
     return {
     }
   },
+  created() {
+    if (this.isLoggedIn) {
+      this.establishConnection();
+    }
+  },
   computed : {
     isLoggedIn : function() {
-      return this.$store.getters.isLoggedIn;
+      return this.$store.getters['auth/isLoggedIn'];
     }
   },
   methods: {
+    ...mapActions('websocket', [
+      'establishConnection'
+    ]),
     logout: function () {
       this.$store.dispatch['auth/logout']
       .then(() => {

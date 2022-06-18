@@ -1,7 +1,7 @@
 <template>
     <v-container class="mx-1 mt-2" fill-height>
 
-        <v-row no-gutters class="sth">
+        <v-row no-gutters>
             <v-col cols="12" md="3" align-self="center" class="custom-sidebar" >
               <v-row v-if="preTask && preTaskLoadingIsFinished && !someNotAssessed"  no-gutters justify="center" >
                 <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled">Proceed to the Task</v-btn>
@@ -62,22 +62,19 @@ export default {
   methods: {
 
     assessPreTaskTweet: function(data) {
-      console.log('event fired', data)
+      console.log('dobare call shod', data)
       this.preTaskTweetAssessments[data.tweetId] = { value: data.value, reason: data.reason};
           
       if (Object.values(this.preTaskTweetAssessments).some(el => !(Object.keys(el).length)))
         this.someNotAssessed = true;
       else
         this.someNotAssessed = false;
-
-      console.log('value of some not assessed', this.someNotAssessed, Object.values(this.preTaskTweetAssessments))
     },
 
     extend: function() {
       let preOffset = this.offset;
       return this.getMoreTweets()
       .then((newTweets) => {
-        console.log('new tweet')
 
         if (this.preTask) {
           for (let tweet of newTweets) {
@@ -90,14 +87,11 @@ export default {
         let postOffset = this.offset;
         if (preOffset == postOffset) {
 
-          console.log('pre offset', preOffset, 'post offset', postOffset);
             this.endOfResults = true;
 
             if (this.preTask)
               this.preTaskLoadingIsFinished = true;
-          
-          console.log('val of pretaskloading is finished', this.preTaskLoadingIsFinished)
-        }
+                  }
         else
           this.endOfResults = false;
       })
@@ -108,7 +102,7 @@ export default {
       this.proceedBtnDisabled = true;
       this.proceedToMainTask(this.preTaskTweetAssessments)
       .then(() => {
-        this.$route.push({name: 'waitingPage'})
+        this.$router.push({ name: 'waitingPage' })
       })
     },
 

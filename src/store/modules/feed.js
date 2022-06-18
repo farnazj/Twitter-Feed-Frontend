@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
       preTask: true,
+      waiting: false,
       tweets: [],
       offset: 0,
       limit: 6,
@@ -37,6 +38,11 @@ export default {
 
       change_task_status: (state) => {
         state.preTask = false;
+        state.waiting = true;
+      },
+
+      end_wait: (state) => {
+        state.waiting = false;
       }
       
     },
@@ -135,7 +141,6 @@ export default {
             labels: assessments
           })
           .then(() => {
-            context.commit('change_task_status');
             resolve()
           })
           .catch(error => {
@@ -143,6 +148,37 @@ export default {
           })
           
         })
+      },
+
+      endPreTask: (context) => {
+        context.commit('change_task_status');
+      },
+      
+      endWait: (context) => {
+        context.commit('end_wait');
+      },
+
+      replaceAILabels: (context, tweetLabelArr) => {
+        return new Promise((resolve, reject) => {
+          let returnedTweetIds = tweetLabelArr.map(el => el.tweet);
+          let displayedTweetsToChange = context.state.tweets.filter(el => returnedTweetIds.includes(el.id));
+          let labelProms = displayedTweetsToChange.map(tweet => {
+            return labelServices.getAccuracyLabel({tweetId: tweet.id})
+            .then(label => {
+              context.commit('update_tweet_label', {
+                tweetId: tweet.id,
+                label: label
+              })
+            })
+          });
+
+          Promise.all(labelProms)
+          .then(() => {
+            resolve();
+          })
+
+        })
       }
+      
     }
 }
