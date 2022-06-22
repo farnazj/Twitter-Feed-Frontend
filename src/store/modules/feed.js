@@ -111,12 +111,16 @@ export default {
 
       updateAccuracyLabel: (context, dataObj) => {
         return new Promise((resolve, reject) => {
+
+          let reqBody = {};
+          for (const [key, val] of Object.entries(dataObj)) {
+            if (key != 'tweetId')
+              reqBody[key] = val;
+          }
+
           labelServices.updateAccuracyLabel({
             tweetId: dataObj.tweetId
-          }, {
-            value: dataObj.value,
-            reason: dataObj.reason
-          })
+          }, reqBody)
           .then((newAccuracyLabel) => {
             context.commit('update_tweet_label', {
               tweetId: dataObj.tweetId,

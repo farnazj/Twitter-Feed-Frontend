@@ -1,65 +1,77 @@
 <template>
-<v-row no-gutters>
-    <v-col cols="8">
-        <v-card rounded="0" flat class="custom-tweet">
-            <v-list-item v-if="tweet.TweetSource">
-                <v-list-item-avatar color="grey darken-3">
-                    <v-img
-                        class="elevation-6"
-                        alt=""
-                        :src="tweet.TweetSource.imageUrl"
-                    ></v-img>
-                </v-list-item-avatar>
+    <v-row no-gutters>
+        <v-col cols="8">
+            <v-card rounded="0" flat class="custom-tweet">
+                <v-list-item v-if="tweet.TweetSource">
+                    <v-list-item-avatar color="grey darken-3">
+                        <v-img
+                            class="elevation-6"
+                            alt=""
+                            :src="tweet.TweetSource.imageUrl"
+                        ></v-img>
+                    </v-list-item-avatar>
 
-                <v-list-item-content>
-                    <v-list-item-title class="custom-list-title mr-1">{{tweet.TweetSource.name}}</v-list-item-title>
-                    <v-list-item-subtitle>@{{tweet.TweetSource.username}}</v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-            <v-card-text class="body-2">
-                {{tweet.text}}
-            </v-card-text>
+                    <v-list-item-content>
+                        <v-list-item-title class="custom-list-title mr-1">{{tweet.TweetSource.name}}</v-list-item-title>
+                        <v-list-item-subtitle>@{{tweet.TweetSource.username}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-card-text class="body-2">
+                    {{tweet.text}}
+                </v-card-text>
 
-        </v-card>
-    </v-col>
-    <v-col cols="4">
-        <v-card tile class="pa-1"  :color="assessmentContainerColor">
-                <v-row no-gutters>
-                    <p v-if="!preTask || userLabel === null"
-                    class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
-                </v-row>
-                <v-row no-gutters>
+            </v-card>
+        </v-col>
+        <v-col cols="4">
+            <v-card tile class="pa-1"  :color="assessmentContainerColor">
+                    <v-row no-gutters>
+                        <p v-if="!preTask || userLabel === null"
+                        class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
+                    </v-row>
+                    <v-row no-gutters>
 
-                    <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
-                        item-text="label" item-value="value" dense
-                        outline>
+                        <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
+                            item-text="label" item-value="value" dense
+                            outline>
+                            <template v-slot:label>
+                            </template>
+
+                            <template slot="item" slot-scope="data" >
+                                <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                                </div>
+                            </template>
+
+                            <template slot="selection" slot-scope="data" >
+                                <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                                </div>
+                            </template>
+
+                        </v-select>
+
+                    </v-row>
+
+                    <v-row no-gutters v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" class="pa-1">
+                        <v-textarea dense hide-details class="caption"
+                            outlined rows="2"
+                            v-model="reason" @focusout="submitReason"
+                            >
+
                         <template v-slot:label>
-                            <!-- <span class="subtitle-2">
-                                Tweet accuracy
-                            </span> -->
-                        </template>
+                            <span class="caption">
+                                Why do you believe so? (Optional)
+                            </span>
+                        </template>    
+                        </v-textarea>
+                    </v-row>
 
-                        <template slot="item" slot-scope="data" >
-                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
-                            </div>
-                        </template>
-
-                        <template slot="selection" slot-scope="data" >
-                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
-                            </div>
-                        </template>
-
-                    </v-select>
-
-                </v-row>
-                <v-row no-gutters class="pt-1">
-                    <span class="caption blue-grey--text text--darken-3">
-                    {{accuracyText}}
-                    </span>
-                </v-row>
-               
-        </v-card>
-    </v-col>
+                    <v-row no-gutters class="pt-1">
+                        <span class="caption blue-grey--text text--darken-3">
+                        {{accuracyText}}
+                        </span>
+                    </v-row>
+                
+            </v-card>
+        </v-col>
     </v-row>
 </template>
 <script>
@@ -73,7 +85,7 @@ export default {
     data() {
         return {
             userLabel: null,
-            reason: '',
+            userReason: '',
              accuracyStatus: [
                 {
                 label: 'Accurate',
@@ -94,6 +106,22 @@ export default {
         }
     },
     computed: {
+
+        reason: {
+            get: function() {
+                if (this.preTask)
+                    return this.userReason;
+                else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
+                    return null;
+                else 
+                    return this.tweet.TweetAccuracyLabels[0].reason;
+            },
+            set: function(newValue) {
+                this.userReason = newValue;
+            }
+
+        },
+
         isAccurate: {
             get: function() {
 
@@ -113,17 +141,14 @@ export default {
                     this.userLabel = newValue;
                     this.$emit('assessed', {
                         value: newValue,
-                        reason: this.reason,
                         tweetId: this.tweet.id });
                 }
                 else {
                     this.updateAccuracyLabel({
                         tweetId: this.tweet.id,
-                        value: newValue,
-                        reason: this.reason
+                        value: newValue
                     })
-                }
-                
+                } 
             }
         },
         
@@ -177,10 +202,19 @@ export default {
         ])
     },
     methods: {
+
+        submitReason: function() {
+            this.updateAccuracyLabel( {
+                tweetId: this.tweet.id, 
+                reason: this.userReason
+            } );
+        },
+
         accuracyMapping: function(val) {
             let mapping = { 1: 'inaccurate', 0: 'accurate' };
             return mapping[val];
         },
+
         ...mapActions('feed', [
             'updateAccuracyLabel'
         ])
