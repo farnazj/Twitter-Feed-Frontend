@@ -1,6 +1,6 @@
 <template>
 <v-row no-gutters>
-    <v-col cols="9">
+    <v-col cols="8">
         <v-card rounded="0" flat class="custom-tweet">
             <v-list-item v-if="tweet.TweetSource">
                 <v-list-item-avatar color="grey darken-3">
@@ -22,18 +22,38 @@
 
         </v-card>
     </v-col>
-    <v-col cols="3">
-        <v-card tile class="pa-1">
+    <v-col cols="4">
+        <v-card tile class="pa-1"  :color="assessmentContainerColor">
                 <v-row no-gutters>
                     <p v-if="!preTask || userLabel === null"
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
                 </v-row>
                 <v-row no-gutters>
-                    <v-switch v-model="isInaccurate" color="red" hide-details dense>
-                    </v-switch>
+
+                    <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
+                        item-text="label" item-value="value" dense
+                        outline>
+                        <template v-slot:label>
+                            <!-- <span class="subtitle-2">
+                                Tweet accuracy
+                            </span> -->
+                        </template>
+
+                        <template slot="item" slot-scope="data" >
+                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                            </div>
+                        </template>
+
+                        <template slot="selection" slot-scope="data" >
+                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                            </div>
+                        </template>
+
+                    </v-select>
+
                 </v-row>
-                <v-row no-gutters>
-                    <span class="caption  blue-grey--text text--darken-3">
+                <v-row no-gutters class="pt-1">
+                    <span class="caption blue-grey--text text--darken-3">
                     {{accuracyText}}
                     </span>
                 </v-row>
@@ -43,6 +63,7 @@
     </v-row>
 </template>
 <script>
+import consts from '@/services/constants'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -52,7 +73,19 @@ export default {
     data() {
         return {
             userLabel: null,
-            reason: ''
+            reason: '',
+             accuracyStatus: [
+                {
+                label: 'Accurate',
+                value: consts.ACCURACY_CODES.ACCURATE,
+                color: 'green--text text--darken-2'
+                },
+                {
+                label: 'Inaccurate',
+                value: consts.ACCURACY_CODES.INACCURATE,
+                color: 'red--text text--accent-3'
+                }
+            ],
         }
     },
     props: {
@@ -61,17 +94,21 @@ export default {
         }
     },
     computed: {
-        isInaccurate: {
+        isAccurate: {
             get: function() {
+
+                console.log('dobare miad inja aya', this.tweet.TweetAccuracyLabels)
+
                 if (this.preTask)
                     return this.userLabel;
-                else if (this.tweet.AccuracyLabel.value == 1)
-                    return true;
-                else
-                    return false;
+                else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
+                    return null;
+                else 
+                    return this.tweet.TweetAccuracyLabels[0].value;
 
             },
             set: function(newValue) {
+                console.log
                 if (this.preTask) {
                     this.userLabel = newValue;
                     this.$emit('assessed', {
@@ -100,19 +137,40 @@ export default {
                     accuracyVal = this.userLabel;
             }
             else {
-                accuracyVal = this.tweet.AccuracyLabel.value;
+                accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
             }
 
             let assessor;
-            if (typeof this.tweet.AccuracyLabel === 'undefined' ||
-                this.tweet.AccuracyLabel.AIAssigned == 0)
+            if (typeof this.tweet.TweetAccuracyLabels === 'undefined' ||
+                this.tweet.TweetAccuracyLabels[0].AIAssigned == 0)
                 assessor = 'You have marked'
             else {
-                assessor = "The AI think you'd consider"
+                assessor = "The AI thinks you'd consider"
             }
             
             return `${assessor} this tweet as ${this.accuracyMapping(accuracyVal)}`;
             
+        },
+
+        assessmentContainerColor: function() {
+            console.log('assessmentContainercolor', this.isAccurate)
+            let accuracyVal;
+            if (!this.preTask && this.tweet.TweetAccuracyLabels[0].AIAssigned)
+                accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
+            else 
+                accuracyVal = this.isAccurate;
+
+            console.log('what is accuracyVal', accuracyVal)
+
+            if (accuracyVal === null) {
+                return '';
+            }
+            else if (accuracyVal == consts.ACCURACY_CODES.ACCURATE)
+                return 'green lighten-4';
+
+            else
+                return 'red lighten-4';
+
         },
         ...mapState('feed', [
             'preTask'
@@ -120,7 +178,7 @@ export default {
     },
     methods: {
         accuracyMapping: function(val) {
-            let mapping = {true: 'inaccurate', false: 'accurate'};
+            let mapping = { 1: 'inaccurate', 0: 'accurate' };
             return mapping[val];
         },
         ...mapActions('feed', [

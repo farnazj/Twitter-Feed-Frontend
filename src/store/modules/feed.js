@@ -30,10 +30,12 @@ export default {
       },
 
       update_tweet_label: (state, data) => {
+
         let tweetIndex = state.tweets.findIndex(tweet => tweet.id == data.tweetId);
         let newTweet = state.tweets[tweetIndex];
-        newTweet.AccuracyLabel = data.label;
+        newTweet.TweetAccuracyLabels = [data.label];
         Vue.set(state.tweets, tweetIndex, newTweet)
+        console.log('new Tweet', newTweet)
       },
 
       change_task_status: (state) => {
@@ -58,7 +60,6 @@ export default {
                   pretask: context.state.preTask
               })
               .then(response => {
-                console.log(response.data, 'resp')
                   resolve(response.data);
               }).catch(error => {
                   reject(error);
@@ -116,22 +117,18 @@ export default {
             value: dataObj.value,
             reason: dataObj.reason
           })
-          .then(() => {
-            labelServices.getAccuracyLabel({
-              tweetId: dataObj.tweetId
-            })
-            .then((accuracyLabel) => {
-              context.commit('update_tweet_label', {
-                tweetId: dataObj.tweetId,
-                label: accuracyLabel
-              });
-              resolve();
-            })
-          })
-          .catch(error => {
-            reject(error);
+          .then((newAccuracyLabel) => {
+            context.commit('update_tweet_label', {
+              tweetId: dataObj.tweetId,
+              label: newAccuracyLabel.data.data
+            });
+            resolve();
           })
         })
+        .catch(error => {
+          reject(error);
+        })
+        
       },
 
       proceedToMainTask: (context, assessments) => {
@@ -153,7 +150,7 @@ export default {
       endPreTask: (context) => {
         context.commit('change_task_status');
       },
-      
+
       endWait: (context) => {
         context.commit('end_wait');
       },
