@@ -13,8 +13,6 @@ export default {
 
         console.log(dataObj, 'whaeeee')
 
-        console.log('state.connection', state.connection)
-
         state.connection.onopen = function() {
             if (state.wsConnIntervalVar) {
                 state.connReestablished = true;
@@ -31,10 +29,11 @@ export default {
 
                 if (data.type == 'new_labels') {
 
-                    console.log( 'whaat', dataObj.rootState)
                     if (dataObj.rootState.feed.waiting)
-                        dataObj.context.dispatch('feed/endWait', true, {root: true});
-                    
+                        dataObj.context.dispatch('feed/endWait', true, { root: true });
+                    else {
+                        dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
+                    }
 
                  }
             })
@@ -60,9 +59,9 @@ export default {
             let userId = context.rootGetters['auth/user'].id;
 
             context.commit('establish_connection', {
-             context: context,
-             userId: userId,
-             rootState: context.rootState
+                context: context,
+                userId: userId,
+                rootState: context.rootState
             });
             resolve();
       })

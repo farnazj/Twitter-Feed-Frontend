@@ -125,8 +125,6 @@ export default {
         isAccurate: {
             get: function() {
 
-                console.log('dobare miad inja aya', this.tweet.TweetAccuracyLabels)
-
                 if (this.preTask)
                     return this.userLabel;
                 else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
@@ -178,7 +176,7 @@ export default {
         },
 
         assessmentContainerColor: function() {
-            console.log('assessmentContainercolor', this.isAccurate)
+
             let accuracyVal;
             if (!this.preTask && this.tweet.TweetAccuracyLabels[0].AIAssigned)
                 accuracyVal = this.tweet.TweetAccuracyLabels[0].value;

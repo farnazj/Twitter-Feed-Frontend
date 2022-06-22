@@ -159,16 +159,16 @@ export default {
         context.commit('end_wait');
       },
 
-      replaceAILabels: (context, tweetLabelArr) => {
+      replaceAILabels: (context, returnedTweetIds) => {
         return new Promise((resolve, reject) => {
-          let returnedTweetIds = tweetLabelArr.map(el => el.tweet);
           let displayedTweetsToChange = context.state.tweets.filter(el => returnedTweetIds.includes(el.id));
           let labelProms = displayedTweetsToChange.map(tweet => {
             return labelServices.getAccuracyLabel({tweetId: tweet.id})
-            .then(label => {
+            .then(data => {
+              console.log('getting new accuracy label for tweet', tweet.id, 'accuracy label is', data)
               context.commit('update_tweet_label', {
                 tweetId: tweet.id,
-                label: label
+                label: data.data
               })
             })
           });
