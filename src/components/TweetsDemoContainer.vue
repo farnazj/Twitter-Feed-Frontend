@@ -6,7 +6,7 @@
             </p>
         </v-row>
         <v-row no-gutters v-for="tweet in demoTweets" :key="tweet.id">
-            <v-card rounded="0" flat class="custom-demo-tweet mt-2">
+            <v-card rounded="0" flat class="custom-demo-tweet mt-2"  @click="scrollTweetIntoView(tweet.id)">
                 <v-list-item v-if="tweet.TweetSource">
                     <v-list-item-avatar color="grey darken-3" size="25">
                         <v-img
@@ -44,15 +44,16 @@ export default {
     props: [ 'mode' ],
     computed: {
         demoTweets: function() {
+            console.log(this.$refs, 'refs')
             if (this.mode == 'newlyUpdated') {
                 return this.tweets.filter(el => this.newlyUpdatedTweetIds.includes(el.id));
             }
         },
-      
 
         ...mapState('feed', [
             'tweets',
-            'newlyUpdatedTweetIds'
+            'newlyUpdatedTweetIds',
+            'tweetRefs'
         ])
     },
     methods: {
@@ -60,6 +61,9 @@ export default {
             let ellipsis = tweet.text.length > this.textSizeToShow ? '...' : '';
             return tweet.text.substring(0, this.textSizeToShow) + ellipsis
         },
+        scrollTweetIntoView: function(tweetId) {
+            this.tweetRefs[tweetId].scrollIntoView({behavior: 'smooth'});
+        }
     }
 
 }
@@ -71,6 +75,7 @@ export default {
   .custom-demo-tweet {
     border: 1px #CFD8DC solid;
     width: 100%;
+    cursor: pointer;
   }
 
   .demo-tweet-text {

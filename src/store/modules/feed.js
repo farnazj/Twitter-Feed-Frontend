@@ -11,7 +11,8 @@ export default {
       offset: 0,
       limit: 6,
       tweetsFetched: false,
-      newlyUpdatedTweetIds: []
+      newlyUpdatedTweetIds: [],
+      tweetRefs: {}
     },
     mutations: {
       append_tweets: (state, tweets) => {
@@ -19,6 +20,7 @@ export default {
         let filteredTweets= tweets.filter(tweet => !tweetIds.includes(tweet.id) );
         state.tweets.push(...filteredTweets);
         state.offset += tweets.length;
+        console.log('state offset changed', state.offset)
       },
 
       refresh_tweets: (state) => {
@@ -50,6 +52,10 @@ export default {
 
       end_wait: (state) => {
         state.waiting = false;
+      },
+
+      add_tweet_ref: (state, obj) => {
+        state.tweetRefs[obj.id] = obj.ref;
       }
       
     },
@@ -184,6 +190,13 @@ export default {
             resolve();
           })
 
+        })
+      },
+
+      addTweetRef: (context, dataObj) => {
+        return new Promise((resolve, reject) => {
+          context.commit('add_tweet_ref', dataObj);
+          resolve();
         })
       }
       

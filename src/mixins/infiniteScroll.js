@@ -8,7 +8,10 @@ export default {
     methods: {
       scroll () {
         window.onscroll = () => {
+          // console.log( document.documentElement.scrollTop, window.innerHeight, document.documentElement.offsetHeight)
           let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= (document.documentElement.offsetHeight - 300);
+
+          // console.log('residim bottom ya na', bottomOfWindow, this.scrollDisabled, this.endOfResults)
 
           if (!this.scrollDisabled && !this.endOfResults && bottomOfWindow) {
             console.log('bottom of window')

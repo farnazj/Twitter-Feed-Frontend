@@ -23,6 +23,7 @@ export default {
         }
     },
     created() {
+        this.scrollDisabled = true;
         this.updateUser()
         .then(() => {
             let prom;
@@ -36,10 +37,14 @@ export default {
             .then(() => {
                 this.refreshTweets()
                 .then((tweets) => {
+                    this.scrollDisabled = false; 
+
                     if (this.preTask) {
                         for (let tweet of tweets) {
-                        this.preTaskTweetAssessments[tweet.id] = {};
+                        this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
                         }
+
+                        this.someNotAssessed = true;
                     }
                 
                 })
@@ -62,10 +67,20 @@ export default {
 
         assessPreTaskTweet: function(data) {
 
-            this.preTaskTweetAssessments[data.tweetId] = { value: data.value, reason: data.reason };
-            
-            if (Object.values(this.preTaskTweetAssessments).some(el => !(Object.keys(el).length)))
+            console.log('data chie', data)
+
+          
+                this.preTaskTweetAssessments[data.tweetId].value = data.value;
+          
+            if (data.reason != null)
+                            this.preTaskTweetAssessments[data.tweetId].reason = data.reason;
+
+
+            if (Object.values(this.preTaskTweetAssessments).some(el => el.value === null)) {
                 this.someNotAssessed = true;
+                console.log(JSON.stringify(Object.values(this.preTaskTweetAssessments)), 'inja')
+                console.log(Object.values(this.preTaskTweetAssessments).some(el => el.value === null), 'pas chi shod')
+            }
             else {
                 this.someNotAssessed = false;
                 this.checkIfReadyToProceed();
@@ -81,20 +96,24 @@ export default {
         },
 
         extend: function() {
+            
             let preOffset = this.offset;
             return this.getMoreTweets()
             .then((newTweets) => {
 
                 if (this.preTask) {
                     for (let tweet of newTweets) {
-                        this.preTaskTweetAssessments[tweet.id] = {};
+                        this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
                     }
+                    
 
                     this.someNotAssessed = true;
                 }
 
+                console.log()
                 let postOffset = this.offset;
                 if (preOffset == postOffset) {
+                    console.log('offset mese ham shod', preOffset, postOffset)
 
                     this.endOfResults = true;
 

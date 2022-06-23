@@ -7,8 +7,10 @@
                 <tweets-demo-container mode="newlyUpdated"></tweets-demo-container>
               </v-row>
 
-              <v-row v-if="revealProceed" no-gutters justify="center" >
-                <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled">Proceed to the Task</v-btn>
+              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': preTask}">
+                <v-col cols="12" align-self="center"> 
+                  <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled">Proceed to the Task</v-btn>
+                </v-col>
               </v-row>
 
             </v-col>
@@ -78,6 +80,10 @@ export default {
 }
 
 .demo-tweets-sidebar {
+}
+
+.full-height {
+  height: 85vh;
 }
 
 </style>

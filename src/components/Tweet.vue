@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters>
+    <v-row no-gutters :ref="`tweet-${tweet.id}`">
         <v-col cols="8">
             <v-card rounded="0" flat class="custom-tweet">
                 <v-list-item v-if="tweet.TweetSource">
@@ -50,7 +50,8 @@
 
                 </v-row>
 
-                <v-row no-gutters v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" class="pa-1">
+                <v-row no-gutters v-if=" (this.preTask && this.userLabel !== null) || 
+                (!this.preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned)" class="pa-1">
                     <v-textarea dense hide-details class="caption"
                         outlined rows="2"
                         v-model="reason" @focusout="submitReason"
@@ -105,6 +106,9 @@ export default {
             type: Object
         }
     },
+    mounted() {
+        this.addTweetRef( { id: this.tweet.id, ref: this.$refs[`tweet-${this.tweet.id}`] })
+    },
     computed: {
 
         reason: {
@@ -139,6 +143,7 @@ export default {
                     this.userLabel = newValue;
                     this.$emit('assessed', {
                         value: newValue,
+                        reason: this.userReason,
                         tweetId: this.tweet.id });
                 }
                 else {
@@ -183,8 +188,6 @@ export default {
             else 
                 accuracyVal = this.isAccurate;
 
-            console.log('what is accuracyVal', accuracyVal)
-
             if (accuracyVal === null) {
                 return '';
             }
@@ -198,7 +201,6 @@ export default {
         
         isANewlyUpdatedTweet: function() {
 
-            console.log('inside comp property', this.newlyUpdatedTweetIds, this.tweet.id)
             return this.newlyUpdatedTweetIds.includes(this.tweet.id);
         },
 
@@ -210,10 +212,13 @@ export default {
     methods: {
 
         submitReason: function() {
-            this.updateAccuracyLabel( {
-                tweetId: this.tweet.id, 
-                reason: this.userReason
-            } );
+            if (!this.preTask) {
+                this.updateAccuracyLabel( {
+                    tweetId: this.tweet.id, 
+                    reason: this.userReason
+                } );
+            }
+            
         },
 
         accuracyMapping: function(val) {
@@ -222,7 +227,8 @@ export default {
         },
 
         ...mapActions('feed', [
-            'updateAccuracyLabel'
+            'updateAccuracyLabel',
+            'addTweetRef'
         ])
     }
 }
