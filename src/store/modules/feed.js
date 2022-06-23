@@ -10,7 +10,8 @@ export default {
       tweets: [],
       offset: 0,
       limit: 6,
-      tweetsFetched: false
+      tweetsFetched: false,
+      newlyUpdatedTweetIds: []
     },
     mutations: {
       append_tweets: (state, tweets) => {
@@ -36,6 +37,10 @@ export default {
         newTweet.TweetAccuracyLabels = [data.label];
         Vue.set(state.tweets, tweetIndex, newTweet)
         console.log('new Tweet', newTweet)
+      },
+
+      update_newly_updated_tweets: (state, tweetIds) => {
+        state.newlyUpdatedTweetIds = tweetIds;
       },
 
       change_task_status: (state) => {
@@ -175,6 +180,7 @@ export default {
 
           Promise.all(labelProms)
           .then(() => {
+            context.commit('update_newly_updated_tweets', returnedTweetIds)
             resolve();
           })
 

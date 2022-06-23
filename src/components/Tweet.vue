@@ -23,52 +23,52 @@
             </v-card>
         </v-col>
         <v-col cols="4">
-            <v-card tile class="pa-1"  :color="assessmentContainerColor">
-                    <v-row no-gutters>
-                        <p v-if="!preTask || userLabel === null"
-                        class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
-                    </v-row>
-                    <v-row no-gutters>
+            <v-card tile :class="['pa-1', {'new-update': isANewlyUpdatedTweet, 'dummy-class': isANewlyUpdatedTweet}]" :color="assessmentContainerColor" >
+                <v-row no-gutters>
+                    <p v-if="!preTask || userLabel === null"
+                    class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
+                </v-row>
+                <v-row no-gutters>
 
-                        <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
-                            item-text="label" item-value="value" dense
-                            outline>
-                            <template v-slot:label>
-                            </template>
-
-                            <template slot="item" slot-scope="data" >
-                                <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
-                                </div>
-                            </template>
-
-                            <template slot="selection" slot-scope="data" >
-                                <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
-                                </div>
-                            </template>
-
-                        </v-select>
-
-                    </v-row>
-
-                    <v-row no-gutters v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" class="pa-1">
-                        <v-textarea dense hide-details class="caption"
-                            outlined rows="2"
-                            v-model="reason" @focusout="submitReason"
-                            >
-
+                    <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
+                        item-text="label" item-value="value" dense
+                        outline>
                         <template v-slot:label>
-                            <span class="caption">
-                                Why do you believe so? (Optional)
-                            </span>
-                        </template>    
-                        </v-textarea>
-                    </v-row>
+                        </template>
 
-                    <v-row no-gutters class="pt-1">
-                        <span class="caption blue-grey--text text--darken-3">
-                        {{accuracyText}}
+                        <template slot="item" slot-scope="data" >
+                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                            </div>
+                        </template>
+
+                        <template slot="selection" slot-scope="data" >
+                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                            </div>
+                        </template>
+
+                    </v-select>
+
+                </v-row>
+
+                <v-row no-gutters v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" class="pa-1">
+                    <v-textarea dense hide-details class="caption"
+                        outlined rows="2"
+                        v-model="reason" @focusout="submitReason"
+                        >
+
+                    <template v-slot:label>
+                        <span class="caption">
+                            Why do you believe so? (Optional)
                         </span>
-                    </v-row>
+                    </template>    
+                    </v-textarea>
+                </v-row>
+
+                <v-row no-gutters class="pt-1">
+                    <span class="caption blue-grey--text text--darken-3">
+                    {{accuracyText}}
+                    </span>
+                </v-row>
                 
             </v-card>
         </v-col>
@@ -195,8 +195,16 @@ export default {
                 return 'red lighten-4';
 
         },
+        
+        isANewlyUpdatedTweet: function() {
+
+            console.log('inside comp property', this.newlyUpdatedTweetIds, this.tweet.id)
+            return this.newlyUpdatedTweetIds.includes(this.tweet.id);
+        },
+
         ...mapState('feed', [
-            'preTask'
+            'preTask',
+            'newlyUpdatedTweetIds'
         ])
     },
     methods: {
@@ -221,15 +229,21 @@ export default {
   </script>
 
   <style scoped>
-  .custom-tweet {
-    border: 1px #ECEFF1 solid;
-    border-bottom: initial;
-    width: 100%;
-  }
 
   .custom-list-title {
     display: inline-block;
     flex: initial;
     
+  }
+
+  .new-update.dummy-class {
+    border: 3px dashed;
+    border-color: #283593 !important;
+  }
+
+  .custom-tweet {
+    border: 1px #CFD8DC solid;
+    border-bottom: initial;
+    width: 100%;
   }
   </style>

@@ -1,0 +1,89 @@
+<template>
+    <v-container class="custom-tweets-container px-3">
+        <v-row no-gutters v-if="demoTweets.length">
+            <p class="body-2">
+                The most recent tweets where AI has changed its prediction of your assessment. You can click on each one to scroll it into view.
+            </p>
+        </v-row>
+        <v-row no-gutters v-for="tweet in demoTweets" :key="tweet.id">
+            <v-card rounded="0" flat class="custom-demo-tweet mt-2">
+                <v-list-item v-if="tweet.TweetSource">
+                    <v-list-item-avatar color="grey darken-3" size="25">
+                        <v-img
+                            class="elevation-6"
+                            alt=""
+                            :src="tweet.TweetSource.imageUrl"
+                        ></v-img>
+                    </v-list-item-avatar>
+
+                    <v-list-item-content class="pb-1">
+                        <v-list-item-title class="custom-demo-tweet-title mr-1">{{tweet.TweetSource.name}}</v-list-item-title>
+                        <v-list-item-subtitle class="custom-demo-tweet-username">@{{tweet.TweetSource.username}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-card-text class="demo-tweet-text py-1">
+                    {{demoTweetText(tweet)}}
+                </v-card-text>
+
+            </v-card>
+        </v-row>
+    </v-container>
+</template>
+<script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+
+export default {
+    name: 'tweet-instance',
+    components: {
+    },
+    data() {
+        return {
+            textSizeToShow: 130
+        }
+    },
+    props: [ 'mode' ],
+    computed: {
+        demoTweets: function() {
+            if (this.mode == 'newlyUpdated') {
+                return this.tweets.filter(el => this.newlyUpdatedTweetIds.includes(el.id));
+            }
+        },
+      
+
+        ...mapState('feed', [
+            'tweets',
+            'newlyUpdatedTweetIds'
+        ])
+    },
+    methods: {
+        demoTweetText: function(tweet) {
+            let ellipsis = tweet.text.length > this.textSizeToShow ? '...' : '';
+            return tweet.text.substring(0, this.textSizeToShow) + ellipsis
+        },
+    }
+
+}
+
+</script>
+
+<style scoped>
+
+  .custom-demo-tweet {
+    border: 1px #CFD8DC solid;
+    width: 100%;
+  }
+
+  .demo-tweet-text {
+    line-height: 1rem;
+    font-size: 0.7rem !important;
+  }
+
+  .custom-demo-tweet-title {
+    font-size: 0.8rem
+  }
+  
+  .custom-demo-tweet-username {
+    font-size: 0.75rem;
+  }
+
+</style>

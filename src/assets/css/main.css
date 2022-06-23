@@ -2,7 +2,6 @@
     cursor: pointer;
   }
   
-  .frozen {
-    position: fixed !important;
-  }
-  
+.frozen {
+  position: fixed !important;
+}
