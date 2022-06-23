@@ -1,10 +1,10 @@
 <template>
-    <v-container class="mx-1 mt-2" fill-height>
+    <v-container class="ma-0 pa-0" fill-height>
 
         <v-row no-gutters>
             <v-col md="3" lg="4" class="demo-tweets-sidebar" >
-              <v-row no-gutters class="new-predictions" v-if="!preTask">
-                <tweets-demo-container mode="newlyUpdated"></tweets-demo-container>
+              <v-row no-gutters class="new-predictions pt-2" v-if="!preTask">
+                <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
 
               <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': preTask}">
@@ -15,8 +15,8 @@
 
             </v-col>
 
-            <v-col md="9" lg="8" >
-              <tweets-container @readyToProceed="enableProceed"></tweets-container>
+            <v-col md="9" lg="8" class="pt-6" >
+              <tweets-container @readyToProceed="enableProceed" ></tweets-container>
             </v-col>
         </v-row>
         
@@ -76,10 +76,12 @@ export default {
 .new-predictions {
   height: 85vh;
   border-right: 1px #CFD8DC solid;
+  border-bottom: 1px #CFD8DC solid;
   overflow: scroll;
 }
 
 .demo-tweets-sidebar {
+
 }
 
 .full-height {

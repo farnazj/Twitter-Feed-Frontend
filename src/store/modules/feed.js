@@ -20,7 +20,6 @@ export default {
         let filteredTweets= tweets.filter(tweet => !tweetIds.includes(tweet.id) );
         state.tweets.push(...filteredTweets);
         state.offset += tweets.length;
-        console.log('state offset changed', state.offset)
       },
 
       refresh_tweets: (state) => {

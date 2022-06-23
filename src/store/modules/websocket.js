@@ -32,7 +32,9 @@ export default {
                     if (dataObj.rootState.feed.waiting)
                         dataObj.context.dispatch('feed/endWait', true, { root: true });
                     else {
+                        
                         dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
+                        
                     }
 
                  }
