@@ -44,6 +44,10 @@ export default {
         state.newlyUpdatedTweetIds = tweetIds;
       },
 
+      remove_from_newly_updated_tweets: (state, tweetId) => {
+        state.newlyUpdatedTweetIds.splice(state.newlyUpdatedTweetIds.indexOf(tweetId), 1);
+      },
+
       change_task_status: (state) => {
         state.preTask = false;
         state.waiting = true;
@@ -136,6 +140,7 @@ export default {
               tweetId: dataObj.tweetId,
               label: newAccuracyLabel.data.data
             });
+            context.commit('remove_from_newly_updated_tweets', dataObj.tweetId);
             resolve();
           })
         })

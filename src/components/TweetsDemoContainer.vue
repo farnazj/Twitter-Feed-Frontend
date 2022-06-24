@@ -1,5 +1,5 @@
 <template>
-    <v-container class="custom-tweets-container px-3">
+    <v-container class="custom-tweets-container px-3" v-if="demoTweets.length">
 
         <v-row  no-gutters justify="center">
 
@@ -20,7 +20,7 @@
                     </v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel v-if="demoTweets.length">
+                <v-expansion-panel >
                     <v-expansion-panel-header>In More Detail</v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-row no-gutters >

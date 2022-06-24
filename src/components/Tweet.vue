@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters :ref="`tweet-${tweet.id}`">
+    <v-row no-gutters :ref="`tweet-${tweet.id}`" >
         <v-col cols="8">
             <v-card rounded="0" flat class="custom-tweet">
                 <v-list-item v-if="tweet.TweetSource">
@@ -27,6 +27,9 @@
                 <v-row no-gutters>
                     <p v-if="!preTask || userLabel === null"
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
+                    <v-spacer></v-spacer>
+                    <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
+                    <v-icon v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
                 </v-row>
                 <v-row no-gutters>
 
@@ -37,7 +40,10 @@
                         </template>
 
                         <template slot="item" slot-scope="data" >
-                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
+                            <div :class="[data.item.color, 'subtitle-2']">
+
+                                {{data.item.label}}
+                                <v-icon small>{{icons.gavel}}</v-icon>
                             </div>
                         </template>
 
@@ -66,8 +72,11 @@
                 </v-row>
 
                 <v-row no-gutters class="pt-1">
-                    <span class="caption blue-grey--text text--darken-3">
-                    {{accuracyText}}
+                    <span class="caption blue-grey--text text--darken-3" >
+                        <v-icon v-if="tweet.TweetAccuracyLabels.length && tweet.TweetAccuracyLabels[0].AIAssigned"
+                            >
+                            {{icons.robot}}
+                        </v-icon> {{accuracyText}}
                     </span>
                 </v-row>
                 
@@ -78,6 +87,7 @@
 <script>
 import consts from '@/services/constants'
 import { mapState, mapActions } from 'vuex'
+import { mdiBellRing, mdiRobot, mdiGavel } from '@mdi/js';
 
 export default {
     name: 'tweet-instance',
@@ -99,6 +109,11 @@ export default {
                 color: 'red--text text--accent-3'
                 }
             ],
+            icons: {
+                newPredictionIcon: mdiBellRing,
+                robot: mdiRobot,
+                gavel: mdiGavel
+            }
         }
     },
     props: {
@@ -173,7 +188,7 @@ export default {
                 this.tweet.TweetAccuracyLabels[0].AIAssigned == 0)
                 assessor = 'You have marked'
             else {
-                assessor = "The AI thinks you'd consider"
+                assessor = " thinks you'd consider"
             }
             
             return `${assessor} this tweet as ${this.accuracyMapping(accuracyVal)}`;
@@ -244,12 +259,13 @@ export default {
 
   .new-update.dummy-class {
     border: 3px dashed;
-    border-color: #283593 !important;
+    border-color: #FF6F00 !important;
   }
 
   .custom-tweet {
     border: 1px #CFD8DC solid;
     border-bottom: initial;
     width: 100%;
+    min-height: 160px;
   }
   </style>
