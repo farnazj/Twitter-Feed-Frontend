@@ -8,8 +8,10 @@
               </v-row>
 
               <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': preTask}">
-                <v-col cols="12" align-self="center"> 
-                  <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled">Proceed to the Task</v-btn>
+                <v-col cols="12" align-self="center">
+                  <v-row justify="center">
+                    <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled" class="ml-2">Proceed to the Task</v-btn>
+                  </v-row>
                 </v-col>
               </v-row>
 
@@ -78,10 +80,6 @@ export default {
   border-right: 1px #CFD8DC solid;
   border-bottom: 1px #CFD8DC solid;
   overflow: scroll;
-}
-
-.demo-tweets-sidebar {
-
 }
 
 .full-height {

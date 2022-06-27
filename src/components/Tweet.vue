@@ -16,8 +16,8 @@
                         <v-list-item-subtitle>@{{tweet.TweetSource.username}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-                <v-card-text class="body-2">
-                    {{tweet.text}}
+                <v-card-text class="body-1" v-html="tweet.text">
+                   
                 </v-card-text>
 
             </v-card>
@@ -73,7 +73,7 @@
 
                 <v-row no-gutters class="pt-1">
                     <span class="caption blue-grey--text text--darken-3" >
-                        <v-icon v-if="tweet.TweetAccuracyLabels.length && tweet.TweetAccuracyLabels[0].AIAssigned"
+                        <v-icon v-if="tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].AIAssigned"
                             >
                             {{icons.robot}}
                         </v-icon> {{accuracyText}}

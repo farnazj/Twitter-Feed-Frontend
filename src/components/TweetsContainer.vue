@@ -1,19 +1,22 @@
 <template>
-    <v-container class="custom-tweets-container pt-2">
+    <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
         <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
             <tweet-instance :tweet="tweet" @assessed="assessPreTaskTweet"></tweet-instance>
         </v-row>
+        <tweet-loading></tweet-loading>
     </v-container>
 </template>
 <script>
 import tweet from '@/components/Tweet'
+import tweetLoading from '@/components/TweetLoading.vue'
 import infiniteScroll from '@/mixins/infiniteScroll'
 
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     components: {
-        'tweet-instance': tweet
+        'tweet-instance': tweet,
+        'tweet-loading': tweetLoading
     },
     data() {
         return {
@@ -67,19 +70,13 @@ export default {
 
         assessPreTaskTweet: function(data) {
 
-            console.log('data chie', data)
-
-          
-                this.preTaskTweetAssessments[data.tweetId].value = data.value;
+            this.preTaskTweetAssessments[data.tweetId].value = data.value;
           
             if (data.reason != null)
-                            this.preTaskTweetAssessments[data.tweetId].reason = data.reason;
-
+                this.preTaskTweetAssessments[data.tweetId].reason = data.reason;
 
             if (Object.values(this.preTaskTweetAssessments).some(el => el.value === null)) {
                 this.someNotAssessed = true;
-                console.log(JSON.stringify(Object.values(this.preTaskTweetAssessments)), 'inja')
-                console.log(Object.values(this.preTaskTweetAssessments).some(el => el.value === null), 'pas chi shod')
             }
             else {
                 this.someNotAssessed = false;
@@ -89,8 +86,6 @@ export default {
         },
 
         checkIfReadyToProceed: function() {
-            console.log('is it ready to proceed', this.preTask && this.preTaskLoadingIsFinished && !this.someNotAssessed,
-            this.preTask, this.preTaskLoadingIsFinished, !this.someNotAssessed)
             if (this.preTask && this.preTaskLoadingIsFinished && !this.someNotAssessed)
                 this.$emit('readyToProceed', this.preTaskTweetAssessments);
         },

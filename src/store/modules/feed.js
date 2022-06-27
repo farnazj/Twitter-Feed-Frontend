@@ -9,7 +9,7 @@ export default {
       waiting: false,
       tweets: [],
       offset: 0,
-      limit: 6,
+      limit: 8,
       tweetsFetched: false,
       newlyUpdatedTweetIds: [],
       tweetRefs: {}
@@ -176,7 +176,8 @@ export default {
 
       replaceAILabels: (context, returnedTweetIds) => {
         return new Promise((resolve, reject) => {
-          let displayedTweetsToChange = context.state.tweets.filter(el => returnedTweetIds.includes(el.id));
+          let displayedTweetsToChange = context.state.tweets.filter(el => returnedTweetIds.includes(el.id)
+          && el.TweetAccuracyLabels[0].AIAssigned == 1);
           let labelProms = displayedTweetsToChange.map(tweet => {
             return labelServices.getAccuracyLabel({tweetId: tweet.id})
             .then(data => {
@@ -190,7 +191,7 @@ export default {
 
           Promise.all(labelProms)
           .then(() => {
-            context.commit('update_newly_updated_tweets', returnedTweetIds)
+            context.commit('update_newly_updated_tweets', displayedTweetsToChange.map(el => el.id));
             resolve();
           })
 
