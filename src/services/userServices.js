@@ -5,5 +5,11 @@ export default {
     return Api().get(`/users/${id}`, {
       withCredentials: true
     })
+  },
+  
+  updateUserCondition(id) {
+    return Api().put(`/users/${id}/update-condition`, {
+      withCredentials: true
+    })
   }
 }

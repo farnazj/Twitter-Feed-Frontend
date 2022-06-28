@@ -64,21 +64,21 @@ export default {
     },
     actions: {
       getTweets: (context) => {
-          return new Promise((resolve, reject) => {
-              feedServices.getFeed(
-                  {
-                    limit: context.state.limit,
-                    offset: context.state.offset
-                  },
-                  {
-                  pretask: context.state.preTask
-              })
-              .then(response => {
-                  resolve(response.data);
-              }).catch(error => {
-                  reject(error);
-              })
+        return new Promise((resolve, reject) => {
+          feedServices.getFeed(
+            {
+              limit: context.state.limit,
+              offset: context.state.offset
+            },
+            {
+            pretask: context.state.preTask
           })
+          .then(response => {
+              resolve(response.data);
+          }).catch(error => {
+              reject(error);
+          })
+        })
           
       },
 
@@ -88,7 +88,7 @@ export default {
     
           context.dispatch('getTweets')
           .then(tweets => {
-            console.log('tweets', tweets)
+            console.log('new tweets', tweets)
             context.commit('append_tweets', tweets);
             resolve(tweets);
           })

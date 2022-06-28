@@ -9,7 +9,6 @@ export default {
       scroll () {
         let containerEl = this.$refs.container;
         containerEl.onscroll = () => {
-          console.log( document.documentElement.scrollTop, window.innerHeight, document.documentElement.offsetHeight)
           let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= (document.documentElement.offsetHeight - 300);
 
           if (!this.scrollDisabled && !this.endOfResults && bottomOfWindow) {

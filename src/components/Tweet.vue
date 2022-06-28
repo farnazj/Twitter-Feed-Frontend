@@ -29,7 +29,7 @@
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
                     <v-spacer></v-spacer>
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
-                    <v-icon v-if="!preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
+                    <v-icon v-if="!preTask && this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
                 </v-row>
                 <v-row no-gutters>
 
@@ -56,8 +56,8 @@
 
                 </v-row>
 
-                <v-row no-gutters v-if=" (this.preTask && this.userLabel !== null) || 
-                (!this.preTask && !this.tweet.TweetAccuracyLabels[0].AIAssigned)" class="pa-1">
+                <v-row no-gutters v-if=" (!this.tweet.TweetAccuracyLabels && this.userLabel !== null) || 
+                (this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned)" class="pa-1">
                     <v-textarea dense hide-details class="caption"
                         outlined rows="2"
                         v-model="reason" @focusout="submitReason"
@@ -86,7 +86,7 @@
 </template>
 <script>
 import consts from '@/services/constants'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { mdiBellRing, mdiRobot, mdiGavel } from '@mdi/js';
 
 export default {
@@ -128,7 +128,7 @@ export default {
 
         reason: {
             get: function() {
-                if (this.preTask)
+                if (!this.tweet.TweetAccuracyLabels)
                     return this.userReason;
                 else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
                     return null;
@@ -144,7 +144,7 @@ export default {
         isAccurate: {
             get: function() {
 
-                if (this.preTask)
+                if (!this.tweet.TweetAccuracyLabels)
                     return this.userLabel;
                 else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
                     return null;
@@ -153,9 +153,11 @@ export default {
 
             },
             set: function(newValue) {
-                console.log
-                if (this.preTask) {
+                
+                if (!this.tweet.TweetAccuracyLabels)
                     this.userLabel = newValue;
+
+                if (this.preTask) {
                     this.$emit('assessed', {
                         value: newValue,
                         reason: this.userReason,
@@ -169,11 +171,15 @@ export default {
                 } 
             }
         },
+
+        AIAssessmentWithheld: function() {
+            return this.user.UserConditions[0] == 'RQ1A';
+        },
         
         accuracyText: function() {
 
             let accuracyVal;
-            if (this.preTask == true) {
+            if (!this.tweet.TweetAccuracyLabels) {
                 if (this.userLabel == null)
                     return '';
                 else
@@ -198,7 +204,7 @@ export default {
         assessmentContainerColor: function() {
 
             let accuracyVal;
-            if (!this.preTask && this.tweet.TweetAccuracyLabels[0].AIAssigned)
+            if (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].AIAssigned)
                 accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
             else 
                 accuracyVal = this.isAccurate;
@@ -222,6 +228,9 @@ export default {
         ...mapState('feed', [
             'preTask',
             'newlyUpdatedTweetIds'
+        ]),
+        ...mapGetters('auth', [
+            'user'
         ])
     },
     methods: {

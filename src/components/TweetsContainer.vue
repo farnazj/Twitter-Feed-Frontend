@@ -86,8 +86,18 @@ export default {
         },
 
         checkIfReadyToProceed: function() {
-            if (this.preTask && this.preTaskLoadingIsFinished && !this.someNotAssessed)
-                this.$emit('readyToProceed', this.preTaskTweetAssessments);
+            if (this.preTaskLoadingIsFinished ) {
+                if (this.preTask && !this.someNotAssessed)
+                    this.$emit('readyToProceed', this.preTaskTweetAssessments);
+                else if (!this.preTask) {
+                    if (this.user.UserConditions[0] == 'RQ1A') {
+                        if (this.tweets.every(el => el.TweetAccuracyLabels))
+                            this.$emit('readyToProceed')
+                    }
+
+                }
+            }
+            
         },
 
         extend: function() {
@@ -101,14 +111,11 @@ export default {
                         this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
                     }
                     
-
                     this.someNotAssessed = true;
                 }
 
-                console.log()
                 let postOffset = this.offset;
                 if (preOffset == postOffset) {
-                    console.log('offset mese ham shod', preOffset, postOffset)
 
                     this.endOfResults = true;
 

@@ -69,12 +69,11 @@
 </template>
 
 <script>
-// import customToolbar from '@/components/CustomToolbar'
+
 import consts from '@/services/constants'
 export default {
   name: 'signup-view',
   components: {
-    // 'custom-toolbar': customToolbar
   },
   props: {
     mode: {
@@ -114,8 +113,9 @@ export default {
     signup: function() {
       if (this.$refs.signupForm.validate()) {
         let data = this.user;
-        if (this.mode)
-          data.specialGroup = this.mode;
+        if (this.mode == 'expf')
+          data.exp = 'RQ1';
+
         this.$store.dispatch('auth/signup', data)
         .then(response => {
           this.type = 'info';

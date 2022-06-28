@@ -10,7 +10,7 @@
               <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': preTask}">
                 <v-col cols="12" align-self="center">
                   <v-row justify="center">
-                    <v-btn tile outlined @click="submitPreTask" :disabled="proceedBtnDisabled" class="ml-2">Proceed to the Task</v-btn>
+                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2">{{proceedBtnText}}</v-btn>
                   </v-row>
                 </v-col>
               </v-row>
@@ -28,7 +28,7 @@
 <script>
 import tweetsContainer from '@/components/TweetsContainer.vue'
 import tweetsDemoContainer from '@/components/TweetsDemoContainer.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'feed-view',
@@ -45,8 +45,23 @@ export default {
   },
   computed: {
 
+    proceedBtnText: function() {
+
+      if (this.preTask) {
+        return 'Proceed to the Task';
+      }
+      else {
+        if (this.user.UserConditions[0] == 'RQ1A')
+          return 'Proceed';
+        else
+          return 'TODO';
+      }
+    },
     ...mapState('feed', [
         'preTask'
+    ]),
+    ...mapGetters('auth', [
+      'user'
     ])
   },
   methods: {
@@ -58,16 +73,33 @@ export default {
       this.revealProceed = true;
     },
 
+    submitTask: function() {
+
+      if (this.preTask)
+        this.submitPreTask();
+      else {
+        this.updateUserCondition()
+        .then(() => {
+          if (this.user.UserConditions[0] == 'RQ1A')
+            this.$router.push({ name: 'RQ1BWait' });
+        })
+
+      }
+    },
+
     submitPreTask: function() {
 
       this.proceedBtnDisabled = true;
       this.proceedToMainTask(this.preTaskTweetAssessments)
       .then(() => {
-        this.$router.push({ name: 'waitingPage' })
+        this.$router.push({ name: 'waitingPage' });
       })
     },
     ...mapActions('feed', [
       'proceedToMainTask'
+    ]),
+    ...mapActions('auth', [
+      'updateUserCondition'
     ])
 
   }

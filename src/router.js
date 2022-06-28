@@ -19,8 +19,9 @@ let router = new Router({
             component: Login
         },
         {
-            path: '/signup',
+            path: '/signup/:mode',
             name: 'signup',
+            props: true,
             component: Signup
         },
         {

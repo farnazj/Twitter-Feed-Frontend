@@ -27,19 +27,19 @@ export default {
     },
     mutations: {
   
-      auth_request(state){
+      auth_request(state) {
         state.status = 'loading'
       },
   
-      auth_success(state, user){
+      auth_success(state, user) {
         state.status = 'success';
       },
   
-      auth_error(state){
+      auth_error(state) {
         state.status = 'error';
       },
   
-      logout(state){
+      logout(state) {
         state.status = '';
         state.token = '';
         localStorage.removeItem('feedUserToken');
@@ -48,6 +48,13 @@ export default {
       update_user(state, user) {
         localStorage.setItem('feedUserToken', JSON.stringify(user));
         state.token = Object.assign({}, user);
+      },
+
+      update_user_condiiton(state, condition) {
+        let currentUser = JSON.parse(localStorage.getItem('feedUserToken'));
+        currentUser.UserConditions[0] = condition;
+        localStorage.setItem('feedUserToken', JSON.stringify(currentUser));
+        state.token = Object.assign({}, currentUser);
       }
     },
     actions: {
@@ -111,6 +118,17 @@ export default {
           })
           .catch(err => {
             reject(err);
+          })
+        })
+      },
+
+      updateUserCondition: (context) => {
+        return new Promise((resolve, reject) => {
+          let userId = context.state.token.id;
+          userServices.updateUserCondition(userId)
+          .then((resp) => {
+            context.commit('update_user_condition', resp.data.condition);
+            resolve();
           })
         })
       }

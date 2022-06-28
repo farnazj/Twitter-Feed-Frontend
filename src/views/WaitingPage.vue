@@ -1,9 +1,14 @@
 <template>
-    <v-container>
+    <v-container fluid class="pa-4">
 
-        <v-row no-gutters>
-            Please wait while we are setting up the Twitter feed for you.
-        </v-row>
+          <v-col cols="12" lg="8" align-self="center">
+            <v-row no-gutters >
+              Please wait while we are setting up the Twitter feed for you.
+            </v-row>
+            <v-row no-gutters v-if="!waiting" justify="center">
+              <v-btn tile outlined  @click="proceed">Proceed</v-btn>
+            </v-row>
+          </v-col>
         
     </v-container>  
 
@@ -28,16 +33,13 @@ export default {
     ])
   },
   methods: {
+    proceed: function() {
+      this.$router.push({ name: 'feed' });
+    },
     ...mapActions('feed', [
         'endPreTask'
     ])
-  },
-  watch: {
-    waiting: function(newVal) {
-        if (!newVal) {
-            this.$router.push({ name: 'feed' });
-        }
-    }
   }
+  
 }
 </script>
