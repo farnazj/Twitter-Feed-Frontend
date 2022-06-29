@@ -5,7 +5,6 @@ import Vue from "vue";
 export default {
     namespaced: true,
     state: {
-      preTask: true,
       waiting: false,
       tweets: [],
       offset: 0,
@@ -49,7 +48,6 @@ export default {
       },
 
       change_task_status: (state) => {
-        state.preTask = false;
         state.waiting = true;
       },
 
@@ -69,10 +67,7 @@ export default {
             {
               limit: context.state.limit,
               offset: context.state.offset
-            },
-            {
-            pretask: context.state.preTask
-          })
+            })
           .then(response => {
               resolve(response.data);
           }).catch(error => {

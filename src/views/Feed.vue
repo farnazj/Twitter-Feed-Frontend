@@ -3,11 +3,11 @@
 
         <v-row no-gutters>
             <v-col md="3" lg="4" class="demo-tweets-sidebar" >
-              <v-row no-gutters class="new-predictions pt-2" v-if="!preTask">
+              <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
 
-              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': preTask}">
+              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': stage < 2}">
                 <v-col cols="12" align-self="center">
                   <v-row justify="center">
                     <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2">{{proceedBtnText}}</v-btn>
@@ -47,7 +47,7 @@ export default {
 
     proceedBtnText: function() {
 
-      if (this.preTask) {
+      if (this.stage == 0) {
         return 'Proceed to the Task';
       }
       else {
@@ -57,17 +57,16 @@ export default {
           return 'TODO';
       }
     },
-    ...mapState('feed', [
-        'preTask'
-    ]),
     ...mapGetters('auth', [
-      'user'
+      'user',
+      'stage'
+
     ])
   },
   methods: {
 
     enableProceed: function(data) {
-      if (this.preTask)
+      if (this.stage == 0)
         this.preTaskTweetAssessments = data;
       
       this.revealProceed = true;
@@ -75,12 +74,12 @@ export default {
 
     submitTask: function() {
 
-      if (this.preTask)
+      if (this.stage == 0)
         this.submitPreTask();
       else {
         this.updateUserCondition()
         .then(() => {
-          if (this.user.UserConditions[0] == 'RQ1A')
+          if (this.user.UserConditions[0].stage == 1)
             this.$router.push({ name: 'RQ1BWait' });
         })
 

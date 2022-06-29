@@ -25,11 +25,11 @@
         <v-col cols="4">
             <v-card tile :class="['pa-1', {'new-update': isANewlyUpdatedTweet, 'dummy-class': isANewlyUpdatedTweet}]" :color="assessmentContainerColor" >
                 <v-row no-gutters>
-                    <p v-if="!preTask || userLabel === null"
+                    <p v-if="stage > 0 || userLabel === null"
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
                     <v-spacer></v-spacer>
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
-                    <v-icon v-if="!preTask && this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
+                    <v-icon v-if="stage > 0 && this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
                 </v-row>
                 <v-row no-gutters>
 
@@ -124,6 +124,9 @@ export default {
     mounted() {
         this.addTweetRef( { id: this.tweet.id, ref: this.$refs[`tweet-${this.tweet.id}`] })
     },
+    created() {
+        console.log(this.stage, 'stage', typeof this.stage)
+    },
     computed: {
 
         reason: {
@@ -157,7 +160,7 @@ export default {
                 if (!this.tweet.TweetAccuracyLabels)
                     this.userLabel = newValue;
 
-                if (this.preTask) {
+                if (this.stage == 0) {
                     this.$emit('assessed', {
                         value: newValue,
                         reason: this.userReason,
@@ -173,7 +176,7 @@ export default {
         },
 
         AIAssessmentWithheld: function() {
-            return this.user.UserConditions[0] == 'RQ1A';
+            return this.user.UserConditions[0].stage == 1 ;
         },
         
         accuracyText: function() {
@@ -226,17 +229,17 @@ export default {
         },
 
         ...mapState('feed', [
-            'preTask',
             'newlyUpdatedTweetIds'
         ]),
         ...mapGetters('auth', [
-            'user'
+            'user',
+            'stage',
         ])
     },
     methods: {
 
         submitReason: function() {
-            if (!this.preTask) {
+            if (this.stage != 0) {
                 this.updateAccuracyLabel( {
                     tweetId: this.tweet.id, 
                     reason: this.userReason

@@ -23,7 +23,15 @@ export default {
         else {
           return JSON.parse(localStorage.getItem('feedUserToken'));
         }
-      }
+      },
+      stage:  (state) => {
+  
+        if (Object.entries(state.token).length)
+          return state.token.UserConditions[0].stage;
+        else {
+          return JSON.parse(localStorage.getItem('feedUserToken')).UserConditions[0].stage;
+        }
+      },
     },
     mutations: {
   
