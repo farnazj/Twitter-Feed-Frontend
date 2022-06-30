@@ -25,6 +25,7 @@ export default {
         }
       },
       stage:  (state) => {
+        console.log('auth getter', state.token)
   
         if (Object.entries(state.token).length)
           return state.token.UserConditions[0].stage;
@@ -58,7 +59,7 @@ export default {
         state.token = Object.assign({}, user);
       },
 
-      update_user_condiiton(state, condition) {
+      update_user_condition(state, condition) {
         let currentUser = JSON.parse(localStorage.getItem('feedUserToken'));
         currentUser.UserConditions[0] = condition;
         localStorage.setItem('feedUserToken', JSON.stringify(currentUser));
@@ -136,7 +137,16 @@ export default {
           userServices.updateUserCondition(userId)
           .then((resp) => {
             context.commit('update_user_condition', resp.data.condition);
-            resolve();
+            
+            let prom = new Promise((resolve) => resolve());
+            // if (context.state.stage == 2) {
+            //   prom = context.dispatch('websocket/establishConnection', true, { root: true })
+            // }
+
+            prom.then(() => {
+              resolve();
+            })
+            
           })
         })
       }

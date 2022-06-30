@@ -1,6 +1,7 @@
 import feedServices from "@/services/feedServices"
 import labelServices from "@/services/labelServices";
 import Vue from "vue";
+import router from '@/router'
 
 export default {
     namespaced: true,
@@ -35,8 +36,8 @@ export default {
         let tweetIndex = state.tweets.findIndex(tweet => tweet.id == data.tweetId);
         let newTweet = state.tweets[tweetIndex];
         newTweet.TweetAccuracyLabels = [data.label];
-        Vue.set(state.tweets, tweetIndex, newTweet)
-        console.log('new Tweet', newTweet)
+        Vue.set(state.tweets, tweetIndex, newTweet);
+        console.log('in update tweet label, new version of the tweet:', newTweet);
       },
 
       update_newly_updated_tweets: (state, tweetIds) => {
@@ -145,28 +146,13 @@ export default {
         
       },
 
-      proceedToMainTask: (context, assessments) => {
-        return new Promise((resolve, reject) => {
-
-          labelServices.postBulkAccuracyLabels( {
-            labels: assessments
-          })
-          .then(() => {
-            resolve()
-          })
-          .catch(error => {
-            reject(error);
-          })
-          
-        })
-      },
-
-      endPreTask: (context) => {
+      endTaskStage: (context) => {
         context.commit('change_task_status');
       },
 
       endWait: (context) => {
         context.commit('end_wait');
+        router.push('/feed');
       },
 
       replaceAILabels: (context, returnedTweetIds) => {

@@ -1,8 +1,8 @@
 <template>
-    <v-container class="ma-0 pa-0" fill-height>
+    <v-container class="ma-0 pa-0" fill-height fluid>
 
-        <v-row no-gutters>
-            <v-col md="3" lg="4" class="demo-tweets-sidebar" >
+        <!-- <v-row no-gutters class="> -->
+            <v-col md="3" lg="2" class="demo-tweets-sidebar" >
               <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
@@ -17,10 +17,10 @@
 
             </v-col>
 
-            <v-col md="9" lg="8" class="pt-6" >
+            <v-col md="9" lg="10" class="pt-6" >
               <tweets-container @readyToProceed="enableProceed" ></tweets-container>
             </v-col>
-        </v-row>
+        <!-- </v-row> -->
         
     </v-container>  
 
@@ -40,7 +40,6 @@ export default {
     return {
       revealProceed: false,
       proceedBtnDisabled: false,
-      preTaskTweetAssessments: null
     }
   },
   computed: {
@@ -51,10 +50,10 @@ export default {
         return 'Proceed to the Task';
       }
       else {
-        if (this.user.UserConditions[0] == 'RQ1A')
+        if (this.stage == 1)
           return 'Proceed';
-        else
-          return 'TODO';
+        else if (this.stage == 2)
+          return 'All looks good!';
       }
     },
     ...mapGetters('auth', [
@@ -65,42 +64,19 @@ export default {
   },
   methods: {
 
-    enableProceed: function(data) {
-      if (this.stage == 0)
-        this.preTaskTweetAssessments = data;
-      
+    enableProceed: function() {
       this.revealProceed = true;
     },
 
     submitTask: function() {
-
-      if (this.stage == 0)
-        this.submitPreTask();
-      else {
-        this.updateUserCondition()
-        .then(() => {
-          if (this.user.UserConditions[0].stage == 1)
-            this.$router.push({ name: 'RQ1BWait' });
-        })
-
-      }
-    },
-
-    submitPreTask: function() {
-
-      this.proceedBtnDisabled = true;
-      this.proceedToMainTask(this.preTaskTweetAssessments)
+      this.updateUserCondition()
       .then(() => {
         this.$router.push({ name: 'waitingPage' });
       })
     },
-    ...mapActions('feed', [
-      'proceedToMainTask'
-    ]),
     ...mapActions('auth', [
       'updateUserCondition'
     ])
-
   }
 }
 </script>

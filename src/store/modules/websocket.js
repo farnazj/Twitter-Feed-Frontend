@@ -22,23 +22,30 @@ export default {
         }
 
         state.connection.onmessage = function(event) {
-            event.data.text()
-            .then(stringifiedData => {
-                console.log(stringifiedData)
-                let data = JSON.parse(stringifiedData)
 
-                if (data.type == 'new_labels') {
+            let isWaiting = dataObj.rootState['feed'].waiting;
+            let stage = dataObj.rootState['auth'].stage;
 
-                    if (dataObj.rootState.feed.waiting)
-                        dataObj.context.dispatch('feed/endWait', true, { root: true });
-                    else {
-                        
-                        dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
-                        
-                    }
+            console.log('data resid', isWaiting, stage)
 
-                 }
-            })
+            if (isWaiting || stage == 2) {
+
+                event.data.text()
+                .then(stringifiedData => {
+                    console.log(stringifiedData)
+                    let data = JSON.parse(stringifiedData)
+    
+                    if (data.type == 'new_labels') {
+    
+                        if (dataObj.rootState.feed.waiting)
+                            dataObj.context.dispatch('feed/endWait', true, { root: true });
+                        else {
+                            dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
+                        }
+    
+                     }
+                })
+            }
       
         }
 

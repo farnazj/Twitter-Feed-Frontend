@@ -25,7 +25,7 @@
         <v-col cols="4">
             <v-card tile :class="['pa-1', {'new-update': isANewlyUpdatedTweet, 'dummy-class': isANewlyUpdatedTweet}]" :color="assessmentContainerColor" >
                 <v-row no-gutters>
-                    <p v-if="stage > 0 || userLabel === null"
+                    <p v-if="stage > 1 || userLabel === null"
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
                     <v-spacer></v-spacer>
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
@@ -160,23 +160,26 @@ export default {
                 if (!this.tweet.TweetAccuracyLabels)
                     this.userLabel = newValue;
 
-                if (this.stage == 0) {
-                    this.$emit('assessed', {
-                        value: newValue,
-                        reason: this.userReason,
-                        tweetId: this.tweet.id });
-                }
-                else {
+                // if (this.stage == 0) {
+                //     this.$emit('assessed', {
+                //         value: newValue,
+                //         reason: this.userReason,
+                //         tweetId: this.tweet.id });
+                // }
+                // else {
                     this.updateAccuracyLabel({
                         tweetId: this.tweet.id,
                         value: newValue
                     })
-                } 
+                    .then(() => {
+                        this.$emit('assessed');
+                    })
+                //} 
             }
         },
 
         AIAssessmentWithheld: function() {
-            return this.user.UserConditions[0].stage == 1 ;
+            return this.stage < 2 ;
         },
         
         accuracyText: function() {
@@ -239,13 +242,12 @@ export default {
     methods: {
 
         submitReason: function() {
-            if (this.stage != 0) {
+            // if (this.stage != 0) {
                 this.updateAccuracyLabel( {
                     tweetId: this.tweet.id, 
                     reason: this.userReason
                 } );
-            }
-            
+            // }
         },
 
         accuracyMapping: function(val) {

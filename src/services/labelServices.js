@@ -15,6 +15,11 @@ export default {
     return Api().get(`/accuracy-label/${params.tweetId}`, {
         withCredentials: true
     })
+  },
+  checkIfLabelsAreReadyForStage(params) {
+    return Api().get(`/labels-ready/${params.stage}`, {
+      withCredentials: true
+    })
   }
 
 }

@@ -1,9 +1,12 @@
 <template>
     <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
-        <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
-            <tweet-instance :tweet="tweet" @assessed="assessPreTaskTweet"></tweet-instance>
-        </v-row>
-        <tweet-loading></tweet-loading>
+        <v-col lg="8" md="9">
+            <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
+                <tweet-instance :tweet="tweet" @assessed="assessTweet"></tweet-instance>
+            </v-row>
+
+            <tweet-loading></tweet-loading>
+        </v-col>
     </v-container>
 </template>
 <script>
@@ -20,37 +23,28 @@ export default {
     },
     data() {
         return {
-            preTaskLoadingIsFinished: false,
-            preTaskTweetAssessments: {},
-            someNotAssessed: true
+            taskLoadingIsFinished: false,
+            // preTaskTweetAssessments: {},
+            // someNotAssessed: true
         }
     },
     created() {
         this.scrollDisabled = true;
         this.updateUser()
         .then(() => {
-            let prom;
-            if (this.user.completedPreTask) {
-                prom = this.endPreTask()
-            }
-            else
-                prom = new Promise((resolve)=> resolve());
-            
-            prom
+ 
+            this.refreshTweets()
             .then(() => {
-                this.refreshTweets()
-                .then((tweets) => {
-                    this.scrollDisabled = false; 
+                this.scrollDisabled = false; 
 
-                    if (this.stage == 0) {
-                        for (let tweet of tweets) {
-                        this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
-                        }
+                // if (this.stage == 0) {
+                //     for (let tweet of tweets) {
+                //     this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
+                //     }
 
-                        this.someNotAssessed = true;
-                    }
-                
-                })
+                //     this.someNotAssessed = true;
+                // }
+            
             })
         })
 
@@ -68,36 +62,23 @@ export default {
     },
     methods: {
 
-        assessPreTaskTweet: function(data) {
-
-            this.preTaskTweetAssessments[data.tweetId].value = data.value;
-          
-            if (data.reason != null)
-                this.preTaskTweetAssessments[data.tweetId].reason = data.reason;
-
-            if (Object.values(this.preTaskTweetAssessments).some(el => el.value === null)) {
-                this.someNotAssessed = true;
-            }
-            else {
-                this.someNotAssessed = false;
-                this.checkIfReadyToProceed();
-            }
-                
+        assessTweet: function(data) {
+    
+            this.checkIfReadyToProceed();
         },
 
         checkIfReadyToProceed: function() {
-            if (this.preTaskLoadingIsFinished ) {
-                if (this.stage == 0 && !this.someNotAssessed)
-                    this.$emit('readyToProceed', this.preTaskTweetAssessments);
-                else if (this.stage != 0) {
-                    if (this.user.UserConditions[0].stage == 1) {
-                        if (this.tweets.every(el => el.TweetAccuracyLabels))
-                            this.$emit('readyToProceed')
-                    }
 
+            console.log('feed loading is finished?', this.taskLoadingIsFinished)
+            console.log('stage', this.stage)
+            if (this.taskLoadingIsFinished ) {
+                if (this.stage == 1 || this.stage == 0) {
+                    console.log(this.tweets.map(el => [el.id, el.TweetAccuracyLabels]))
+                    if (this.tweets.every(el => el.TweetAccuracyLabels))
+                        this.$emit('readyToProceed');
                 }
+                
             }
-            
         },
 
         extend: function() {
@@ -106,21 +87,11 @@ export default {
             return this.getMoreTweets()
             .then((newTweets) => {
 
-                if (this.stage == 0) {
-                    for (let tweet of newTweets) {
-                        this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
-                    }
-                    
-                    this.someNotAssessed = true;
-                }
-
                 let postOffset = this.offset;
                 if (preOffset == postOffset) {
 
                     this.endOfResults = true;
-
-                    if (this.stage == 0)
-                        this.preTaskLoadingIsFinished = true;
+                    this.taskLoadingIsFinished = true;
                     
                     this.checkIfReadyToProceed();
                 }
@@ -136,7 +107,7 @@ export default {
         ...mapActions('feed', [
             'getMoreTweets',
             'refreshTweets',
-            'endPreTask'
+            'endTaskStage'
         ])
 
     },
