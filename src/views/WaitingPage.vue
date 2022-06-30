@@ -39,8 +39,6 @@ export default {
     console.log('what is stage in waiting page', this.stage)
     this.endTaskStage()
     .then(() => {
-      this.updateUserCondition()
-      .then(() => {
         labelServices.checkIfLabelsAreReadyForStage({
           stage: this.stage })
         .then((resp) => {
@@ -49,7 +47,7 @@ export default {
             this.endWait();
         })
       })
-    })
+    
   },
   computed: {
     ...mapState('feed', [
@@ -68,9 +66,9 @@ export default {
         'endTaskStage',
         'endWait'
     ]),
-    ...mapActions('auth', [
-      'updateUserCondition'
-    ])
+    // ...mapActions('auth', [
+    //   'updateUserCondition'
+    // ])
   }
   
 }

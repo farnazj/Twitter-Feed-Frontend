@@ -152,7 +152,6 @@ export default {
 
       endWait: (context) => {
         context.commit('end_wait');
-        router.push('/feed');
       },
 
       replaceAILabels: (context, returnedTweetIds) => {

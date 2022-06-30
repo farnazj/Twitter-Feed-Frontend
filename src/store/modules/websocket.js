@@ -22,9 +22,10 @@ export default {
         }
 
         state.connection.onmessage = function(event) {
+            console.log('message resid')
 
             let isWaiting = dataObj.rootState['feed'].waiting;
-            let stage = dataObj.rootState['auth'].stage;
+            let stage = dataObj.rootGetters['auth/stage'];
 
             console.log('data resid', isWaiting, stage)
 
@@ -70,7 +71,8 @@ export default {
             context.commit('establish_connection', {
                 context: context,
                 userId: userId,
-                rootState: context.rootState
+                rootState: context.rootState,
+                rootGetters: context.rootGetters
             });
             resolve();
       })

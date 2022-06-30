@@ -2,8 +2,8 @@
     <v-container class="ma-0 pa-0" fill-height fluid>
 
         <!-- <v-row no-gutters class="> -->
-            <v-col md="3" lg="2" class="demo-tweets-sidebar" >
-              <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1">
+            <v-col md="3" lg="3" class="demo-tweets-sidebar" >
+              <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1 && newlyUpdatedTweetIds.length">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
 
@@ -17,7 +17,7 @@
 
             </v-col>
 
-            <v-col md="9" lg="10" class="pt-6" >
+            <v-col md="9" lg="9" class="pt-6" >
               <tweets-container @readyToProceed="enableProceed" ></tweets-container>
             </v-col>
         <!-- </v-row> -->
@@ -60,6 +60,9 @@ export default {
       'user',
       'stage'
 
+    ]),
+    ...mapState('feed', [
+      'newlyUpdatedTweetIds'
     ])
   },
   methods: {
