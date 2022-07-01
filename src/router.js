@@ -35,7 +35,7 @@ let router = new Router({
         },
         {
           path: '/post-study',
-          name: 'PostStudy',
+          name: 'postStudy',
           component: PostStudy,
         },
         {

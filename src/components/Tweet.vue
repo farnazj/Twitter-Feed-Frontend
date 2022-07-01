@@ -29,7 +29,7 @@
                     class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
                     <v-spacer></v-spacer>
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
-                    <v-icon v-if="stage > 0 && this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned" > {{icons.gavel}}</v-icon>
+                    <v-icon v-if="stage > 0 && this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 0" > {{icons.gavel}}</v-icon>
                 </v-row>
                 <v-row no-gutters>
 
@@ -57,7 +57,7 @@
                 </v-row>
 
                 <v-row no-gutters v-if=" (!this.tweet.TweetAccuracyLabels && this.userLabel !== null) || 
-                (this.tweet.TweetAccuracyLabels && !this.tweet.TweetAccuracyLabels[0].AIAssigned)" class="pa-1">
+                (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 0)" class="pa-1">
                     <v-textarea dense hide-details class="caption"
                         outlined rows="2"
                         v-model="reason" @focusout="submitReason"
@@ -73,7 +73,7 @@
 
                 <v-row no-gutters class="pt-1">
                     <span class="caption blue-grey--text text--darken-3" >
-                        <v-icon v-if="tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].AIAssigned"
+                        <v-icon v-if="tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 1"
                             >
                             {{icons.robot}}
                         </v-icon> {{accuracyText}}
@@ -133,7 +133,7 @@ export default {
             get: function() {
                 if (!this.tweet.TweetAccuracyLabels)
                     return this.userReason;
-                else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
+                else if (this.tweet.TweetAccuracyLabels[0].assessor == 1)
                     return null;
                 else 
                     return this.tweet.TweetAccuracyLabels[0].reason;
@@ -149,7 +149,7 @@ export default {
 
                 if (!this.tweet.TweetAccuracyLabels)
                     return this.userLabel;
-                else if (this.tweet.TweetAccuracyLabels[0].AIAssigned)
+                else if (this.tweet.TweetAccuracyLabels[0].assessor == 1)
                     return null;
                 else 
                     return this.tweet.TweetAccuracyLabels[0].value;
@@ -197,7 +197,7 @@ export default {
 
             let assessor;
             if (typeof this.tweet.TweetAccuracyLabels === 'undefined' ||
-                this.tweet.TweetAccuracyLabels[0].AIAssigned == 0)
+                this.tweet.TweetAccuracyLabels[0].assessor == 0)
                 assessor = 'You have marked'
             else {
                 assessor = " thinks you'd consider"
@@ -210,7 +210,7 @@ export default {
         assessmentContainerColor: function() {
 
             let accuracyVal;
-            if (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].AIAssigned)
+            if (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 1)
                 accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
             else 
                 accuracyVal = this.isAccurate;

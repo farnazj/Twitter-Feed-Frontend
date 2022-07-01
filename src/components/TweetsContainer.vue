@@ -43,7 +43,7 @@ export default {
     computed: {
 
         tweetCountAssessedByUser: function() {
-            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.AIAssigned == 0).length).length;
+            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0).length).length;
         },
 
         ...mapState('feed', [

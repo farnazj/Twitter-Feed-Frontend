@@ -157,7 +157,7 @@ export default {
       replaceAILabels: (context, returnedTweetIds) => {
         return new Promise((resolve, reject) => {
           let displayedTweetsToChange = context.state.tweets.filter(el => returnedTweetIds.includes(el.id)
-          && el.TweetAccuracyLabels[0].AIAssigned == 1);
+          && el.TweetAccuracyLabels[0].assessor == 1);
           let labelProms = displayedTweetsToChange.map(tweet => {
             return labelServices.getAccuracyLabel({tweetId: tweet.id})
             .then(data => {
