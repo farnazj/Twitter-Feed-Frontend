@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 // import customToolbar from '@/components/CustomToolbar'
 export default {
   name: 'login-view',
@@ -94,19 +95,25 @@ export default {
         'password': password
       })
       .then(() => {
-        this.$router.push('/');
+        this.establishConnection()
+        .then(() => {
+          this.$router.push('/');
+        })
+        
       })
       .catch(err => {
         this.alertMessage = err.response.data.message;
         this.alert = true;
       })
     },
+    
     goToSignup: function() {
       this.$router.push({ name: 'signup' });
     },
-    // goToPasswordReset: function() {
-    //   this.$router.push({ name: 'forgotPassword' });
-    // }
+
+    ...mapActions('websocket', [
+      'establishConnection'
+    ])
   }
 }
 </script>

@@ -13,6 +13,7 @@
 import tweet from '@/components/Tweet'
 import tweetLoading from '@/components/TweetLoading.vue'
 import infiniteScroll from '@/mixins/infiniteScroll'
+import consts from '@/services/constants'
 
 import { mapState, mapGetters, mapActions } from 'vuex'
 
@@ -23,9 +24,7 @@ export default {
     },
     data() {
         return {
-            taskLoadingIsFinished: false,
-            // preTaskTweetAssessments: {},
-            // someNotAssessed: true
+            taskLoadingIsFinished: false
         }
     },
     created() {
@@ -36,20 +35,16 @@ export default {
             this.refreshTweets()
             .then(() => {
                 this.scrollDisabled = false; 
-
-                // if (this.stage == 0) {
-                //     for (let tweet of tweets) {
-                //     this.preTaskTweetAssessments[tweet.id] = { value: null, reason: '' };
-                //     }
-
-                //     this.someNotAssessed = true;
-                // }
             
             })
         })
 
     },
     computed: {
+
+        tweetCountAssessedByUser: function() {
+            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.AIAssigned == 0).length).length;
+        },
 
         ...mapState('feed', [
             'tweets',
@@ -63,7 +58,8 @@ export default {
     methods: {
 
         assessTweet: function(data) {
-    
+            // if (this.stage == 2)
+            //     this.$emit('tweestsAssessed', this.tweetCountAssessedByUser);
             this.checkIfReadyToProceed();
         },
 
@@ -76,6 +72,10 @@ export default {
                     console.log(this.tweets.map(el => [el.id, el.TweetAccuracyLabels]))
                     if (this.tweets.every(el => el.TweetAccuracyLabels))
                         this.$emit('readyToProceed');
+                }
+                else { //if stage == 2
+                    if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN)
+                       this.$emit('readyToProceed');
                 }
                 
             }

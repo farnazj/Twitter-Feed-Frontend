@@ -11,5 +11,11 @@ export default {
     return Api().put(`/users/${id}/update-condition`, {}, {
       withCredentials: true
     })
+  },
+
+  endStudy(id) {
+    return Api().post(`/users/${id}/end-study`, {}, {
+      withCredentials: true
+    })
   }
 }

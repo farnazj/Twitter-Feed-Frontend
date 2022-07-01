@@ -2,18 +2,45 @@
     <v-container class="pa-4">
       <v-row no-gutters justify="center">
           <v-col cols="12" lg="8" align-self="center">
-            <v-row no-gutters justify="center" class="pt-10">
-              <p class="body-1">
-                Please wait while we are setting up the Twitter feed for you.
-              </p>  
-            </v-row>
 
-            <v-row no-gutters justify="center" class="pt-6">
-              <v-progress-circular
-              indeterminate v-if="waiting"
-              color="primary" :size="70" :width="7"
-            ></v-progress-circular>
-            </v-row>
+            <template v-if="waiting">
+              <v-row no-gutters justify="center" class="pt-10">
+                <p class="body-1">
+                  Please wait while we are setting up the Twitter feed for you.
+                </p>  
+              </v-row>
+
+              <v-row no-gutters justify="center" class="pt-6">
+                <v-progress-circular
+                indeterminate v-if="waiting"
+                color="primary" :size="70" :width="7"
+              ></v-progress-circular>
+              </v-row>
+
+            </template>
+
+            <template v-else>
+                <v-row no-gutters justify="center" class="pt-10">
+                  <p class="body-1" v-if="stage == 1">
+                    We need a few more accuracy labels from you. The next page will show you another feed of tweets. We ask that you also assess the tweets on that feed.
+                  </p> 
+
+                  <p class="body-1" v-if="stage == 2">
+                    On the next page, you will see another feed of tweets. For each one, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You can do this by explicitly assessing tweets as accurate or inaccurate.
+                  </p>
+
+
+                  <p class="body-1" v-if="stage == 2">
+                   You do not need to assess every single tweet. We only ask that you assess a minimum of X tweets. It is up to you to decide which ones you want to assess.
+                  </p>
+
+                  <p class="body-1" v-if="stage == 2">
+                   When you determine that the AI has become good at predicting your assessments, confirm that the AI looks good and proceed to the post-study survey.
+                  </p>
+
+              </v-row>
+            </template>
+            
 
             <v-row no-gutters v-if="!waiting" justify="center"  class="pt-6">
               <v-btn tile outlined  @click="proceed">Proceed</v-btn>

@@ -92,7 +92,6 @@ export default {
             const user = resp.data.user;
             context.commit('auth_success');
             context.commit('update_user', user);
-            context.dispatch('websocket/establishConnection', true, {root: true});
   
             resolve(resp);
           })
@@ -137,18 +136,22 @@ export default {
           userServices.updateUserCondition(userId)
           .then((resp) => {
             context.commit('update_user_condition', resp.data.condition);
-            
-            let prom = new Promise((resolve) => resolve());
-            // if (context.state.stage == 2) {
-            //   prom = context.dispatch('websocket/establishConnection', true, { root: true })
-            // }
-
-            prom.then(() => {
-              resolve();
-            })
-            
+            resolve();
           })
         })
+      },
+
+      finishStudy: (context) => {
+        return new Promise((resolve, reject) => {
+          let userId = context.state.token.id;
+          userServices.endStudy(userId)
+          .then((resp) => {
+            
+            //logout
+            resolve();
+          })
+        })
+
       }
   
     }

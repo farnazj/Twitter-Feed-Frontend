@@ -4,6 +4,7 @@ import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import Feed from './views/Feed.vue'
 import WaitingPage from './views/WaitingPage'
+import PostStudy from './views/PostStudy'
 import store from './store/store'
 
 Vue.use(Router);
@@ -31,6 +32,11 @@ let router = new Router({
           meta: {
             requiresAuth: true
           }
+        },
+        {
+          path: '/post-study',
+          name: 'PostStudy',
+          component: PostStudy,
         },
         {
           path: '/',

@@ -1,26 +1,27 @@
 <template>
     <v-container class="ma-0 pa-0" fill-height fluid>
 
-        <!-- <v-row no-gutters class="> -->
+        <v-row no-gutters>
             <v-col md="3" lg="3" class="demo-tweets-sidebar" >
               <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1 && newlyUpdatedTweetIds.length">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
 
-              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': stage < 2}">
-                <v-col cols="12" align-self="center">
-                  <v-row justify="center">
-                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2">{{proceedBtnText}}</v-btn>
-                  </v-row>
+              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': stage < 2, 'mt-6': true}">
+                <v-col cols="12" lg="6" md="8" align-self="center">
+                  <!-- <v-row justify="center"> -->
+                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2" color="light-blue darken-4" large
+                    >{{proceedBtnText}}</v-btn>
+                  <!-- </v-row> -->
                 </v-col>
               </v-row>
 
             </v-col>
 
             <v-col md="9" lg="9" class="pt-6" >
-              <tweets-container @readyToProceed="enableProceed" ></tweets-container>
+              <tweets-container @readyToProceed="enableProceed"></tweets-container>
             </v-col>
-        <!-- </v-row> -->
+        </v-row>
         
     </v-container>  
 
@@ -59,7 +60,6 @@ export default {
     ...mapGetters('auth', [
       'user',
       'stage'
-
     ]),
     ...mapState('feed', [
       'newlyUpdatedTweetIds'
@@ -72,13 +72,32 @@ export default {
     },
 
     submitTask: function() {
-      this.updateUserCondition()
-      .then(() => {
-        this.$router.push({ name: 'waitingPage' });
-      })
+      if (this.stage == 0 || this.stage == 1) {
+        this.updateUserCondition()
+        .then(() => {
+          this.$router.push({ name: 'waitingPage' });
+        })
+      }
+      else {
+        this.finishStudy()
+        .then(() => {
+          this.closeConnection()
+          .then(() => {
+            this.$router.push({ name: 'postStudy' });
+          })
+          
+        })
+
+      }
+
+      
     },
     ...mapActions('auth', [
-      'updateUserCondition'
+      'updateUserCondition',
+      'finishStudy'
+    ]),
+    ...mapActions('websocket', [
+      'closeConnection'
     ])
   }
 }

@@ -22,7 +22,7 @@ export default {
         }
 
         state.connection.onmessage = function(event) {
-            console.log('message resid')
+            console.log('message resid', event, event.data)
 
             let isWaiting = dataObj.rootState['feed'].waiting;
             let stage = dataObj.rootGetters['auth/stage'];
@@ -47,6 +47,8 @@ export default {
                      }
                 })
             }
+
+            return false;
       
         }
 
@@ -61,22 +63,33 @@ export default {
             }
                 
         }
+      },
+
+      close_connection: (state) => {
+        state.connection.close();
       }
     },
     actions: {
-      establishConnection: (context) => {
-        return new Promise((resolve, reject) => {
-            let userId = context.rootGetters['auth/user'].id;
+        establishConnection: (context) => {
+            return new Promise((resolve, reject) => {
+                let userId = context.rootGetters['auth/user'].id;
 
-            context.commit('establish_connection', {
-                context: context,
-                userId: userId,
-                rootState: context.rootState,
-                rootGetters: context.rootGetters
-            });
-            resolve();
-      })
-    }
+                context.commit('establish_connection', {
+                    context: context,
+                    userId: userId,
+                    rootState: context.rootState,
+                    rootGetters: context.rootGetters
+                });
+                resolve();
+            })
+        },
+
+        closeConnection: (context) => {
+            return new Promise((resolve, reject) => {
+                context.commit('close_connection');
+                resolve();
+            })
+        }
 
     }
   }
