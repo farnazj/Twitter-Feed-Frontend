@@ -23,25 +23,28 @@
             </v-card>
         </v-col>
         <v-col cols="4">
+
             <v-card tile :class="['pa-1', {'new-update': isANewlyUpdatedTweet, 'dummy-class': isANewlyUpdatedTweet}]" :color="assessmentContainerColor" >
+
                 <v-row no-gutters>
-                    <p v-if="stage > 1 || userLabel === null"
-                    class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p>
+                    
                     <v-spacer></v-spacer>
-                    <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2">{{icons.newPredictionIcon}}</v-icon>
-                    <v-icon v-if="stage > 0 && this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 0" > {{icons.gavel}}</v-icon>
+                    <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2" small>{{icons.newPredictionIcon}}</v-icon>
+                    <v-icon v-if="stage > 0 && tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 0" small> {{icons.gavel}}</v-icon>
                 </v-row>
-                <v-row no-gutters>
+                <v-row no-gutters class="pt-3">
+                    <!-- <p v-if="stage > 1 || userLabel === null"
+                    class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p> -->
 
                     <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
                         item-text="label" item-value="value" dense
                         outline>
                         <template v-slot:label>
+                            <span class="caption">Is this tweet accurate?</span>
                         </template>
 
                         <template slot="item" slot-scope="data" >
                             <div :class="[data.item.color, 'subtitle-2']">
-
                                 {{data.item.label}}
                                 <v-icon small>{{icons.gavel}}</v-icon>
                             </div>
@@ -56,8 +59,34 @@
 
                 </v-row>
 
-                <v-row no-gutters v-if=" (!this.tweet.TweetAccuracyLabels && this.userLabel !== null) || 
-                (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 0)" class="pa-1">
+                <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-3">
+
+                    <v-select :items="confidenceStatus" v-model="userConfidence" hide-details
+                        item-text="label" item-value="value" dense @change="submitConfidence"
+                        outline>
+                        <template v-slot:label>
+                            <span class="caption">
+                                How confident are you?
+                            </span>
+                        </template>
+
+                        <template slot="item" slot-scope="data" >
+                            <div class="caption">
+                                {{data.item.label}}
+                            </div>
+                        </template>
+
+                        <template slot="selection" slot-scope="data" >
+                            <div v-html="data.item.label" :class="'caption'">
+                            </div>
+                        </template>
+
+                    </v-select>
+
+                </v-row>
+
+
+                <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pa-1 pt-2">
                     <v-textarea dense hide-details class="caption"
                         outlined rows="2"
                         v-model="reason" @focusout="submitReason"
@@ -88,6 +117,7 @@
 import consts from '@/services/constants'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mdiBellRing, mdiRobot, mdiGavel } from '@mdi/js';
+var moment = require('moment');
 
 export default {
     name: 'tweet-instance',
@@ -97,18 +127,42 @@ export default {
         return {
             userLabel: null,
             userReason: '',
-             accuracyStatus: [
+            userConfidence: null,
+            accuracyStatus: [
                 {
-                label: 'Accurate',
-                value: consts.ACCURACY_CODES.ACCURATE,
-                color: 'green--text text--darken-2'
+                    label: 'Accurate',
+                    value: consts.ACCURACY_CODES.ACCURATE,
+                    color: 'green--text text--darken-2'
                 },
                 {
-                label: 'Inaccurate',
-                value: consts.ACCURACY_CODES.INACCURATE,
-                color: 'red--text text--accent-3'
+                    label: 'Inaccurate',
+                    value: consts.ACCURACY_CODES.INACCURATE,
+                    color: 'red--text text--accent-3'
                 }
             ],
+            confidenceStatus: [
+                {
+                    label: 'None at all',
+                    value: consts.CONFIDENCE_CODES.NONE_AT_ALL,
+                },
+                {
+                    label: 'A little',
+                    value: consts.CONFIDENCE_CODES.A_LITTLE
+                },
+                {
+                    label: 'A moderate amount',
+                    value: consts.CONFIDENCE_CODES.A_MODERATE_AMOUNT
+                },
+                {
+                    label: 'A lot',
+                    value: consts.CONFIDENCE_CODES.A_LOT
+                },
+                {
+                    label: 'A great deal',
+                    value: consts.CONFIDENCE_CODES.A_GREAT_DEAL
+                }
+            ],
+
             icons: {
                 newPredictionIcon: mdiBellRing,
                 robot: mdiRobot,
@@ -125,7 +179,7 @@ export default {
         this.addTweetRef( { id: this.tweet.id, ref: this.$refs[`tweet-${this.tweet.id}`] })
     },
     created() {
-        console.log(this.stage, 'stage', typeof this.stage)
+        // console.log(this.stage, 'stage', typeof this.stage)
     },
     computed: {
 
@@ -156,44 +210,43 @@ export default {
 
             },
             set: function(newValue) {
-                
-                if (!this.tweet.TweetAccuracyLabels)
-                    this.userLabel = newValue;
+                this.userLabel = newValue;
 
-                // if (this.stage == 0) {
-                //     this.$emit('assessed', {
-                //         value: newValue,
-                //         reason: this.userReason,
-                //         tweetId: this.tweet.id });
-                // }
-                // else {
-                    this.updateAccuracyLabel({
-                        tweetId: this.tweet.id,
-                        value: newValue
-                    })
-                    .then(() => {
-                        this.$emit('assessed');
-                    })
-                //} 
+                let timeElapsed = moment().diff(this.timeLoaded);
+
+                this.updateAccuracyLabel({
+                    tweetId: this.tweet.id,
+                    value: newValue,
+                    timeSinceFeedLoaded: timeElapsed
+                })
+            //     .then(() => {
+            //         this.$emit('assessed');
+            //     })
             }
         },
 
         AIAssessmentWithheld: function() {
             return this.stage < 2 ;
         },
+
+        isTweetAssessedForAccuracy: function() {
+            return (!this.tweet.TweetAccuracyLabels && this.userLabel !== null) || 
+                (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 0);
+        },
         
         accuracyText: function() {
 
             let accuracyVal;
-            if (!this.tweet.TweetAccuracyLabels) {
-                if (this.userLabel == null)
+            
+            if (this.stage < 2) {
+                accuracyVal = this.isAccurate;
+                if (accuracyVal == null)
                     return '';
-                else
-                    accuracyVal = this.userLabel;
             }
             else {
                 accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
             }
+                
 
             let assessor;
             if (typeof this.tweet.TweetAccuracyLabels === 'undefined' ||
@@ -203,17 +256,22 @@ export default {
                 assessor = " thinks you'd consider"
             }
             
-            return `${assessor} this tweet as ${this.accuracyMapping(accuracyVal)}`;
+            return `${assessor} this tweet ${this.accuracyMapping(accuracyVal)}`;
             
         },
 
         assessmentContainerColor: function() {
 
             let accuracyVal;
-            if (this.tweet.TweetAccuracyLabels && this.tweet.TweetAccuracyLabels[0].assessor == 1)
-                accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
-            else 
+            
+            if (this.stage < 2) {
                 accuracyVal = this.isAccurate;
+                if (accuracyVal == null)
+                    return '';
+            }
+            else {
+                accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
+            }
 
             if (accuracyVal === null) {
                 return '';
@@ -232,7 +290,8 @@ export default {
         },
 
         ...mapState('feed', [
-            'newlyUpdatedTweetIds'
+            'newlyUpdatedTweetIds',
+            'timeLoaded'
         ]),
         ...mapGetters('auth', [
             'user',
@@ -242,12 +301,23 @@ export default {
     methods: {
 
         submitReason: function() {
-            // if (this.stage != 0) {
-                this.updateAccuracyLabel( {
-                    tweetId: this.tweet.id, 
-                    reason: this.userReason
-                } );
-            // }
+            this.updateAccuracyLabel( {
+                tweetId: this.tweet.id, 
+                reason: this.userReason,
+                timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
+            } );
+        },
+
+        submitConfidence: function() {
+        
+            this.updateAccuracyLabel( {
+                tweetId: this.tweet.id, 
+                confidence: this.userConfidence,
+                timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
+            } )
+            .then(() => {
+                this.$emit('assessedConfidence', this.tweet.id);
+            })
         },
 
         accuracyMapping: function(val) {
@@ -278,7 +348,7 @@ export default {
 
   .custom-tweet {
     border: 1px #CFD8DC solid;
-    border-bottom: initial;
+    /* border-bottom: initial; */
     width: 100%;
     min-height: 160px;
   }

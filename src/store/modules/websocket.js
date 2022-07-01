@@ -11,8 +11,6 @@ export default {
       establish_connection: (state, dataObj) => {
         state.connection = new WebSocket(`${constants.WS_BASE_URL}`, [dataObj.userId]);
 
-        console.log(dataObj, 'whaeeee')
-
         state.connection.onopen = function() {
             if (state.wsConnIntervalVar) {
                 state.connReestablished = true;

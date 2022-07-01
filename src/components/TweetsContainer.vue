@@ -1,8 +1,8 @@
 <template>
     <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
-        <v-col lg="8" md="9">
+        <v-col lg="9" md="9">
             <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
-                <tweet-instance :tweet="tweet" @assessed="assessTweet"></tweet-instance>
+                <tweet-instance :tweet="tweet"  @assessedConfidence="checkAssessedCount" class="pt-1"></tweet-instance>
             </v-row>
 
             <tweet-loading></tweet-loading>
@@ -43,7 +43,7 @@ export default {
     computed: {
 
         tweetCountAssessedByUser: function() {
-            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0).length).length;
+            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
         },
 
         ...mapState('feed', [
@@ -57,9 +57,11 @@ export default {
     },
     methods: {
 
-        assessTweet: function(data) {
-            // if (this.stage == 2)
-            //     this.$emit('tweestsAssessed', this.tweetCountAssessedByUser);
+        checkAssessedCount: function() {
+            if (this.stage == 2) {
+                this.$emit('tweestsAssessed', `You have assessed ${this.tweetCountAssessedByUser} tweets.`);
+            }
+                
             this.checkIfReadyToProceed();
         },
 
@@ -69,8 +71,7 @@ export default {
             console.log('stage', this.stage)
             if (this.taskLoadingIsFinished ) {
                 if (this.stage == 1 || this.stage == 0) {
-                    console.log(this.tweets.map(el => [el.id, el.TweetAccuracyLabels]))
-                    if (this.tweets.every(el => el.TweetAccuracyLabels))
+                    if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
                         this.$emit('readyToProceed');
                 }
                 else { //if stage == 2

@@ -2,6 +2,7 @@ import feedServices from "@/services/feedServices"
 import labelServices from "@/services/labelServices";
 import Vue from "vue";
 import router from '@/router'
+var moment = require('moment');
 
 export default {
     namespaced: true,
@@ -12,7 +13,8 @@ export default {
       limit: 8,
       tweetsFetched: false,
       newlyUpdatedTweetIds: [],
-      tweetRefs: {}
+      tweetRefs: {},
+      timeLoaded: null
     },
     mutations: {
       append_tweets: (state, tweets) => {
@@ -34,10 +36,15 @@ export default {
       update_tweet_label: (state, data) => {
 
         let tweetIndex = state.tweets.findIndex(tweet => tweet.id == data.tweetId);
-        let newTweet = state.tweets[tweetIndex];
-        newTweet.TweetAccuracyLabels = [data.label];
-        Vue.set(state.tweets, tweetIndex, newTweet);
-        console.log('in update tweet label, new version of the tweet:', newTweet);
+        if (typeof state.tweets[tweetIndex].TweetAccuracyLabels !== 'undefined') {
+          state.tweets[tweetIndex].TweetAccuracyLabels.splice(0, 1);
+          state.tweets[tweetIndex].TweetAccuracyLabels.push(data.label);
+        }
+        else {
+          state.tweets[tweetIndex] = Object.assign({}, state.tweets[tweetIndex], {TweetAccuracyLabels: [data.label]})
+        }
+          
+        console.log('in update tweet label, new version of the tweet:', state.tweets[tweetIndex]);
       },
 
       update_newly_updated_tweets: (state, tweetIds) => {
@@ -58,6 +65,10 @@ export default {
 
       add_tweet_ref: (state, obj) => {
         state.tweetRefs[obj.id] = obj.ref;
+      },
+
+      reset_time_since_opened: (state, obj) => {
+        state.timeLoaded = moment();
       }
       
     },
@@ -103,6 +114,7 @@ export default {
         context.dispatch('loader/setLoading', true, { root: true });
         context.commit('refresh_tweets');
         context.commit('set_fetch_status', false);
+        context.commit('reset_time_since_opened');
         return new Promise((resolve, reject) => {
     
           context.dispatch('getMoreTweets')

@@ -1,7 +1,7 @@
 <template>
     <v-container class="ma-0 pa-0" fill-height fluid>
 
-        <v-row no-gutters>
+        <v-row no-gutters v-if="!waiting">
             <v-col md="3" lg="3" class="demo-tweets-sidebar" >
               <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1 && newlyUpdatedTweetIds.length">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
@@ -16,10 +16,14 @@
                 </v-col>
               </v-row>
 
+              <v-row no-gutters>
+                <p class="body-1">{{portionText}}</p>
+              </v-row>
+
             </v-col>
 
             <v-col md="9" lg="9" class="pt-6" >
-              <tweets-container @readyToProceed="enableProceed"></tweets-container>
+              <tweets-container @readyToProceed="enableProceed" @tweetsAssessed="displayPortion"></tweets-container>
             </v-col>
         </v-row>
         
@@ -41,6 +45,7 @@ export default {
     return {
       revealProceed: false,
       proceedBtnDisabled: false,
+      portionText: ''
     }
   },
   computed: {
@@ -62,10 +67,15 @@ export default {
       'stage'
     ]),
     ...mapState('feed', [
-      'newlyUpdatedTweetIds'
+      'newlyUpdatedTweetIds',
+      'waiting'
     ])
   },
   methods: {
+
+    displayPortion: function(text) {
+      this.portionText = text;
+    },
 
     enableProceed: function() {
       this.revealProceed = true;
