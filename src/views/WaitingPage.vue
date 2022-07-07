@@ -38,7 +38,7 @@
 
 
                   <p class="body-1" v-if="stage == 2">
-                   You do not need to assess every single tweet. We only ask that you assess a minimum of X tweets. It is up to you to decide which ones you want to assess.
+                   You do not need to assess every single tweet. We only ask that you assess a minimum of {{stage2RequiredAssessmentCount}} tweets. It is up to you to decide which ones you want to assess.
                   </p>
 
                   <p class="body-1" v-if="stage == 2">
@@ -86,7 +86,10 @@ export default {
   },
   computed: {
     reasoningCountMin: function() {
-        return constants.REASONING_COUNT_MIN;
+      return constants.REASONING_COUNT_MIN;
+    },
+    stage2RequiredAssessmentCount: function() {
+      return constants.STAGE_2_ASSESSMEMT_COUNT_MIN;
     },
     ...mapState('feed', [
         'waiting'

@@ -1,7 +1,7 @@
 <template>
     <v-container class="ma-0 pa-0" fill-height fluid>
 
-        <v-row no-gutters v-if="!waiting">
+        <v-row no-gutters v-if="!waiting && !stopDisplay">
             <v-col md="3" lg="3" class="demo-tweets-sidebar" >
               <v-row no-gutters class="new-predictions pt-2" v-if="stage > 1 && newlyUpdatedTweetIds.length">
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
@@ -45,22 +45,19 @@ export default {
     return {
       revealProceed: false,
       proceedBtnDisabled: false,
-      portionText: ''
+      portionText: '',
+      stopDisplay: false
     }
   },
   computed: {
 
     proceedBtnText: function() {
 
-      if (this.stage == 0) {
-        return 'Proceed to the Task';
-      }
-      else {
-        if (this.stage == 1)
-          return 'Proceed';
-        else if (this.stage == 2)
-          return 'All looks good!';
-      }
+      if (this.stage == 0 || this.stage == 1) 
+        return 'Proceed';
+      else if (this.stage == 2)
+        return 'All looks good!';
+      
     },
     ...mapGetters('auth', [
       'user',
@@ -83,6 +80,7 @@ export default {
 
     submitTask: function() {
       if (this.stage == 0 || this.stage == 1) {
+        this.stopDisplay = true;
         this.updateUserCondition()
         .then(() => {
           this.$router.push({ name: 'waitingPage' });
