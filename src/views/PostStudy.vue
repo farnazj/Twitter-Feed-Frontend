@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'post-study',
+  name: 'post-study-view',
   components: {
   },
   data() {

@@ -2,7 +2,7 @@
     <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
         <v-col lg="9" md="9">
             <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
-                <tweet-instance :tweet="tweet"  @assessedConfidence="checkAssessedCount" class="pt-1"></tweet-instance>
+                <tweet-instance :tweet="tweet"  @assessedConfidenceOrReason="checkAssessedCount" class="pt-1"></tweet-instance>
             </v-row>
 
             <tweet-loading></tweet-loading>
@@ -41,7 +41,7 @@ export default {
 
     },
     computed: {
-
+        
         tweetCountAssessedByUser: function() {
             return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
         },
@@ -67,15 +67,20 @@ export default {
 
         checkIfReadyToProceed: function() {
 
-            console.log('feed loading is finished?', this.taskLoadingIsFinished)
+            console.log('checking if ready to proceed. feed loading is finished?', this.taskLoadingIsFinished)
             console.log('stage', this.stage)
             if (this.taskLoadingIsFinished ) {
+
+                let isReasoningCountMet = this.tweets.filter(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].reason != '' &&  el.TweetAccuracyLabels[0].reason !== null).length >= consts.REASONING_COUNT_MIN;
+                
                 if (this.stage == 1 || this.stage == 0) {
-                    if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
+                    console.log(' has every tweet been assessed: ', this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
+
+                    if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ) && isReasoningCountMet)
                         this.$emit('readyToProceed');
                 }
                 else { //if stage == 2
-                    if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN)
+                    if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN && isReasoningCountMet)
                        this.$emit('readyToProceed');
                 }
                 

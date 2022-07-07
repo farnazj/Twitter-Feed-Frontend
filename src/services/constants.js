@@ -2,6 +2,7 @@ const BASE_URL = `http://localhost:3000`;
 const WS_BASE_URL = `ws://localhost:3000/realtime`;
 const WS_CONN_INTERVAL = 10000; //in ms
 const STAGE_2_ASSESSMEMT_COUNT_MIN = 6;
+const REASONING_COUNT_MIN = 3;
 
 const ACCURACY_CODES = {
     ACCURATE: 0,
@@ -22,5 +23,6 @@ export default {
     WS_CONN_INTERVAL,
     ACCURACY_CODES,
     STAGE_2_ASSESSMEMT_COUNT_MIN,
-    CONFIDENCE_CODES
+    CONFIDENCE_CODES,
+    REASONING_COUNT_MIN
 }

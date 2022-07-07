@@ -305,7 +305,10 @@ export default {
                 tweetId: this.tweet.id, 
                 reason: this.userReason,
                 timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
-            } );
+            } )
+            .then(() => {
+                this.$emit('assessedConfidenceOrReason', this.tweet.id);
+            })
         },
 
         submitConfidence: function() {
@@ -316,7 +319,7 @@ export default {
                 timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
             } )
             .then(() => {
-                this.$emit('assessedConfidence', this.tweet.id);
+                this.$emit('assessedConfidenceOrReason', this.tweet.id);
             })
         },
 
@@ -347,7 +350,7 @@ export default {
   }
 
   .custom-tweet {
-    border: 1px #CFD8DC solid;
+    border: 1px #CFD8DC solid !important;
     /* border-bottom: initial; */
     width: 100%;
     min-height: 160px;
