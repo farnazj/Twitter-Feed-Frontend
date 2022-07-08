@@ -92,7 +92,7 @@ export default {
                     if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ) && isReasoningCountMet)
                         this.$emit('readyToProceed');
                 }
-                else { //if stage == 2 && experiment != test2
+                else { //if stage == 2 && experiment != exp2
                     if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN && isReasoningCountMet)
                        this.$emit('readyToProceed');
                 }

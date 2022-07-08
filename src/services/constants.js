@@ -4,7 +4,7 @@ const WS_CONN_INTERVAL = 10000; //in ms
 const STAGE_2_ASSESSMEMT_COUNT_MIN = 6;
 const REASONING_COUNT_MIN = 4;
 const CHANGED_ELEMENT_THRESHOLD = 4;
-const EXPERIMENT_2 = 'test2';
+const EXPERIMENT_2 = 'exp2';
 
 const ACCURACY_CODES = {
     ACCURATE: 0,

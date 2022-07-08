@@ -52,7 +52,9 @@ export default {
       },
 
       remove_from_newly_updated_tweets: (state, tweetId) => {
-        state.newlyUpdatedTweetIds.splice(state.newlyUpdatedTweetIds.indexOf(tweetId), 1);
+        let tweetIdIndex = state.newlyUpdatedTweetIds.indexOf(tweetId);
+        if (tweetIdIndex != -1)
+          state.newlyUpdatedTweetIds.splice(tweetIdIndex, 1);
       },
 
       change_task_status: (state) => {
@@ -157,6 +159,8 @@ export default {
               tweetId: dataObj.tweetId,
               label: newAccuracyLabel.data.data
             });
+
+            console.log('what is here', dataObj.tweetId);
             context.commit('remove_from_newly_updated_tweets', dataObj.tweetId);
             resolve();
           })
