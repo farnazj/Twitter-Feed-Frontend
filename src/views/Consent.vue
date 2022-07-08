@@ -105,7 +105,7 @@
 
                     <p class="subtitle-1 font-weight-medium">Do you understand and consent to these terms?</p>
                     <v-row no-gutters justify="center" class="pt-6">    
-                        <v-btn tile outlined  @click="proceed" :disabled="buttonDisabled">I agree</v-btn>
+                        <v-btn tile outlined color="indigo darken-4" @click="proceed" :disabled="buttonDisabled">I agree</v-btn>
                     </v-row>
                 </v-form>
           </v-col>

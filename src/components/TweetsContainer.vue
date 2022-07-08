@@ -1,14 +1,15 @@
 <template>
     <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
-        <v-col lg="9" md="9">
-            <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
-                <tweet-instance :tweet="tweet"  @assessedConfidenceOrReason="checkAssessedCount"></tweet-instance>
+        <v-col lg="12" md="12" xl="9">
+            <v-row no-gutters v-for="(tweet, index) in tweets" :key="tweet.id">
+                <tweet-instance :tweet="tweet" :index="index" @assessedConfidenceOrReason="checkAssessedCount"></tweet-instance>
             </v-row>
 
             <tweet-loading></tweet-loading>
         </v-col>
     </v-container>
 </template>
+
 <script>
 import tweet from '@/components/Tweet'
 import tweetLoading from '@/components/TweetLoading.vue'
@@ -35,7 +36,6 @@ export default {
             this.refreshTweets()
             .then(() => {
                 this.scrollDisabled = false; 
-            
             })
         })
 
@@ -52,14 +52,23 @@ export default {
         ]),
         ...mapGetters('auth', [
             'user',
-            'stage'
+            'stage',
+            'experiment'
         ])
     },
     methods: {
 
         checkAssessedCount: function() {
+
+            console.log('dakhele chekcassessed count', this.tweetCountAssessedByUser)
+            console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
             if (this.stage == 2) {
                 this.$emit('tweestsAssessed', `You have assessed ${this.tweetCountAssessedByUser} tweets.`);
+
+                if (this.experiment == consts.EXPERIMENT_2) {
+                    if (this.tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0)
+                        this.unlockNextSetForAssessment();
+                }
             }
                 
             this.checkIfReadyToProceed();
@@ -73,13 +82,13 @@ export default {
 
                 let isReasoningCountMet = this.tweets.filter(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].reason != '' &&  el.TweetAccuracyLabels[0].reason !== null).length >= consts.REASONING_COUNT_MIN;
 
-                if (this.stage == 1 || this.stage == 0) {
+                if (this.stage !=2 || this.experiment == consts.EXPERIMENT_2) {
                     console.log(' has every tweet been assessed: ', this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
 
                     if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ) && isReasoningCountMet)
                         this.$emit('readyToProceed');
                 }
-                else { //if stage == 2
+                else { //if stage == 2 && experiment != test2
                     if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN && isReasoningCountMet)
                        this.$emit('readyToProceed');
                 }
@@ -113,7 +122,8 @@ export default {
         ...mapActions('feed', [
             'getMoreTweets',
             'refreshTweets',
-            'endTaskStage'
+            'endTaskStage',
+            'unlockNextSetForAssessment'
         ])
 
     },

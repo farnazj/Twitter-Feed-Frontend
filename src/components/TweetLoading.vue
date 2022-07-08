@@ -26,7 +26,6 @@ export default {
         }
     },
     created() {
-        console.log('loader', this.loading)
     },
     computed: {
         ...mapState('loader', [

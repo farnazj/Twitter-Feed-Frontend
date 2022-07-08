@@ -10,7 +10,7 @@
               <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': stage < 2, 'mt-6': true}">
                 <v-col cols="12" lg="6" md="8" align-self="center">
                   <!-- <v-row justify="center"> -->
-                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2" color="light-blue darken-4" large
+                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2" color="indigo darken-4" large
                     >{{proceedBtnText}}</v-btn>
                   <!-- </v-row> -->
                 </v-col>

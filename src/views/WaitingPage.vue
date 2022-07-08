@@ -12,45 +12,85 @@
 
               <v-row no-gutters justify="center" class="pt-6">
                 <v-progress-circular
-                indeterminate v-if="waiting"
-                color="primary" :size="70" :width="7"
-              ></v-progress-circular>
+                  indeterminate v-if="waiting"
+                  color="primary" :size="70" :width="7"
+                ></v-progress-circular>
               </v-row>
 
             </template>
 
             <template v-else>
                 <v-row no-gutters justify="center" class="pt-10">
-                  <p class="body-1" v-if="stage == 1">
-                    We need a few more accuracy labels from you. The next page will show you another feed of tweets. We ask that you also assess the tweets on that feed.
+                  <v-col cols="12">
 
-                    <br>
-                   Similar to the last step, <span class="font-weight-bold">once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments</span>, a button will appear on the side which you will click to go to the next step.
-                  </p> 
+                    <template v-if="stage == 1">
 
-                  <p class="body-1" v-if="stage == 1">
-                    <span class="font-weight-bold">Note:</span> As we are training the model, we will mark which tweets would be most helpful to assess next. You are free to choose to assess these tweets next or not.
-                  </p> 
+                      <p class="body-1" >
+                        We need a few more accuracy labels from you. The next page will show you another feed of tweets. We ask that you also assess the tweets on that feed.
 
-                  <p class="body-1" v-if="stage == 2">
-                    On the next page, you will see another feed of tweets. For each one, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You can do this by explicitly assessing tweets as accurate or inaccurate.
-                  </p>
+                        <br>
+                        Similar to the last step, <span class="font-weight-bold">once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments</span>, a button will appear on the side which you will click to go to the next step.
+                      </p> 
+
+                      <p class="body-1">
+                        <span class="font-weight-bold">Note:</span> As we are training the model, we will mark which tweets would be most helpful to assess next. You are free to choose to assess these tweets next or not.
+                      </p> 
+                    </template>
 
 
-                  <p class="body-1" v-if="stage == 2">
-                   You do not need to assess every single tweet. We only ask that you assess a minimum of {{stage2RequiredAssessmentCount}} tweets. It is up to you to decide which ones you want to assess.
-                  </p>
+                    <template v-if="stage == 2">
 
-                  <p class="body-1" v-if="stage == 2">
-                   When you determine that the AI has become good at predicting your assessments, confirm that the AI looks good and proceed to the post-study survey.
-                  </p>
+                      <p class="body-1">
+                        Please read the instructions on this page carefully.
+                        <br>
+                        On the next page, you will see another feed of tweets. For each one, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You will do this by explicitly assessing tweets as accurate or inaccurate.
+                      </p>
 
-              </v-row>
-            </template>
+                      <template v-if="isUserFreeInAssessment">
+                        <p class="body-1" v-if="stage == 2">
+                        You do not need to assess every single tweet. We only ask that you assess a minimum of {{stage2RequiredAssessmentCount}} tweets. It is up to you to decide which ones you want to assess.
+                        </p>
+
+                        <p class="body-1" v-if="stage == 2">
+                        When you determine that the AI has become good at predicting your assessments, confirm that the AI looks good and proceed to the post-study survey.
+                        </p>
+                      </template>
+                    
+
+                      <template v-else>
+                        <p class="body-1">
+                          Although you will be able to see the AI's predictions of your assessments on all the tweets of the feed, you are only able to change the assessments of {{countOfItemsToAssess}} tweets at a time.
+                          The assessments that you can change at a certain time are marked with a blue arrow, similar to the picture below.
+                        </p>
+                        
+                      <v-row no-gutters justify="center">
+                          <v-col cols="12">
+                          <v-img :contain="true" :src="tweetSelectionURL"></v-img>
+                          </v-col>
+                      </v-row>
+                      </template>
+
+                      <p class="body-1 mt-4">
+                      As you are guiding the AI, a list of updated predictions will appear on the side. These are the tweets that the AI has changed its prediction on, based on the feedback that you have given to it. We encourage you to explore this pane. In this pane, you can click on any of the tweet previews (orange arrow shown on the picture below) to bring the actual tweet into view.
+                      </p>
+
+                      <v-row no-gutters justify="center">
+                        <v-col lg="5" md="6">
+                        <v-img :contain="true" :src="updatedPredictionsURL"></v-img>
+
+                        </v-col>
+                      </v-row>
+
+
+
+                    </template>
+                 </v-col>
+               </v-row>
+             </template>
             
 
-            <v-row no-gutters v-if="!waiting" justify="center"  class="pt-6">
-              <v-btn tile outlined  @click="proceed">Proceed</v-btn>
+            <v-row no-gutters v-if="!waiting" justify="center"  class="mt-7">
+              <v-btn tile outlined color="indigo darken-4" @click="proceed" large>Proceed</v-btn>
             </v-row>
           </v-col>
         </v-row>
@@ -68,6 +108,8 @@ export default {
   },
   data() {
     return {
+      tweetSelectionURL: './images/blue_arrow.png',
+      updatedPredictionsURL: './images/updated_predictions.png'
     }
   },
   created() {
@@ -85,6 +127,12 @@ export default {
     
   },
   computed: {
+    countOfItemsToAssess: function() {
+      return constants.CHANGED_ELEMENT_THRESHOLD;
+    },
+    isUserFreeInAssessment: function() {
+      return this.experiment != constants.EXPERIMENT_2 ;
+    },
     reasoningCountMin: function() {
       return constants.REASONING_COUNT_MIN;
     },
@@ -95,7 +143,8 @@ export default {
         'waiting'
     ]),
     ...mapGetters('auth', [
-      'stage'
+      'stage',
+      'experiment'
     ])
   },
   methods: {
@@ -106,10 +155,7 @@ export default {
     ...mapActions('feed', [
         'endTaskStage',
         'endWait'
-    ]),
-    // ...mapActions('auth', [
-    //   'updateUserCondition'
-    // ])
+    ])
   }
   
 }

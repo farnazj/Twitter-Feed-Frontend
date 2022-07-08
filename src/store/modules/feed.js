@@ -1,7 +1,6 @@
 import feedServices from "@/services/feedServices"
 import labelServices from "@/services/labelServices";
-import Vue from "vue";
-import router from '@/router'
+import constants from '@/services/constants';
 var moment = require('moment');
 
 export default {
@@ -14,7 +13,8 @@ export default {
       tweetsFetched: false,
       newlyUpdatedTweetIds: [],
       tweetRefs: {},
-      timeLoaded: null
+      timeLoaded: null,
+      unlockedForAssessmentIndex : 0
     },
     mutations: {
       append_tweets: (state, tweets) => {
@@ -69,6 +69,11 @@ export default {
 
       reset_time_since_opened: (state, obj) => {
         state.timeLoaded = moment();
+      },
+
+      unlock_next_set_for_assessment: (state) => {
+        state.unlockedForAssessmentIndex += constants.CHANGED_ELEMENT_THRESHOLD;
+        console.log('raf dakhele unlcok', state.unlockedForAssessmentIndex)
       }
       
     },
@@ -194,6 +199,12 @@ export default {
         return new Promise((resolve, reject) => {
           context.commit('add_tweet_ref', dataObj);
           resolve();
+        })
+      },
+
+      unlockNextSetForAssessment: (context) => {
+        return new Promise((resolve, reject) => {
+          context.commit('unlock_next_set_for_assessment');
         })
       }
       

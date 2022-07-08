@@ -1,6 +1,6 @@
 <template>
     <v-row no-gutters :ref="`tweet-${tweet.id}`"  class="pt-2">
-        <v-col cols="8">
+        <v-col cols="7">
             <v-card rounded="0" flat class="custom-tweet">
                 <v-list-item v-if="tweet.TweetSource">
                     <v-list-item-avatar color="grey darken-3">
@@ -16,8 +16,8 @@
                         <v-list-item-subtitle>@{{tweet.TweetSource.username}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-                <v-card-text class="body-1" v-html="tweet.text">
-                   
+
+                <v-card-text class="body-1" v-html="tweet.text">   
                 </v-card-text>
 
             </v-card>
@@ -26,35 +26,15 @@
 
             <v-card tile :class="['pa-1', {'new-update': isANewlyUpdatedTweet, 'dummy-class': isANewlyUpdatedTweet}]" :color="assessmentContainerColor" >
 
-                <v-row no-gutters>
-                    
+                <v-row no-gutters>    
                     <v-spacer></v-spacer>
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2" small>{{icons.newPredictionIcon}}</v-icon>
                     <v-icon v-if="stage > 0 && tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 0" small> {{icons.gavel}}</v-icon>
                 </v-row>
+
                 <v-row no-gutters >
-
-                    <!-- <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
-                        item-text="label" item-value="value" dense
-                        outline>
-                        
-
-                        <template slot="item" slot-scope="data" >
-                            <div :class="[data.item.color, 'subtitle-2']">
-                                {{data.item.label}}
-                                <v-icon small>{{icons.gavel}}</v-icon>
-                            </div>
-                        </template>
-
-                        <template slot="selection" slot-scope="data" >
-                            <div v-html="data.item.label" :class="[data.item.color, 'subtitle-2']">
-                            </div>
-                        </template>
-
-                    </v-select> -->
-
                     <span class="caption">This tweet is</span>
-                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2">
+                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2" :disabled="stage == 2 && !isTweetUnlockedForAssessment">
                         <template v-for="(item, index) in accuracyStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -63,35 +43,11 @@
                             </v-radio>
                         </template>
                     </v-radio-group>
-
                 </v-row>
 
                 <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
-
-                    <!-- <v-select :items="confidenceStatus" v-model="userConfidence" hide-details
-                        item-text="label" item-value="value" dense @change="submitConfidence"
-                        outline>
-                        <template v-slot:label>
-                            <span class="caption">
-                                How confident are you?
-                            </span>
-                        </template>
-
-                        <template slot="item" slot-scope="data" >
-                            <div class="caption">
-                                {{data.item.label}}
-                            </div>
-                        </template>
-
-                        <template slot="selection" slot-scope="data" >
-                            <div v-html="data.item.label" :class="'caption'">
-                            </div>
-                        </template>
-
-                    </v-select> -->
-
                     <span class="caption">How confident are you?</span>
-                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2">
+                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="stage == 2 && !isTweetUnlockedForAssessment">
                         <template v-for="(item, index) in confidenceStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -101,7 +57,6 @@
                             </v-radio>
                         </template>
                     </v-radio-group>
-
                 </v-row>
 
 
@@ -130,12 +85,18 @@
                 
             </v-card>
         </v-col>
+
+        <v-col cols="1">
+            <v-icon color="light-blue darken-4" x-large 
+            v-if="stage == 2 && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
+        </v-col>
+
     </v-row>
 </template>
 <script>
 import consts from '@/services/constants'
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { mdiBellRing, mdiRobot, mdiGavel } from '@mdi/js';
+import { mdiBellRing, mdiRobot, mdiGavel, mdiArrowLeftThin } from '@mdi/js';
 var moment = require('moment');
 
 export default {
@@ -185,13 +146,17 @@ export default {
             icons: {
                 newPredictionIcon: mdiBellRing,
                 robot: mdiRobot,
-                gavel: mdiGavel
+                gavel: mdiGavel,
+                arrow: mdiArrowLeftThin
             }
         }
     },
     props: {
         tweet: {
             type: Object
+        },
+        index: {
+            type: Number
         }
     },
     mounted() {
@@ -238,10 +203,17 @@ export default {
                     value: newValue,
                     timeSinceFeedLoaded: timeElapsed
                 })
-            //     .then(() => {
-            //         this.$emit('assessed');
-            //     })
             }
+        },
+
+        isTweetUnlockedForAssessment: function() {
+            if (this.stage != 2 || this.experiment != consts.EXPERIMENT_2)
+                return true;
+
+            else if (this.index < this.unlockedForAssessmentIndex + consts.CHANGED_ELEMENT_THRESHOLD)
+                return true;
+            else
+                return false;
         },
 
         AIAssessmentWithheld: function() {
@@ -310,11 +282,13 @@ export default {
 
         ...mapState('feed', [
             'newlyUpdatedTweetIds',
-            'timeLoaded'
+            'timeLoaded',
+            'unlockedForAssessmentIndex'
         ]),
         ...mapGetters('auth', [
             'user',
             'stage',
+            'experiment',
         ])
     },
     methods: {

@@ -36,7 +36,7 @@
             
 
             <v-row no-gutters justify="center" class="pt-6">
-              <v-btn tile outlined  @click="proceed">Proceed</v-btn>
+              <v-btn tile outlined  color="indigo darken-4" @click="proceed">Proceed</v-btn>
             </v-row>
           </v-col>
         </v-row>

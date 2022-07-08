@@ -33,6 +33,15 @@ export default {
           return JSON.parse(localStorage.getItem('feedUserToken')).UserConditions[0].stage;
         }
       },
+      experiment:  (state) => {
+        console.log('auth getter', state.token)
+  
+        if (Object.entries(state.token).length)
+          return state.token.UserConditions[0].experiment;
+        else {
+          return JSON.parse(localStorage.getItem('feedUserToken')).UserConditions[0].experiment;
+        }
+      }
     },
     mutations: {
   
