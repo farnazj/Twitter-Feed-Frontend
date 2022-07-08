@@ -129,8 +129,10 @@ export default {
   
         console.log('going to logout')
         return new Promise((resolve, reject) => {
-          authServices.logout().then(resp => {
+          authServices.logout()
+          .then(resp => {
             commit('logout');
+            console.log('logged out?')
             resolve();
           })
           .catch(err => {

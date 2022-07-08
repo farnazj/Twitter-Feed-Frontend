@@ -54,7 +54,7 @@ export default {
 
     proceedBtnText: function() {
 
-      if (this.stage == 0 || this.stage == 1 || this.experiment != constants.EXPERIMENT_2) 
+      if (this.stage == 0 || this.stage == 1 || this.experiment == constants.EXPERIMENT_2) 
         return 'Proceed';
       else
         return 'All looks good!';
@@ -93,21 +93,18 @@ export default {
           this.closeConnection()
           .then(() => {
             this.logout()
-            .then(() => {
-              this.$router.push({ name: 'postStudy' });
-            })
-            
+            this.$router.push({ name: 'postStudy' });
           })
           
         })
 
       }
-
       
     },
     ...mapActions('auth', [
       'updateUserCondition',
-      'finishStudy'
+      'finishStudy',
+      'logout'
     ]),
     ...mapActions('websocket', [
       'closeConnection'

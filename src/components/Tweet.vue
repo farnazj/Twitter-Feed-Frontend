@@ -88,7 +88,7 @@
 
         <v-col cols="1">
             <v-icon color="light-blue darken-4" x-large 
-            v-if="stage == 2 && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
+            v-if="!isUserFreeInAssessment && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
         </v-col>
 
     </v-row>
@@ -215,7 +215,9 @@ export default {
             else
                 return false;
         },
-
+        isUserFreeInAssessment: function() {
+            return this.experiment != consts.EXPERIMENT_2 ;
+        },
         AIAssessmentWithheld: function() {
             return this.stage < 2 ;
         },

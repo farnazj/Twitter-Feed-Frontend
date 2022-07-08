@@ -48,7 +48,7 @@
 
                       <template v-if="isUserFreeInAssessment">
                         <p class="body-1" v-if="stage == 2">
-                        You do not need to assess every single tweet. We only ask that you assess a minimum of {{stage2RequiredAssessmentCount}} tweets. It is up to you to decide which ones you want to assess.
+                        You do not need to assess every single tweet. We only ask that you <span class="font-weight-bold">assess a minimum of {{stage2RequiredAssessmentCount}} tweets.</span> It is up to you to decide which ones you want to assess. <span class="font-weight-bold">Similar to the previous steps, you are required to provide your reasoning for at least {{reasoningCountMin}} of your assessments</span>. 
                         </p>
 
                         <p class="body-1" v-if="stage == 2">

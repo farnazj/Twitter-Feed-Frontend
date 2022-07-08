@@ -94,7 +94,7 @@
                 <v-form ref="signupForm" lazy-validation>
                     <v-row no-gutters class="my-3">
                         <v-col cols="2">
-                            <p class="body-1">Your email:</p>
+                            <p class="body-1">Your worker ID:</p>
                         </v-col>
                         <v-col cols="10">
                             <v-text-field v-model="workerId" label="Worker ID"
@@ -145,12 +145,9 @@ export default {
 
       if (this.$refs.signupForm.validate()) {
         let data = {
-            email: this.workerId,
+            workerId: this.workerId,
             password: this.workerId
         }
-
-        // if (this.mode == 'expf')
-        data.exp = 'RQ1';
 
         this.$store.dispatch('auth/signup', data)
         .then(response => {
@@ -161,7 +158,7 @@ export default {
 
             this.$store.dispatch('auth/login',
             {
-                'email': this.workerId,
+                'workerId': this.workerId,
                 'password': this.workerId
             })
             .then(() => {
