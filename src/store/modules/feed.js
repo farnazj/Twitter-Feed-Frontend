@@ -74,6 +74,10 @@ export default {
       unlock_next_set_for_assessment: (state) => {
         state.unlockedForAssessmentIndex += constants.CHANGED_ELEMENT_THRESHOLD;
         console.log('raf dakhele unlcok', state.unlockedForAssessmentIndex)
+      },
+
+      unlock_specific_set_for_assessment: (state, index) => {
+        state.unlockedForAssessmentIndex = index;
       }
       
     },
@@ -205,6 +209,12 @@ export default {
       unlockNextSetForAssessment: (context) => {
         return new Promise((resolve, reject) => {
           context.commit('unlock_next_set_for_assessment');
+        })
+      },
+
+      setIndexForSetAssessment: (context, data) => {
+        return new Promise((resolve, reject) => {
+          context.commit('unlock_specific_set_for_assessment', data);
         })
       }
       

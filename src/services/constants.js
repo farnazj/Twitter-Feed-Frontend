@@ -2,7 +2,7 @@ const BASE_URL = `http://localhost:3000`;
 const WS_BASE_URL = `ws://localhost:3000/realtime`;
 const WS_CONN_INTERVAL = 10000; //in ms
 const STAGE_2_ASSESSMEMT_COUNT_MIN = 6;
-const REASONING_COUNT_MIN = 3;
+const REASONING_COUNT_MIN = 4;
 const CHANGED_ELEMENT_THRESHOLD = 4;
 const EXPERIMENT_2 = 'test2';
 
@@ -12,7 +12,7 @@ const ACCURACY_CODES = {
 }
 
 const CONFIDENCE_CODES = {
-    NONE_AT_ALL: 1,
+    NOT_AT_ALL: 1,
     A_LITTLE: 2,
     A_MODERATE_AMOUNT: 3,
     A_LOT: 4,

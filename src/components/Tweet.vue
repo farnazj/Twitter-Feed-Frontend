@@ -122,8 +122,8 @@ export default {
             ],
             confidenceStatus: [
                 {
-                    label: 'None at all',
-                    value: consts.CONFIDENCE_CODES.NONE_AT_ALL,
+                    label: 'Not at all',
+                    value: consts.CONFIDENCE_CODES.NOT_AT_ALL,
                 },
                 {
                     label: 'A little',

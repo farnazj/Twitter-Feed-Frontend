@@ -22,7 +22,7 @@
 
             </v-col>
 
-            <v-col md="9" lg="9" class="pt-6" >
+            <v-col md="9" lg="9" class="mt-6" >
               <tweets-container @readyToProceed="enableProceed" @tweetsAssessed="displayPortion"></tweets-container>
             </v-col>
         </v-row>
@@ -33,6 +33,7 @@
 <script>
 import tweetsContainer from '@/components/TweetsContainer.vue'
 import tweetsDemoContainer from '@/components/TweetsDemoContainer.vue'
+import constants from '@/services/constants'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -53,9 +54,9 @@ export default {
 
     proceedBtnText: function() {
 
-      if (this.stage == 0 || this.stage == 1) 
+      if (this.stage == 0 || this.stage == 1 || this.experiment != constants.EXPERIMENT_2) 
         return 'Proceed';
-      else if (this.stage == 2)
+      else
         return 'All looks good!';
       
     },

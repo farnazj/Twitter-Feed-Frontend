@@ -1,4 +1,6 @@
+import logServices from '@/services/logServices';
 import constants from '@/services/constants.js'
+var moment = require('moment');
 
 export default {
     namespaced: true,
@@ -35,18 +37,26 @@ export default {
                     let data = JSON.parse(stringifiedData)
     
                     if (data.type == 'new_labels') {
+
+                        let timeReceived = moment();
     
                         if (dataObj.rootState.feed.waiting)
                             dataObj.context.dispatch('feed/endWait', true, { root: true });
                         else {
-                            dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
+                            dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true })
+                            .then(() => {
+                                let timeDisplayed = moment();
+                                logServices.postlogs({
+                                    changedTweets: data.data,
+                                    timeReceived: timeReceived,
+                                    timeDisplayed: timeDisplayed
+                                })
+                            })
                         }
     
                     }
-                    else if (data.type == 'next_to_labels') {
-
-                        console.log('next toooo')
-                    }
+                    // else if (data.type == 'next_to_labels') {
+                    // }
 
                 })
             }

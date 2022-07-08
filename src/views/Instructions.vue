@@ -19,12 +19,12 @@
                 There is also a textbox where you can provide your reasoning for why you believe the tweet is or is not accurate. We ask that you <span class="font-weight-bold">provide your reasoning for at least {{reasoningCountMin}} of your assessments</span>. You are encouraged to provide your reasoning for as many more tweets as you would like, as it would greatly help our research.
                 </p> 
 
-                <v-row no-gutters class="my-8">
-                    <p class="body-1">The pictures below show an example of how to assess a tweet. Upon marking the tweet as accurate/inaccurate, two other questions appear to capture your confidence in your assessment and your reasoning.</p>
-                    <v-col cols="6">
+                <v-row no-gutters class="my-8" justify="center">
+                    <p class="body-1">The pictures below show an example of how to assess a tweet. Upon marking the tweet as accurate/inaccurate, two other questions appear in order to capture your confidence in your assessment and your reasoning.</p>
+                    <v-col cols="11">
                         <v-img :contain="true" :src="imageUrls[0]"></v-img>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="11">
                         <v-img :contain="true" :src="imageUrls[1]"></v-img>
                     </v-col>
                     

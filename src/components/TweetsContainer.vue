@@ -35,7 +35,9 @@ export default {
  
             this.refreshTweets()
             .then(() => {
-                this.scrollDisabled = false; 
+                this.scrollDisabled = false;
+
+                this.checkIndexForAssessment();
             })
         })
 
@@ -60,9 +62,11 @@ export default {
 
         checkAssessedCount: function() {
 
-            console.log('dakhele chekcassessed count', this.tweetCountAssessedByUser)
-            console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
+
             if (this.stage == 2) {
+                console.log('dakhele chekcassessed count', this.tweetCountAssessedByUser)
+                console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
+
                 this.$emit('tweestsAssessed', `You have assessed ${this.tweetCountAssessedByUser} tweets.`);
 
                 if (this.experiment == consts.EXPERIMENT_2) {
@@ -110,9 +114,21 @@ export default {
                     
                     this.checkIfReadyToProceed();
                 }
-                else
+                else {
+                    this.checkIndexForAssessment();
                     this.endOfResults = false;
+                }
             })
+        },
+
+        checkIndexForAssessment: function() {
+            if (this.stage == 2 && this.experiment == consts.EXPERIMENT_2) {
+                let alreadyAssessed = this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0).length).length;
+                
+                if (alreadyAssessed < this.tweets.length) {
+                    this.setIndexForSetAssessment(alreadyAssessed - alreadyAssessed % consts.CHANGED_ELEMENT_THRESHOLD);
+                }
+            }
         },
 
         ...mapActions('auth', [
@@ -123,7 +139,8 @@ export default {
             'getMoreTweets',
             'refreshTweets',
             'endTaskStage',
-            'unlockNextSetForAssessment'
+            'unlockNextSetForAssessment',
+            'setIndexForSetAssessment'
         ])
 
     },
