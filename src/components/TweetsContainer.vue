@@ -2,7 +2,7 @@
     <v-container ref="container" class="custom-tweets-container pt-2" justify="center">
         <v-col lg="9" md="9">
             <v-row no-gutters v-for="tweet in tweets" :key="tweet.id">
-                <tweet-instance :tweet="tweet"  @assessedConfidenceOrReason="checkAssessedCount" class="pt-1"></tweet-instance>
+                <tweet-instance :tweet="tweet"  @assessedConfidenceOrReason="checkAssessedCount"></tweet-instance>
             </v-row>
 
             <tweet-loading></tweet-loading>
@@ -72,7 +72,7 @@ export default {
             if (this.taskLoadingIsFinished ) {
 
                 let isReasoningCountMet = this.tweets.filter(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].reason != '' &&  el.TweetAccuracyLabels[0].reason !== null).length >= consts.REASONING_COUNT_MIN;
-                
+
                 if (this.stage == 1 || this.stage == 0) {
                     console.log(' has every tweet been assessed: ', this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
 

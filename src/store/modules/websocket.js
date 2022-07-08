@@ -42,7 +42,12 @@ export default {
                             dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true });
                         }
     
-                     }
+                    }
+                    else if (data.type == 'next_to_labels') {
+
+                        console.log('next toooo')
+                    }
+
                 })
             }
 

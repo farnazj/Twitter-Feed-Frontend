@@ -5,3 +5,7 @@
 .frozen {
   position: fixed !important;
 }
+
+.v-input--selection-controls__input {
+  margin-right: 2px !important;
+}

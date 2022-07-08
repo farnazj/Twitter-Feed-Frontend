@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters :ref="`tweet-${tweet.id}`" >
+    <v-row no-gutters :ref="`tweet-${tweet.id}`"  class="pt-2">
         <v-col cols="8">
             <v-card rounded="0" flat class="custom-tweet">
                 <v-list-item v-if="tweet.TweetSource">
@@ -32,16 +32,12 @@
                     <v-icon v-if="isANewlyUpdatedTweet" color="amber darken-2" small>{{icons.newPredictionIcon}}</v-icon>
                     <v-icon v-if="stage > 0 && tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 0" small> {{icons.gavel}}</v-icon>
                 </v-row>
-                <v-row no-gutters class="pt-3">
-                    <!-- <p v-if="stage > 1 || userLabel === null"
-                    class="caption mb-0 pb-0 blue-grey--text text--darken-1">Is this tweet accurate?</p> -->
+                <v-row no-gutters >
 
-                    <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
+                    <!-- <v-select :items="accuracyStatus" v-model="isAccurate" hide-details
                         item-text="label" item-value="value" dense
                         outline>
-                        <template v-slot:label>
-                            <span class="caption">Is this tweet accurate?</span>
-                        </template>
+                        
 
                         <template slot="item" slot-scope="data" >
                             <div :class="[data.item.color, 'subtitle-2']">
@@ -55,13 +51,24 @@
                             </div>
                         </template>
 
-                    </v-select>
+                    </v-select> -->
+
+                    <span class="caption">This tweet is</span>
+                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2">
+                        <template v-for="(item, index) in accuracyStatus">
+                            <v-radio :key="index" :value="item.value">
+                                <template v-slot:label>
+                                    <span class="caption">{{item.label}}</span>
+                                </template>
+                            </v-radio>
+                        </template>
+                    </v-radio-group>
 
                 </v-row>
 
-                <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-3">
+                <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
 
-                    <v-select :items="confidenceStatus" v-model="userConfidence" hide-details
+                    <!-- <v-select :items="confidenceStatus" v-model="userConfidence" hide-details
                         item-text="label" item-value="value" dense @change="submitConfidence"
                         outline>
                         <template v-slot:label>
@@ -81,7 +88,19 @@
                             </div>
                         </template>
 
-                    </v-select>
+                    </v-select> -->
+
+                    <span class="caption">How confident are you?</span>
+                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2">
+                        <template v-for="(item, index) in confidenceStatus">
+                            <v-radio :key="index" :value="item.value">
+                                <template v-slot:label>
+                                    <span class="caption" v-if="index == 0 || index == 4">{{item.label}}</span>
+                                    <span class="caption" v-else></span>
+                                </template>
+                            </v-radio>
+                        </template>
+                    </v-radio-group>
 
                 </v-row>
 
@@ -100,7 +119,7 @@
                     </v-textarea>
                 </v-row>
 
-                <v-row no-gutters class="pt-1">
+                <v-row no-gutters class="pt-0">
                     <span class="caption blue-grey--text text--darken-3" >
                         <v-icon v-if="tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 1"
                             >
