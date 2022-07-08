@@ -97,8 +97,8 @@
                             <p class="body-1">Your email:</p>
                         </v-col>
                         <v-col cols="10">
-                            <v-text-field v-model="email" type="email" label="Email"
-                        tabindex="4" required :rules="formRules.emailRules">
+                            <v-text-field v-model="workerId" label="Worker ID"
+                        tabindex="4" required >
                             </v-text-field>
                         </v-col>
                     </v-row>
@@ -131,7 +131,7 @@ export default {
             ]
         },
         buttonDisabled: false,
-        email: '',
+        workerId: '',
         alert: false,
         alertMessage: '',
         type: 'info'
@@ -145,8 +145,8 @@ export default {
 
       if (this.$refs.signupForm.validate()) {
         let data = {
-            email: this.email,
-            password: this.email
+            email: this.workerId,
+            password: this.workerId
         }
 
         // if (this.mode == 'expf')
@@ -161,8 +161,8 @@ export default {
 
             this.$store.dispatch('auth/login',
             {
-                'email': this.email,
-                'password': this.email
+                'email': this.workerId,
+                'password': this.workerId
             })
             .then(() => {
                 this.establishConnection()

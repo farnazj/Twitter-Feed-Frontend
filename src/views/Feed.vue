@@ -92,7 +92,11 @@ export default {
         .then(() => {
           this.closeConnection()
           .then(() => {
-            this.$router.push({ name: 'postStudy' });
+            this.logout()
+            .then(() => {
+              this.$router.push({ name: 'postStudy' });
+            })
+            
           })
           
         })
