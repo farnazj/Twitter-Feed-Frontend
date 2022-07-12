@@ -30,6 +30,7 @@ export default {
     },
     created() {
         this.scrollDisabled = true;
+        this.emptyFeed();
         this.updateUser()
         .then(() => {
  
@@ -140,7 +141,8 @@ export default {
             'refreshTweets',
             'endTaskStage',
             'unlockNextSetForAssessment',
-            'setIndexForSetAssessment'
+            'setIndexForSetAssessment',
+            'emptyFeed'
         ])
 
     },

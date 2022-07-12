@@ -213,12 +213,21 @@ export default {
       unlockNextSetForAssessment: (context) => {
         return new Promise((resolve, reject) => {
           context.commit('unlock_next_set_for_assessment');
+          resolve();
         })
       },
 
       setIndexForSetAssessment: (context, data) => {
         return new Promise((resolve, reject) => {
           context.commit('unlock_specific_set_for_assessment', data);
+          resolve();
+        })
+      },
+
+      emptyFeed: (context) => {
+        return new Promise((resolve, reject) => {
+          context.commit('refresh_tweets');
+          resolve();
         })
       }
       

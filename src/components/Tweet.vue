@@ -47,7 +47,7 @@
 
                 <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
                     <span class="caption">How confident are you?</span>
-                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="stage == 2 && !isTweetUnlockedForAssessment">
+                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage == 2 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
                         <template v-for="(item, index) in confidenceStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -61,7 +61,7 @@
 
 
                 <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pa-1 pt-2">
-                    <v-textarea dense hide-details class="caption"
+                    <v-textarea dense hide-details class="caption" :disabled="accuracyLabelBeingUpdated"
                         outlined rows="2"
                         v-model="reason" @focusout="submitReason"
                         >
@@ -74,12 +74,11 @@
                     </v-textarea>
                 </v-row>
 
-                <v-row no-gutters class="pt-0">
+                <v-row no-gutters class="pt-0" v-if="stage == 2 && tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 1">
                     <span class="caption blue-grey--text text--darken-3" >
-                        <v-icon v-if="tweet.TweetAccuracyLabels && tweet.TweetAccuracyLabels[0].assessor == 1"
-                            >
+                        <v-icon>
                             {{icons.robot}}
-                        </v-icon> {{accuracyText}}
+                        </v-icon> thinks you'd consider this tweet <span class="font-weight-bold">{{accuracyText}}</span>
                     </span>
                 </v-row>
                 
@@ -88,7 +87,7 @@
 
         <v-col cols="1">
             <v-icon color="light-blue darken-4" x-large 
-            v-if="!isUserFreeInAssessment && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
+            v-if="stage == 2 && !isUserFreeInAssessment && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
         </v-col>
 
     </v-row>
@@ -105,6 +104,7 @@ export default {
     },
     data() {
         return {
+            accuracyLabelBeingUpdated: false,
             userLabel: null,
             userReason: '',
             userConfidence: null,
@@ -198,10 +198,15 @@ export default {
 
                 let timeElapsed = moment().diff(this.timeLoaded);
 
+
+                this.accuracyLabelBeingUpdated = true;
                 this.updateAccuracyLabel({
                     tweetId: this.tweet.id,
                     value: newValue,
                     timeSinceFeedLoaded: timeElapsed
+                })
+                .then(() => {
+                    this.accuracyLabelBeingUpdated = false;
                 })
             }
         },
@@ -229,27 +234,8 @@ export default {
         
         accuracyText: function() {
 
-            let accuracyVal;
-            
-            if (this.stage < 2) {
-                accuracyVal = this.isAccurate;
-                if (accuracyVal == null)
-                    return '';
-            }
-            else {
-                accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
-            }
-                
-
-            let assessor;
-            if (typeof this.tweet.TweetAccuracyLabels === 'undefined' ||
-                this.tweet.TweetAccuracyLabels[0].assessor == 0)
-                assessor = 'You have marked'
-            else {
-                assessor = " thinks you'd consider"
-            }
-            
-            return `${assessor} this tweet ${this.accuracyMapping(accuracyVal)}`;
+            let accuracyVal = this.tweet.TweetAccuracyLabels[0].value;
+            return this.accuracyMapping(accuracyVal);
             
         },
 

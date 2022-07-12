@@ -116,13 +116,14 @@ export default {
     console.log('what is stage in waiting page', this.stage)
     this.endTaskStage()
     .then(() => {
-        labelServices.checkIfLabelsAreReadyForStage({
-          stage: this.stage })
-        .then((resp) => {
-          console.log('what is resp', resp)
-          if (resp.data)
-            this.endWait();
-        })
+      // this.emptyFeed();
+      labelServices.checkIfLabelsAreReadyForStage({
+        stage: this.stage })
+      .then((resp) => {
+        console.log('what is resp', resp)
+        if (resp.data)
+          this.endWait();
+      })
       })
     
   },
@@ -154,7 +155,8 @@ export default {
     },
     ...mapActions('feed', [
         'endTaskStage',
-        'endWait'
+        'endWait',
+        'emptyFeed'
     ])
   }
   

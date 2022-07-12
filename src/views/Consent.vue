@@ -1,6 +1,12 @@
 <template>
     <v-container class="pa-4">
-      <v-row no-gutters justify="center">
+
+           <v-progress-circular class="waiting"
+                indeterminate v-if="buttonClicked"
+                color="primary" :size="120" :width="7"
+            ></v-progress-circular>
+
+      <v-row no-gutters justify="center" :class="{'faded': buttonClicked}">
           <v-col cols="12" xl="8" lg="10" align-self="center" class="pt-10">
 
                 <p class="text-h4">IBM Research Project Participation Consent Form</p>
@@ -105,7 +111,7 @@
 
                     <p class="subtitle-1 font-weight-medium">Do you understand and consent to these terms?</p>
                     <v-row no-gutters justify="center" class="pt-6">    
-                        <v-btn tile outlined color="indigo darken-4" @click="proceed" :disabled="buttonDisabled">I agree</v-btn>
+                        <v-btn tile outlined color="indigo darken-4" @click="proceed" :disabled="buttonClicked">I agree</v-btn>
                     </v-row>
                 </v-form>
           </v-col>
@@ -130,7 +136,7 @@ export default {
                 v => /.+@.+/.test(v) || 'E-mail must be valid'
             ]
         },
-        buttonDisabled: false,
+        buttonClicked: false,
         workerId: '',
         alert: false,
         alertMessage: '',
@@ -148,13 +154,14 @@ export default {
             workerId: this.workerId,
             password: this.workerId
         }
+       
+        this.buttonClicked = true;
 
         this.$store.dispatch('auth/signup', data)
         .then(response => {
             this.type = 'info';
             this.alertMessage = response.data.message;
             this.alert = true;
-            this.buttonDisabled = true;
 
             this.$store.dispatch('auth/login',
             {
@@ -173,6 +180,7 @@ export default {
           this.alertMessage = err.response.data.message;
           this.type = 'error';
           this.alert = true;
+          this.buttonClicked = false;
         })
       }
     },
@@ -184,3 +192,16 @@ export default {
   
 }
 </script>
+
+<style scoped>
+.waiting {
+    z-index: 20;
+    position: fixed;
+    top: 48%;
+    left: 48%;
+}
+
+.faded {
+    opacity: 0.5;
+}
+</style>
