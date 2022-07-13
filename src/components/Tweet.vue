@@ -68,7 +68,7 @@
 
                     <template v-slot:label>
                         <span class="caption">
-                            Why do you believe so? (Optional)
+                            Why do you believe so?
                         </span>
                     </template>    
                     </v-textarea>
