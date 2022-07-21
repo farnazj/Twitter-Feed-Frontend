@@ -7,7 +7,7 @@
                         <v-img
                             class="elevation-6"
                             alt=""
-                            :src="tweet.TweetSource.imageUrl"
+                            :src="imageUrl"
                         ></v-img>
                     </v-list-item-avatar>
 
@@ -17,7 +17,7 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-card-text class="body-1" v-html="tweet.text">   
+                <v-card-text class="body-1" v-html="tweetText">   
                 </v-card-text>
 
             </v-card>
@@ -166,6 +166,31 @@ export default {
         // console.log(this.stage, 'stage', typeof this.stage)
     },
     computed: {
+
+        imageUrl: function() {
+            if (!this.tweet.TweetSource.imageUrl.includes('https://pbs'))
+                return consts.BASE_URL + '/' + this.tweet.TweetSource.imageUrl;
+            else
+                return this.tweet.TweetSource.imageUrl;
+
+        },
+
+
+        tweetText: function() {
+            const regex = /http(\S)+/g;
+            const allMatches = this.tweet.text.matchAll(regex);
+
+            // console.log('all matches', allMatches)
+
+            let text = this.tweet.text;
+
+            for (let match of allMatches) {
+                console.log(match)
+                text = text.replace(match[0], `<a href="${match[0]}" target="_blank">${match[0]}</a>`)
+            }
+            console.log('text chi shod', text)
+            return text;
+        },
 
         reason: {
             get: function() {
