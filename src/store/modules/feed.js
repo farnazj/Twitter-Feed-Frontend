@@ -75,7 +75,6 @@ export default {
 
       unlock_next_set_for_assessment: (state) => {
         state.unlockedForAssessmentIndex += constants.CHANGED_ELEMENT_THRESHOLD;
-        console.log('raf dakhele unlcok', state.unlockedForAssessmentIndex)
       },
 
       unlock_specific_set_for_assessment: (state, index) => {
@@ -160,7 +159,6 @@ export default {
               label: newAccuracyLabel.data.data
             });
 
-            console.log('what is here', dataObj.tweetId);
             context.commit('remove_from_newly_updated_tweets', dataObj.tweetId);
             resolve();
           })

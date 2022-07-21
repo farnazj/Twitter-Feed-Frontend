@@ -44,31 +44,31 @@
                 </p>
 
 
-                <p class="body-1">
+                <!-- <p class="body-1">
                     <span class="text-h5">PERSONAL INFORMATION</span>
                     <br>
-                    <span class="text-h6">Personal information we collect:</span> During the project we may collect personal information about you such as your age, gender, ethnicity, occupation, and level of education.
+                    <span class="text-h6">Personal information we collect:</span> During the project we may collect personal information about you through a survey, such as your age, gender, ethnicity, occupation, and level of education.
                     <br>
                     <span class="text-h6">How we use personal information:</span> The personal information and other data collected during this project will be used primarily to perform research for purposes described in the introduction above.  Such information and data, or the results of the research may eventually be used to develop and improve our commercial products, services or technologies.
                     <br>
-                    <span class="text-h6">How we store and share your personal information:</span> Your personal information will be kept separate from the other information you give, and these two things will be stored in different places. Your personal data will stored for a period of up to 18 months. Except as otherwise described in this document, personal information you provide during this project will not be shared outside of IBM and its subsidiaries and affiliates without your permission.
+                    <span class="text-h6">How we store and share your personal information:</span> Your personal information will be kept separate from the other information you give, and these two things will be stored in different places. Your personal data will be stored for a period of up to 18 months. Except as otherwise described in this document, personal information you provide during this project will not be shared outside of IBM and its subsidiaries and affiliates without your permission.
                     <br>
                     <span class="text-h6">How you can access and control your personal information:</span> If you wish to review or copy any personal information you provided during the study, or if you want us to delete or correct any such data, email your request to the research team at: <a href="mailto:dakuo.wang@ibm.com">dakuo.wang@ibm.com</a>.
                     <br>
-                </p>
+                </p> -->
 
-                <p class="body-1">
+                <!-- <p class="body-1">
                     <span class="text-h5">RESEARCH RESULTS AND FEEDBACK</span>
                     <br>
                     IBM will own all of the research data and analysis and other results (collectively “Research Results”) generated from the information you provide and your participation in the research project. You may also provide suggestions, comments or other feedback (“Feedback”) to IBM with respect to the research project. Feedback is entirely voluntary, and IBM shall be free to use, disclose, reproduce, license, or otherwise distribute, and leverage the Feedback and Research Results.
-                </p>
+                </p> -->
         
                 <p class="body-1">
                     <span class="text-h5">BENEFITS AND RISKS</span>
                     <br>
                     <span class="text-h6">Benefits:</span> There will be no direct benefit to the participant for participating in this research. The research's benefit to the society will concern a better understanding of the application of artificially intelligent systems for learning a user's accuracy assessments of content.
                     <br>
-                    <span class="text-h6">Risks:</span> During your participation, you may experience stress, boredom, frustration, or discomfort, especially if you perform the task for prolonged periods.
+                    <span class="text-h6">Risks:</span> During your participation, you may experience stress, boredom, frustration, or discomfort, especially if you perform the task for prolonged periods. However, to mitigate these risk, you are able to take a break whenever needed.
                 </p>
 
                 <p class="body-1">
@@ -79,16 +79,38 @@
                     Your data may be used to make new products, tests, or findings. These may have value and may be developed and owned by IBM and/or others. If this happens, there are no plans to pay you.
                 </p>
 
-                <p class="body-1">
+                <!-- <p class="body-1">
                     <span class="text-h5">FUTURE USE OF YOUR IDENTIFIABLE INFORMATION</span>
                     <br>
                     Identifiers might be removed from your identifiable private information, and after such removal, the information could be used for future research studies or distributed to another investigator for future research studies without your (or your legally authorized representative's) additional informed consent.
-                </p>
+                </p> -->
                 
                 <p class="body-1">
-                    <span class="text-h5">CONTACT INFORMATION</span>
+                    <span class="text-h5">CONFIDENTIALITY</span>
                     <br>
-                    Should you have any questions concerning this project, or if you are injured as a result of being in this study, please contact the research team at <a href="mailto:dakuo.wang@ibm.com">dakuo.wang@ibm.com</a>.
+                    The investigators and their assistants will consider your records confidential to the extent permitted by law. Your records and results will nto be identified as pertaining to you in any publication without your expressed permission.
+                    </p>
+
+                <p class="body-1">
+                    <span class="text-h5">WHOM TO CONTACT FOR ANSWERS</span>
+                    <br>
+                    If you have any questions or concerns bout this research study, feel free to ask for additional information from the research team at <a href="mailto:dakuo.wang@ibm.com">dakuo.wang@ibm.com</a>.
+                </p>
+
+
+                <p class="body-1">
+                    <span class="text-h5">RIGHT TO WITHDRAW</span>
+                    <br>
+                    Your participation in this study is voluntary. You may refuse to take part in this study or end your participation (withdraw consent and discontinue participation) in this study at any time without risk, penalty, or loss of benefits that you are otherwise entitled to receive.
+                    <br>
+                    Although unlikely, the investigator or her assistants can also stop your continued participation in this study. For example, if you do not follow the investigator's instructions we may ask you to stop.
+                </p>
+
+
+                <p class="body-1">
+                    <span class="text-h5">RIGHTS IN INFORMATION</span>
+                    <br>
+                    All information, including but not limited to paper forms, computer log files, audio and video recordings, recorded or created during the session shall be the sole property of IBM Corporation and IBM Corporation shall hold the copyright. IBM Corporation shall hold the title to any inventions made during the course of the session.
                 </p>
 
                 <p class="body-1">

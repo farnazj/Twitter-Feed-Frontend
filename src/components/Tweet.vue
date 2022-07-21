@@ -17,7 +17,7 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-card-text class="body-1" v-html="tweetText">   
+                <v-card-text class="body-1" v-html="tweetText" @copy="preventCopy">   
                 </v-card-text>
 
             </v-card>
@@ -172,15 +172,11 @@ export default {
                 return consts.BASE_URL + '/' + this.tweet.TweetSource.imageUrl;
             else
                 return this.tweet.TweetSource.imageUrl;
-
         },
-
 
         tweetText: function() {
             const regex = /http(\S)+/g;
             const allMatches = this.tweet.text.matchAll(regex);
-
-            // console.log('all matches', allMatches)
 
             let text = this.tweet.text;
 
@@ -188,7 +184,6 @@ export default {
                 console.log(match)
                 text = text.replace(match[0], `<a href="${match[0]}" target="_blank">${match[0]}</a>`)
             }
-            console.log('text chi shod', text)
             return text;
         },
 
@@ -305,6 +300,11 @@ export default {
         ])
     },
     methods: {
+
+        preventCopy: function(evt) {
+            evt.clipboardData.setData("text/plain", "Copying is not allowed on this webpage");
+            evt.preventDefault();
+        },
 
         submitReason: function() {
             this.updateAccuracyLabel( {

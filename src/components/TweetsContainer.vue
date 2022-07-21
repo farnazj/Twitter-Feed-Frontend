@@ -63,11 +63,8 @@ export default {
 
         checkAssessedCount: function() {
 
-
             if (this.stage == 2) {
-                console.log('dakhele chekcassessed count', this.tweetCountAssessedByUser)
-                console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
-
+                // console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
                 this.$emit('tweestsAssessed', `You have assessed ${this.tweetCountAssessedByUser} tweets.`);
 
                 if (this.experiment == consts.EXPERIMENT_2) {
