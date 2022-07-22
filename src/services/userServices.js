@@ -13,6 +13,12 @@ export default {
     })
   },
 
+  getUserMTurkCode() {
+    return Api().get(`/users/mturk-code`, {
+      withCredentials: true
+    })
+  },
+
   endStudy(id) {
     return Api().post(`/users/${id}/end-study`, {}, {
       withCredentials: true

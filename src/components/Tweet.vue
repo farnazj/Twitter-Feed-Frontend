@@ -181,7 +181,6 @@ export default {
             let text = this.tweet.text;
 
             for (let match of allMatches) {
-                console.log(match)
                 text = text.replace(match[0], `<a href="${match[0]}" target="_blank">${match[0]}</a>`)
             }
             return text;

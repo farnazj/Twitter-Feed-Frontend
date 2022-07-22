@@ -92,7 +92,6 @@ export default {
         .then(() => {
           this.closeConnection()
           .then(() => {
-            this.logout()
             this.$router.push({ name: 'postStudy' });
           })
           
@@ -103,8 +102,7 @@ export default {
     },
     ...mapActions('auth', [
       'updateUserCondition',
-      'finishStudy',
-      'logout'
+      'finishStudy'
     ]),
     ...mapActions('websocket', [
       'closeConnection'

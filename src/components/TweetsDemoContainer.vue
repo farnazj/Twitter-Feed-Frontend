@@ -5,7 +5,7 @@
 
             <v-row no-gutters justify="center">
 
-                <v-icon large color="blue lighten-1">{{ icons.tweetIcon }}</v-icon>
+                <v-icon large color="blue-grey darken-1">{{ icons.robot }}</v-icon>
                 <v-icon color="amber darken-1">{{ icons.newPredictionIcon }}</v-icon>
                 <span class="subtitle-2"> Updated Predictions</span>
 
@@ -58,7 +58,7 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { mdiTwitter, mdiBellRing } from '@mdi/js';
+import { mdiTwitter, mdiBellRing, mdiRobot } from '@mdi/js';
 
 export default {
     name: 'tweet-instance',
@@ -69,7 +69,8 @@ export default {
             textSizeToShow: 130,
             icons: {
                 newPredictionIcon: mdiBellRing,
-                tweetIcon: mdiTwitter
+                tweetIcon: mdiTwitter,
+                robot: mdiRobot
             },
             panel: [0]
         }

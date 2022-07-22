@@ -2,9 +2,10 @@ const BASE_URL = `http://localhost:3000`;
 const WS_BASE_URL = `ws://localhost:3000/realtime`;
 const WS_CONN_INTERVAL = 10000; //in ms
 const STAGE_2_ASSESSMEMT_COUNT_MIN = 6;
-const REASONING_COUNT_MIN = 4;
+const REASONING_COUNT_MIN = 3;
 const CHANGED_ELEMENT_THRESHOLD = 4;
 const EXPERIMENT_2 = 'exp2';
+const QUALTRICKS_LINK  = 'https://mit.co1.qualtrics.com/jfe/form/SV_4VOiMkCT2OAWlYq'
 
 const ACCURACY_CODES = {
     ACCURATE: 0,
@@ -28,5 +29,6 @@ export default {
     CONFIDENCE_CODES,
     REASONING_COUNT_MIN,
     CHANGED_ELEMENT_THRESHOLD,
-    EXPERIMENT_2
+    EXPERIMENT_2,
+    QUALTRICKS_LINK
 }

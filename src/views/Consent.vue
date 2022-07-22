@@ -1,5 +1,5 @@
 <template>
-    <v-container class="pa-4">
+    <v-container class="px-4 pt-4 pb-0" fluid>
 
            <v-progress-circular class="waiting"
                 indeterminate v-if="buttonClicked"
@@ -7,7 +7,7 @@
             ></v-progress-circular>
 
       <v-row no-gutters justify="center" :class="{'faded': buttonClicked}">
-          <v-col cols="12" xl="8" lg="10" align-self="center" class="pt-10">
+          <v-col cols="12" xl="7" lg="9" align-self="center" class="pt-10">
 
                 <p class="text-h4">IBM Research Project Participation Consent Form</p>
                 <p class="body-1">
@@ -117,6 +117,8 @@
                     <span class="text-h5">CONSENT</span>
                     <br>
                     By clicking "I agree" below, you confirm that the study was explained to you, you had a chance to ask questions before beginning the study, and all your questions were answered satisfactorily. By clicking "I agree" below, you voluntarily consent to participate, and you do not give up any legal rights you have as a study participant.
+                    <br>
+                    You can participate in this study only once.
                 </p>
 
                 <v-form ref="signupForm" lazy-validation>
@@ -136,8 +138,25 @@
                         <v-btn tile outlined color="indigo darken-4" @click="proceed" :disabled="buttonClicked">I agree</v-btn>
                     </v-row>
                 </v-form>
+
+               
+                <v-snackbar v-model="alert">
+                {{ alertMessage }}
+
+                    <template v-slot:action="{ attrs }">
+                        <v-btn color="pink" text v-bind="attrs"
+                        @click="alert = false"> Close</v-btn>
+                    </template>
+                </v-snackbar>
           </v-col>
         </v-row>
+
+         <v-footer color="blue lighten-5" class="mt-5">
+            <v-col class="text-center" cols="12">
+                <a href="https://www.ibm.com/us-en/privacy" target="_blank">View IBM Privacy Policy</a>
+            </v-col>
+         </v-footer>
+
     </v-container>  
 
 </template>
@@ -199,10 +218,10 @@ export default {
             })
         })
         .catch(err => {
-          this.alertMessage = err.response.data.message;
-          this.type = 'error';
-          this.alert = true;
-          this.buttonClicked = false;
+            this.alertMessage = err.response.data.message;
+            this.type = 'error';
+            this.alert = true;
+            this.buttonClicked = false;
         })
       }
     },

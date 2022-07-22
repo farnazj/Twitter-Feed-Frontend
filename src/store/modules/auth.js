@@ -25,7 +25,6 @@ export default {
         }
       },
       stage:  (state) => {
-        console.log('auth getter', state.token)
   
         if (Object.entries(state.token).length)
           return state.token.UserConditions[0].stage;
@@ -34,7 +33,6 @@ export default {
         }
       },
       experiment:  (state) => {
-        console.log('auth getter', state.token)
   
         if (Object.entries(state.token).length)
           return state.token.UserConditions[0].experiment;
