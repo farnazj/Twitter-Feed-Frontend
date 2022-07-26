@@ -113,14 +113,14 @@ export default {
     }
   },
   created() {
-    console.log('what is stage in waiting page', this.stage)
+    // console.log('what is stage in waiting page', this.stage)
     this.endTaskStage()
     .then(() => {
       // this.emptyFeed();
       labelServices.checkIfLabelsAreReadyForStage({
         stage: this.stage })
       .then((resp) => {
-        console.log('what is resp', resp)
+        // console.log('what is resp', resp)
         if (resp.data)
           this.endWait();
       })

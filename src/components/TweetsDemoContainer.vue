@@ -35,7 +35,7 @@
                                         <v-img
                                             class="elevation-6"
                                             alt=""
-                                            :src="tweet.TweetSource.imageUrl"
+                                            :src="imageUrl(tweet)"
                                         ></v-img>
                                     </v-list-item-avatar>
 
@@ -44,8 +44,8 @@
                                         <v-list-item-subtitle class="custom-demo-tweet-username">@{{tweet.TweetSource.username}}</v-list-item-subtitle>
                                     </v-list-item-content>
                                 </v-list-item>
-                                <v-card-text class="demo-tweet-text py-1">
-                                    {{demoTweetText(tweet)}}
+                                <v-card-text class="demo-tweet-text py-1" v-html="demoTweetText(tweet)" >
+                                    
                                 </v-card-text>
 
                             </v-card>
@@ -77,8 +77,9 @@ export default {
     },
     props: [ 'mode' ],
     computed: {
+        
         demoTweets: function() {
-            console.log(this.$refs, 'refs')
+            // console.log(this.$refs, 'refs')
             if (this.mode == 'newlyUpdated') {
                 return this.tweets.filter(el => this.newlyUpdatedTweetIds.includes(el.id));
             }
@@ -104,6 +105,12 @@ export default {
         ])
     },
     methods: {
+        imageUrl: function(tweet) {
+            if (tweet.TweetSource.imageUrl.includes('https://pbs'))
+                return consts.BASE_URL + '/' + tweet.TweetSource.imageUrl;
+            else
+                return tweet.TweetSource.imageUrl;
+        },
         demoTweetText: function(tweet) {
             let ellipsis = tweet.text.length > this.textSizeToShow ? '...' : '';
             return tweet.text.substring(0, this.textSizeToShow) + ellipsis

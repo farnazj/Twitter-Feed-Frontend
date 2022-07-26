@@ -22,18 +22,18 @@ export default {
         }
 
         state.connection.onmessage = function(event) {
-            console.log('message resid', event, event.data)
+            // console.log('message arrived', event, event.data)
 
             let isWaiting = dataObj.rootState['feed'].waiting;
             let stage = dataObj.rootGetters['auth/stage'];
 
-            console.log('data resid', isWaiting, stage)
+            console.log('data arrived', isWaiting, stage)
 
             if (isWaiting || stage == 2) {
 
                 event.data.text()
                 .then(stringifiedData => {
-                    console.log(stringifiedData)
+                    // console.log(stringifiedData)
                     let data = JSON.parse(stringifiedData)
     
                     if (data.type == 'new_labels') {

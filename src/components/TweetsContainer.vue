@@ -78,8 +78,8 @@ export default {
 
         checkIfReadyToProceed: function() {
 
-            console.log('checking if ready to proceed. feed loading is finished?', this.taskLoadingIsFinished)
-            console.log('stage', this.stage)
+            // console.log('checking if ready to proceed. feed loading is finished?', this.taskLoadingIsFinished)
+            // console.log('stage', this.stage)
             if (this.taskLoadingIsFinished ) {
 
                 let isReasoningCountMet = this.tweets.filter(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].reason != '' &&  el.TweetAccuracyLabels[0].reason !== null).length >= consts.REASONING_COUNT_MIN;

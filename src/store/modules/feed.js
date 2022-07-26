@@ -44,7 +44,7 @@ export default {
           state.tweets[tweetIndex] = Object.assign({}, state.tweets[tweetIndex], {TweetAccuracyLabels: [data.label]})
         }
           
-        console.log('in update tweet label, new version of the tweet:', state.tweets[tweetIndex]);
+        // console.log('in update tweet label, new version of the tweet:', state.tweets[tweetIndex]);
       },
 
       update_newly_updated_tweets: (state, tweetIds) => {
@@ -105,7 +105,7 @@ export default {
     
           context.dispatch('getTweets')
           .then(tweets => {
-            console.log('new tweets', tweets)
+            // console.log('new tweets', tweets)
             context.commit('append_tweets', tweets);
             resolve(tweets);
           })
@@ -184,7 +184,7 @@ export default {
           let labelProms = displayedTweetsToChange.map(tweet => {
             return labelServices.getAccuracyLabel({tweetId: tweet.id})
             .then(data => {
-              console.log('getting new accuracy label for tweet', tweet.id, 'accuracy label is', data)
+              // console.log('getting new accuracy label for tweet', tweet.id, 'accuracy label is', data)
               context.commit('update_tweet_label', {
                 tweetId: tweet.id,
                 label: data.data
