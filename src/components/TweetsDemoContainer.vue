@@ -59,6 +59,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mdiTwitter, mdiBellRing, mdiRobot } from '@mdi/js';
+import constants from '@/services/constants'
 
 export default {
     name: 'tweet-instance',
@@ -107,7 +108,7 @@ export default {
     methods: {
         imageUrl: function(tweet) {
             if (tweet.TweetSource.imageUrl.includes('https://pbs'))
-                return consts.BASE_URL + '/' + tweet.TweetSource.imageUrl;
+                return constants.BASE_URL + '/' + tweet.TweetSource.imageUrl;
             else
                 return tweet.TweetSource.imageUrl;
         },
