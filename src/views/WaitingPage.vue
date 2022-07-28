@@ -29,12 +29,19 @@
                         We need a few more accuracy labels from you. The next page will show you another feed of tweets. We ask that you also assess the tweets on that feed.
 
                         <br>
+                        You are only able to change the assessments of <span class="font-weight-bold">{{countOfItemsToAssess}}</span> tweets at a time.
+                        The assessments that you can change at a certain time are marked with a blue arrow, similar to the picture below.
+                       </p> 
+
+                      <v-row no-gutters justify="center">
+                          <v-col cols="12">
+                          <v-img :contain="true" :src="tweetSelectionURLStage1"></v-img>
+                          </v-col>
+                      </v-row>
+
+                      <p class="body-1">
                         Similar to the last step, <span class="font-weight-bold">once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments</span>, a button will appear on the side which you will click to go to the next step.
                       </p> 
-
-                      <!-- <p class="body-1">
-                        <span class="font-weight-bold">Note:</span> As we are training the model, we will mark which tweets would be most helpful to assess next. You are free to choose to assess these tweets next or not.
-                      </p>  -->
                     </template>
 
 
@@ -59,13 +66,13 @@
 
                       <template v-else>
                         <p class="body-1">
-                          Although you will be able to see the AI's predictions of your assessments on all the tweets of the feed, you are only able to change the assessments of {{countOfItemsToAssess}} tweets at a time.
+                          Although you will be able to see the AI's predictions of your assessments on all the tweets of the feed, similar to the previous step, you are only able to change the assessments of {{countOfItemsToAssess}} tweets at a time.
                           The assessments that you can change at a certain time are marked with a blue arrow, similar to the picture below.
                         </p>
                         
                       <v-row no-gutters justify="center">
                           <v-col cols="12">
-                          <v-img :contain="true" :src="tweetSelectionURL"></v-img>
+                          <v-img :contain="true" :src="tweetSelectionURLStage2"></v-img>
                           </v-col>
                       </v-row>
                       </template>
@@ -108,7 +115,8 @@ export default {
   },
   data() {
     return {
-      tweetSelectionURL: './images/blue_arrow.png',
+      tweetSelectionURLStage1: './images/blue_arrow_stage1.png',
+      tweetSelectionURLStage2: './images/blue_arrow_stage2.png',
       updatedPredictionsURL: './images/updated_predictions.png'
     }
   },

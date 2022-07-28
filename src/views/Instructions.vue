@@ -33,6 +33,10 @@
                 <p class="body-1">
                 Once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments, a button will appear on the side which you will click to go to the next step.
                 </p>
+
+                <p class="body-1">
+                While completing the study, please do not refresh the page.
+                </p>
             
 
             <v-row no-gutters justify="center" class="pt-6">

@@ -45,9 +45,11 @@ export default {
     },
     computed: {
         
-        tweetCountAssessedByUser: function() {
-            return this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
-        },
+        // tweetCountAssessedByUser: function() {
+
+        //     console.log('tweet count assessed by user', this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length)
+        //     return this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
+        // },
 
         ...mapState('feed', [
             'tweets',
@@ -63,12 +65,13 @@ export default {
 
         checkAssessedCount: function() {
 
-            if (this.stage == 2) {
+            if (this.stage != 0 ) {
                 // console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
-                this.$emit('tweestsAssessed', `You have assessed ${this.tweetCountAssessedByUser} tweets.`);
+                let tweetCountAssessedByUser = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
+                this.$emit('tweestsAssessed', `You have assessed ${tweetCountAssessedByUser} tweets.`);
 
                 if (this.experiment == consts.EXPERIMENT_2) {
-                    if (this.tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0)
+                    if (tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0)
                         this.unlockNextSetForAssessment();
                 }
             }
@@ -85,13 +88,14 @@ export default {
                 let isReasoningCountMet = this.tweets.filter(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].reason != '' &&  el.TweetAccuracyLabels[0].reason !== null).length >= consts.REASONING_COUNT_MIN;
 
                 if (this.stage !=2 || this.experiment == consts.EXPERIMENT_2) {
-                    console.log(' has every tweet been assessed: ', this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
+                    console.log('has every tweet been assessed: ', this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ))
 
                     if (this.tweets.every(el => el.TweetAccuracyLabels && el.TweetAccuracyLabels[0].confidence != null ) && isReasoningCountMet)
                         this.$emit('readyToProceed');
                 }
                 else { //if stage == 2 && experiment != exp2
-                    if (this.tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN && isReasoningCountMet)
+                    let tweetCountAssessedByUser = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
+                    if (tweetCountAssessedByUser >= consts.STAGE_2_ASSESSMEMT_COUNT_MIN && isReasoningCountMet)
                        this.$emit('readyToProceed');
                 }
                 
@@ -120,11 +124,12 @@ export default {
         },
 
         checkIndexForAssessment: function() {
-            if (this.stage == 2 && this.experiment == consts.EXPERIMENT_2) {
-                let alreadyAssessed = this.tweets.filter(tweet => tweet.TweetAccuracyLabels.filter(label => label.assessor == 0).length).length;
+            if (this.stage != 0 && this.experiment == consts.EXPERIMENT_2) {
+                let alreadyAssessedTweets = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0).length)
+                let alreadyAssessedCount = alreadyAssessedTweets.length;
                 
-                if (alreadyAssessed < this.tweets.length) {
-                    this.setIndexForSetAssessment(alreadyAssessed - alreadyAssessed % consts.CHANGED_ELEMENT_THRESHOLD);
+                if (alreadyAssessedCount < this.tweets.length) {
+                    this.setIndexForSetAssessment(alreadyAssessedCount - alreadyAssessedCount % consts.CHANGED_ELEMENT_THRESHOLD);
                 }
             }
         },

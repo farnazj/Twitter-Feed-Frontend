@@ -34,7 +34,7 @@
 
                 <v-row no-gutters >
                     <span class="caption">This tweet is</span>
-                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2" :disabled="stage == 2 && !isTweetUnlockedForAssessment">
+                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2" :disabled="stage != 0 && !isTweetUnlockedForAssessment">
                         <template v-for="(item, index) in accuracyStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -47,7 +47,7 @@
 
                 <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
                     <span class="caption">How confident are you?</span>
-                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage == 2 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
+                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage != 0 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
                         <template v-for="(item, index) in confidenceStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -87,7 +87,8 @@
 
         <v-col cols="1">
             <v-icon color="light-blue darken-4" x-large 
-            v-if="stage == 2 && !isUserFreeInAssessment && isTweetUnlockedForAssessment && (isAccurate == null || tweet.TweetAccuracyLabels[0].confidence == null)">{{icons.arrow}}</v-icon>
+            v-if="stage != 0 && !isUserFreeInAssessment && isTweetUnlockedForAssessment && (isAccurate == null || 
+                userConfidence == null || (stage ==2 && tweet.TweetAccuracyLabels[0].confidence == null))">{{icons.arrow}}</v-icon>
         </v-col>
 
     </v-row>
@@ -231,7 +232,7 @@ export default {
         },
 
         isTweetUnlockedForAssessment: function() {
-            if (this.stage != 2 || this.experiment != consts.EXPERIMENT_2)
+            if (this.stage == 0 || this.experiment != consts.EXPERIMENT_2)
                 return true;
 
             else if (this.index < this.unlockedForAssessmentIndex + consts.CHANGED_ELEMENT_THRESHOLD)
