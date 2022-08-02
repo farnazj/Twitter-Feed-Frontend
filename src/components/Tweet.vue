@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters :ref="`tweet-${tweet.id}`"  class="pt-2">
+    <v-row no-gutters :ref="`tweet-${tweet.id}`"  class="pt-5">
         <v-col cols="7">
             <v-card rounded="0" flat class="custom-tweet">
                 <v-list-item v-if="tweet.TweetSource">
@@ -45,7 +45,7 @@
                     </v-radio-group>
                 </v-row>
 
-                <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
+                <v-row no-gutters v-if="isTweetAssessedForAccuracy" :class="{'pt-1': true, 'highlighted-background': userConfidence === null}">
                     <span class="caption">How confident are you?</span>
                        <v-radio-group v-model="userConfidence" row  hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage != 0 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
                         <template v-for="(item, index) in confidenceStatus">
@@ -360,5 +360,9 @@ export default {
     /* border-bottom: initial; */
     width: 100%;
     min-height: 160px;
+  }
+
+  .highlighted-background {
+    background-color: #E6EE9C;
   }
   </style>
