@@ -12,7 +12,7 @@ module.exports = {
       'no-console': 'off',
       'no-debugger': 'off',
       'no-unused-vars': 'off',
-      'no-unused-components': 'off',
+      'vue/no-unused-components': 'off',
       'no-undef': 'off',
       'vue/no-unused-vars': 'off',
       'vue/return-in-computed-property': 'off'

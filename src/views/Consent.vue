@@ -121,13 +121,13 @@
                     You can participate in this study only once.
                 </p>
 
-                <v-form ref="signupForm" lazy-validation>
+                <v-form ref="signupForm"  lazy-validation>
                     <v-row no-gutters class="my-3">
                         <v-col cols="2">
                             <p class="body-1">Your worker ID:</p>
                         </v-col>
                         <v-col cols="10">
-                            <v-text-field v-model="workerId" label="Worker ID"
+                            <v-text-field v-model="workerId" label="Worker ID" :rules="formRules.workerIdRules"
                         tabindex="4" required >
                             </v-text-field>
                         </v-col>
@@ -163,18 +163,24 @@
 
 <script>
 import { mapActions } from 'vuex';
-
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default {
   name: 'consent-view',
   components: {
+    ValidationObserver,
+    ValidationProvider
   },
   data() {
     return {
         formRules: {
-            emailRules: [
-                v => !!v || 'E-mail is required',
-                v => /.+@.+/.test(v) || 'E-mail must be valid'
+            // emailRules: [
+            //     v => !!v || 'E-mail is required',
+            //     v => /.+@.+/.test(v) || 'E-mail must be valid'
+            // ]
+            workerIdRules: [
+                v => !!v || 'Worker ID is required',
+                v => /^[a-zA-Z0-9]+$/.test(v) || 'Worker ID must only consist of numbers and letters'
             ]
         },
         buttonClicked: false,
