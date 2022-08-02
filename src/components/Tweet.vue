@@ -307,6 +307,7 @@ export default {
         },
 
         submitReason: function() {
+            this.accuracyLabelBeingUpdated = true;
             this.updateAccuracyLabel( {
                 tweetId: this.tweet.id, 
                 reason: this.userReason,
@@ -314,11 +315,13 @@ export default {
             } )
             .then(() => {
                 this.$emit('assessedConfidenceOrReason', this.tweet.id);
+                this.accuracyLabelBeingUpdated = false;
             })
         },
 
         submitConfidence: function() {
         
+            this.accuracyLabelBeingUpdated = true;
             this.updateAccuracyLabel( {
                 tweetId: this.tweet.id, 
                 confidence: this.userConfidence,
@@ -326,6 +329,7 @@ export default {
             } )
             .then(() => {
                 this.$emit('assessedConfidenceOrReason', this.tweet.id);
+                this.accuracyLabelBeingUpdated = false;
             })
         },
 
