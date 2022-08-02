@@ -18,6 +18,8 @@
 
               <v-row no-gutters justify="center" class="mt-3">
                 <p class="body-2 blue--text text--darken-4">{{portionText}}</p>
+              </v-row>
+              <v-row no-gutters justify="center">
                 <p class="caption blue--text text--darken-4">{{rationaleText}}</p>
               </v-row>
 
@@ -84,7 +86,7 @@ export default {
   methods: {
 
     displayPortion: function(countObj) {
-      this.portionText = `You have assessed ${countObj.assessedCount} of ${this.tweetCountForFeed} tweets.`;
+      this.portionText = `You have assessed ${countObj.assessedCount} of ${this.tweetCountForFeed} tweets`;
       let pluralized = countObj.rationaleCount == 1 ? '' : 's'
       this.rationaleText = `and provided reasoning for ${countObj.rationaleCount} tweet${pluralized}.`
     },
