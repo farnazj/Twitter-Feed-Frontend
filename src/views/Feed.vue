@@ -7,17 +7,18 @@
                 <tweets-demo-container mode="newlyUpdated" class="pr-6"></tweets-demo-container>
               </v-row>
 
-              <v-row v-if="revealProceed" no-gutters justify="center" :class="{'full-height': stage < 2, 'mt-6': true}">
+              <v-row  no-gutters justify="center" :class="{'full-height': stage < 2, 'mt-6': true}">
                 <v-col cols="12" lg="6" md="8" align-self="center">
                   <!-- <v-row justify="center"> -->
-                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled" class="ml-2" color="indigo darken-4" large
+                    <v-btn tile outlined @click="submitTask" :disabled="proceedBtnDisabled || !revealProceed" class="ml-2" color="indigo darken-4" large
                     >{{proceedBtnText}}</v-btn>
                   <!-- </v-row> -->
                 </v-col>
               </v-row>
 
-              <v-row no-gutters>
-                <p class="body-1">{{portionText}}</p>
+              <v-row no-gutters justify="center" class="mt-3">
+                <p class="body-2 blue--text text--darken-4">{{portionText}}</p>
+                <p class="caption blue--text text--darken-4">{{rationaleText}}</p>
               </v-row>
 
             </v-col>
@@ -47,9 +48,19 @@ export default {
       revealProceed: false,
       proceedBtnDisabled: false,
       portionText: '',
+      rationaleText: '',
       stopDisplay: false
     }
   },
+  created() {
+
+    this.getTweetCount()
+    .then(() => {
+      this.portionText = `You have assessed 0 of ${this.tweetCountForFeed} tweets`;
+      this.rationaleText = `and provided reasoning for 0 tweets.`
+    })
+  },
+
   computed: {
 
     proceedBtnText: function() {
@@ -66,13 +77,16 @@ export default {
     ]),
     ...mapState('feed', [
       'newlyUpdatedTweetIds',
-      'waiting'
+      'waiting',
+      'tweetCountForFeed'
     ])
   },
   methods: {
 
-    displayPortion: function(text) {
-      this.portionText = text;
+    displayPortion: function(countObj) {
+      this.portionText = `You have assessed ${countObj.assessedCount} of ${this.tweetCountForFeed} tweets.`;
+      let pluralized = countObj.rationaleCount == 1 ? '' : 's'
+      this.rationaleText = `and provided reasoning for ${countObj.rationaleCount} tweet${pluralized}.`
     },
 
     enableProceed: function() {
@@ -106,6 +120,9 @@ export default {
     ]),
     ...mapActions('websocket', [
       'closeConnection'
+    ]),
+    ...mapActions('feed', [
+      'getTweetCount'
     ])
   }
 }

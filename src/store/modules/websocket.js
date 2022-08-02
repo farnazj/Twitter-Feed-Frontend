@@ -39,6 +39,7 @@ export default {
                     if (data.type == 'new_labels') {
 
                         let timeReceived = moment();
+                        console.log('time received', timeReceived)
     
                         if (dataObj.rootState.feed.waiting)
                             dataObj.context.dispatch('feed/endWait', true, { root: true });
@@ -46,6 +47,7 @@ export default {
                             dataObj.context.dispatch('feed/replaceAILabels', data.data, { root: true })
                             .then(() => {
                                 let timeDisplayed = moment();
+                                console.log('time displayed', timeDisplayed)
                                 logServices.postlogs({
                                     changedTweets: data.data,
                                     timeReceived: timeReceived,

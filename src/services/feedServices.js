@@ -6,6 +6,11 @@ export default {
       withCredentials: true,
       headers: headers
     })
+  },
+  getTweetCountForFeed() {
+    return Api().get(`/tweets-count`, {
+      withCredentials: true
+    })
   }
 
 }

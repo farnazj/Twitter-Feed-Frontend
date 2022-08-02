@@ -40,7 +40,7 @@
                       </v-row>
 
                       <p class="body-1">
-                        Similar to the last step, <span class="font-weight-bold">once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments</span>, a button will appear on the side which you will click to go to the next step.
+                        Similar to the last step, <span class="font-weight-bold">once you have assessed and marked your level of confidence for all the tweets as well as provided your reasoning for at least {{reasoningCountMin}} of your assessments</span>, you will be able to proceed to the next step.
                       </p> 
                     </template>
 
@@ -48,8 +48,8 @@
                     <template v-if="stage == 2">
 
                       <p class="body-1">
-                        Please read the instructions on this page carefully.
-                        <br>
+                        <!-- Please read the instructions on this page carefully.
+                        <br> -->
                         On the next page, you will see another feed of tweets. For each one, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You will do this by explicitly assessing tweets as accurate or inaccurate.
                       </p>
 

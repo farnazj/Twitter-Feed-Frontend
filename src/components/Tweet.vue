@@ -34,7 +34,7 @@
 
                 <v-row no-gutters >
                     <span class="caption">This tweet is</span>
-                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-2" :disabled="stage != 0 && !isTweetUnlockedForAssessment">
+                       <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-3" :disabled="stage != 0 && !isTweetUnlockedForAssessment">
                         <template v-for="(item, index) in accuracyStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>
@@ -47,7 +47,7 @@
 
                 <v-row no-gutters v-if="isTweetAssessedForAccuracy" class="pt-1">
                     <span class="caption">How confident are you?</span>
-                       <v-radio-group v-model="userConfidence" row dense hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage != 0 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
+                       <v-radio-group v-model="userConfidence" row  hide-details class="mt-0 ml-2" @change="submitConfidence" :disabled="(stage != 0 && !isTweetUnlockedForAssessment) || accuracyLabelBeingUpdated">
                         <template v-for="(item, index) in confidenceStatus">
                             <v-radio :key="index" :value="item.value">
                                 <template v-slot:label>

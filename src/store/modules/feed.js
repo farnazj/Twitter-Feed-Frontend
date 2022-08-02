@@ -14,7 +14,8 @@ export default {
       newlyUpdatedTweetIds: [],
       tweetRefs: {},
       timeLoaded: null,
-      unlockedForAssessmentIndex : 0
+      unlockedForAssessmentIndex : 0,
+      tweetCountForFeed: null
     },
     mutations: {
       append_tweets: (state, tweets) => {
@@ -79,6 +80,10 @@ export default {
 
       unlock_specific_set_for_assessment: (state, index) => {
         state.unlockedForAssessmentIndex = index;
+      },
+
+      set_tweet_count: (state, count) => {
+        state.tweetCountForFeed = count;
       }
       
     },
@@ -167,6 +172,20 @@ export default {
           reject(error);
         })
         
+      },
+
+      getTweetCount: (context) => {
+        return new Promise((resolve, reject) => {
+          feedServices.getTweetCountForFeed()
+          .then((resp) => {
+            context.commit('set_tweet_count', resp.data.data);
+            resolve();
+          })
+          .catch(error => {
+            reject(error);
+          })
+          
+        })
       },
 
       endTaskStage: (context) => {

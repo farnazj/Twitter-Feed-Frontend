@@ -33,7 +33,7 @@ export default {
         this.emptyFeed();
         this.updateUser()
         .then(() => {
- 
+            
             this.refreshTweets()
             .then(() => {
                 this.scrollDisabled = false;
@@ -65,10 +65,17 @@ export default {
 
         checkAssessedCount: function() {
 
-            if (this.stage != 0 ) {
                 // console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
-                let tweetCountAssessedByUser = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
-                this.$emit('tweestsAssessed', `You have assessed ${tweetCountAssessedByUser} tweets.`);
+            let tweetCountAssessedByUser = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
+
+            // console.log('rationale text',  this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.reason != null).length).length)
+
+            this.$emit('tweetsAssessed', {
+                assessedCount: tweetCountAssessedByUser,
+                rationaleCount: this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.reason != null).length).length
+                 });
+
+            if (this.stage != 0 ) {
 
                 if (this.experiment == consts.EXPERIMENT_2) {
                     if (tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0)
