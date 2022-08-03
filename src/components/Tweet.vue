@@ -108,6 +108,7 @@ export default {
             accuracyLabelBeingUpdated: false,
             userLabel: null,
             userReason: '',
+            reasonEmptied: false,
             userConfidence: null,
             accuracyStatus: [
                 {
@@ -197,6 +198,11 @@ export default {
                     return this.tweet.TweetAccuracyLabels[0].reason;
             },
             set: function(newValue) {
+                if (this.userReason.length && !newValue.length)
+                    this.reasonEmptied = true;
+                else
+                    this.reasonEmptied = false;
+
                 this.userReason = newValue;
             }
 
@@ -306,7 +312,9 @@ export default {
         },
 
         submitReason: function() {
-            if (this.userReason.length) {
+
+            if (this.userReason.length || this.reasonEmptied) {
+                
                 this.accuracyLabelBeingUpdated = true;
                 this.updateAccuracyLabel( {
                     tweetId: this.tweet.id, 
