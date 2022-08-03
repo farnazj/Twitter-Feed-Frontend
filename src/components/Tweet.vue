@@ -218,7 +218,6 @@ export default {
 
                 let timeElapsed = moment().diff(this.timeLoaded);
 
-
                 this.accuracyLabelBeingUpdated = true;
                 this.updateAccuracyLabel({
                     tweetId: this.tweet.id,
@@ -307,16 +306,19 @@ export default {
         },
 
         submitReason: function() {
-            this.accuracyLabelBeingUpdated = true;
-            this.updateAccuracyLabel( {
-                tweetId: this.tweet.id, 
-                reason: this.userReason,
-                timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
-            } )
-            .then(() => {
-                this.$emit('assessedConfidenceOrReason', this.tweet.id);
-                this.accuracyLabelBeingUpdated = false;
-            })
+            if (this.userReason.length) {
+                this.accuracyLabelBeingUpdated = true;
+                this.updateAccuracyLabel( {
+                    tweetId: this.tweet.id, 
+                    reason: this.userReason,
+                    timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
+                } )
+                .then(() => {
+                    this.$emit('assessedConfidenceOrReason', this.tweet.id);
+                    this.accuracyLabelBeingUpdated = false;
+                })
+            }
+            
         },
 
         submitConfidence: function() {
