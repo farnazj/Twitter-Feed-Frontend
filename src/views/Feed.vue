@@ -59,7 +59,7 @@ export default {
     this.getTweetCount()
     .then(() => {
       this.portionText = `You have assessed 0 of ${this.tweetCountForFeed} tweets`;
-      this.rationaleText = `and provided reasoning for 0 tweets.`
+      this.rationaleText = `and provided reasoning for 0 tweets (need at least ${constants.REASONING_COUNT_MIN}).`
     })
   },
 
@@ -88,7 +88,7 @@ export default {
     displayPortion: function(countObj) {
       this.portionText = `You have assessed ${countObj.assessedCount} of ${this.tweetCountForFeed} tweets`;
       let pluralized = countObj.rationaleCount == 1 ? '' : 's'
-      this.rationaleText = `and provided reasoning for ${countObj.rationaleCount} tweet${pluralized}.`
+      this.rationaleText = `and provided reasoning for ${countObj.rationaleCount} tweet${pluralized} (need at least ${constants.REASONING_COUNT_MIN}).`
     },
 
     enableProceed: function() {
