@@ -8,8 +8,18 @@
                 <!-- <p class="body-1">
                   Please read the instructions on this page carefully.
                 </p> -->
+                <p class="body-1"> In this study, you will see 3 feeds of tweets. All tweets will be related to COVID.</p>
 
-                <p class="body-1">You will see a feed of tweets related to COVID as shown in the picture.</p>
+                <p class="body-1"> You will see the first feed on the next page.</p>
+
+                <p class="body-1">
+                  <span class="font-weight-bold">For all the tweets on the feed, use your best judgment to assess whether they are accurate or inaccurate and how confident you are in your belief.</span> There is also a textbox where you can provide your reasoning for why you believe the tweet is or is not accurate.
+                </p> 
+
+                <p class="body-1">
+                 Upon marking the the tweet as accurate/inaccurate, two other questions appear in order to capture your confidence in your assessment and your reasoning, as shown in the picture below.
+                </p> 
+
                 <v-row no-gutters class="my-8" justify="center">
 
                     <v-col cols="11">
@@ -20,14 +30,6 @@
                     </v-col>
                     
                 </v-row>
-
-                <p class="body-1">
-                  <span class="font-weight-bold">For all the tweets on the feed, use your best judgment to assess whether they are accurate or inaccurate and how confident you are in your belief.</span> There is also a textbox where you can provide your reasoning for why you believe the tweet is or is not accurate.
-                </p> 
-
-                <p class="body-1">
-                 Upon marking the the tweet as accurate/inaccurate, two other questions appear in order to capture your confidence in your assessment and your reasoning.
-                </p> 
 
                 <p class="body-1">
                 We ask that you <span class="font-weight-bold">provide your reasoning for at least {{reasoningCountMin}} of your assessments</span>. You are encouraged to provide your reasoning for as many more tweets as you would like, as it would greatly help our research.

@@ -140,7 +140,7 @@ export default {
                     value: consts.CONFIDENCE_CODES.A_LOT
                 },
                 {
-                    label: 'A great deal',
+                    label: 'Very confident',
                     value: consts.CONFIDENCE_CODES.A_GREAT_DEAL
                 }
             ],
@@ -314,7 +314,7 @@ export default {
         submitReason: function() {
 
             if (this.userReason.length || this.reasonEmptied) {
-                
+
                 this.accuracyLabelBeingUpdated = true;
                 this.updateAccuracyLabel( {
                     tweetId: this.tweet.id, 

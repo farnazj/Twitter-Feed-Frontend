@@ -50,7 +50,7 @@
                       <p class="body-1">
                         <!-- Please read the instructions on this page carefully.
                         <br> -->
-                        On the next page, you will see another feed of tweets. For each one, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You will do this by explicitly assessing tweets as accurate or inaccurate.
+                        On the next page, you will see the last feed of tweets. For each tweet, we will show the AI's prediction of how you would assess the tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You will do this by explicitly assessing tweets as accurate or inaccurate.
                       </p>
 
                       <template v-if="isUserFreeInAssessment">

@@ -20,7 +20,7 @@
                 <p class="body-1">
                     <span class="text-h5">RESEARCH PROJECT TITLE</span>
                     <br>
-                    Personalized Artifical Intelligence for Learning a User's Accuracy Assessments
+                    Personalized Artificial Intelligence for Learning a User's Accuracy Assessments
                 </p>
                 <p class="body-1">
                     <span class="text-h5">INVITATION TO PARTICIPATE</span>
