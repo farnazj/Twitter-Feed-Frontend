@@ -238,7 +238,6 @@ export default {
 
         isTweetUnlockedForAssessment: function() {
 
-            console.log('in isTweetUnlockedForAssessment', this.index, this.unlockedForAssessmentIndex, consts.CHANGED_ELEMENT_THRESHOLD)
             if (this.stage == 0 || this.experiment != consts.EXPERIMENT_2)
                 return true;
             else if (this.index < this.unlockedForAssessmentIndex + consts.CHANGED_ELEMENT_THRESHOLD)
