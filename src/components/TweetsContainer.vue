@@ -63,8 +63,8 @@ export default {
     },
     methods: {
 
-        checkAssessedCount: function() {
-
+        checkAssessedCount: function(type) {
+        
                 // console.log('this.stage', this.stage, this.experiment, this.tweetCountAssessedByUser, consts.EXPERIMENT_2)
             let tweetCountAssessedByUser = this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.confidence != null).length).length;
 
@@ -75,10 +75,10 @@ export default {
                 rationaleCount: this.tweets.filter(tweet => typeof tweet.TweetAccuracyLabels !== 'undefined' && tweet.TweetAccuracyLabels.filter(label => label.assessor == 0 && label.reason != null).length).length
                  });
 
-            if (this.stage != 0 ) {
+            if (this.stage != 0 && type == 'confidence') {
 
                 if (this.experiment == consts.EXPERIMENT_2) {
-                    if (tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0)
+                    if (tweetCountAssessedByUser % consts.CHANGED_ELEMENT_THRESHOLD == 0 )
                         this.unlockNextSetForAssessment();
                 }
             }

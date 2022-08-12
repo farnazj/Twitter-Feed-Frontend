@@ -33,7 +33,7 @@
                 </v-row>
 
                 <v-row no-gutters >
-                    <span class="caption">This tweet is</span>
+                    <span class="caption">I think this tweet is</span>
                        <v-radio-group v-model="isAccurate" row dense hide-details class="mt-0 ml-3" :disabled="stage != 0 && !isTweetUnlockedForAssessment">
                         <template v-for="(item, index) in accuracyStatus">
                             <v-radio :key="index" :value="item.value">
@@ -237,9 +237,10 @@ export default {
         },
 
         isTweetUnlockedForAssessment: function() {
+
+            console.log('in isTweetUnlockedForAssessment', this.index, this.unlockedForAssessmentIndex, consts.CHANGED_ELEMENT_THRESHOLD)
             if (this.stage == 0 || this.experiment != consts.EXPERIMENT_2)
                 return true;
-
             else if (this.index < this.unlockedForAssessmentIndex + consts.CHANGED_ELEMENT_THRESHOLD)
                 return true;
             else
@@ -322,7 +323,7 @@ export default {
                     timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
                 } )
                 .then(() => {
-                    this.$emit('assessedConfidenceOrReason', this.tweet.id);
+                    this.$emit('assessedConfidenceOrReason', 'reason');
                     this.accuracyLabelBeingUpdated = false;
                 })
             }
@@ -338,7 +339,7 @@ export default {
                 timeSinceFeedLoaded: this.timeElapsedSinceFeedLoaded
             } )
             .then(() => {
-                this.$emit('assessedConfidenceOrReason', this.tweet.id);
+                this.$emit('assessedConfidenceOrReason', 'confidence');
                 this.accuracyLabelBeingUpdated = false;
             })
         },
