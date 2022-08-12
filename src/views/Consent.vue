@@ -10,12 +10,13 @@
           <v-col cols="12" xl="7" lg="9" align-self="center" class="pt-10">
 
                 <p class="text-h4">IBM Research Project Participation Consent Form</p>
+                <div class="text-h5 mb-3">INTRODUCTION</div>
                 <p class="body-1">
-                    <span class="text-h5">INTRODUCTION</span>
+                    <span class="text-h5">Purpose</span>
                     <br>
                     Thank you for deciding to volunteer in an IBM research project. The purpose of this project is to study your interaction with IBM's technology in support of our basic and open research efforts to improve human understanding of the capabilities and limitations of artificially intelligent systems.
                     <br>
-                    You have no obligation to participate and you may decide to terminate your participation at any time.  You also understand that the researcher has the right to withdraw you from participation in the project at any time. Below is a description of the research project, and your consent to participate.  Read this information carefully. If you agree to participate, sign in the space provided.
+                    You have no obligation to participate and you may decide to terminate your participation at any time.  You also understand that the researcher has the right to withdraw you from participation in the project at any time. Below is a description of the research project, and your consent to participate. Read this information carefully. If you agree to participate, write your Worker ID in the space provided and click "I agree".
                 </p>
                 <p class="body-1">
                     <span class="text-h5">RESEARCH PROJECT TITLE</span>
@@ -25,7 +26,7 @@
                 <p class="body-1">
                     <span class="text-h5">INVITATION TO PARTICIPATE</span>
                     <br>
-                    To be eligible to participate, you must be 18 years of age or older, at least occasionally read news online, and be a US citizen or permanent resident.
+                    To be eligible to participate, you must be 18 years of age or older, at least occasionally read news online, and be a US citizen or permanent US resident.
                 </p>
 
                 <p class="body-1">
@@ -38,11 +39,22 @@
                     <br>
                     Then we will show you another feed of tweets along with the AI's prediction of how you would assess each tweet. Your task is to guide the AI to become better at learning your assessments by indicating whether you agree or disagree with the AI's predictions. You will do this by explicitly assessing tweets as accurate or inaccurate.
                     <br>
-                    At the end of the task, you will be asked to complete a survey about your experience interacting with the system.
+                    At the end of the task, you will be asked to complete a survey about your experience interacting with the system. The survey will collect some personal information which will be age, education, income, English fluency, and the Mechanical Turk Worker ID.
                     <br>
                     IBM may document and collect information about your participation by collecting instrumentation data from the actions you take in interacting with the website and your answers to survey questions.
                 </p>
 
+                <p class="body-1">
+                    <span class="text-h5">PARTICIPATION START AND END DATES</span>
+                    <br>
+                    August 12-22. Participation may close earlier if sufficent number of participants is reached.
+                </p>
+
+                <p class="body-1">
+                    <span class="text-h5">DATA RETENTION</span>
+                    <br>
+                    Data will be retained for 2 years from the date of collection.
+                </p>
 
                 <!-- <p class="body-1">
                     <span class="text-h5">PERSONAL INFORMATION</span>
@@ -66,15 +78,15 @@
                 <p class="body-1">
                     <span class="text-h5">BENEFITS AND RISKS</span>
                     <br>
-                    <span class="text-h6">Benefits:</span> There will be no direct benefit to the participant for participating in this research. The research's benefit to the society will concern a better understanding of the application of artificially intelligent systems for learning a user's accuracy assessments of content.
+                    <span class="text-h6">Benefits:</span> There will be no direct benefit to the participant for participating in this research. The study is to further the research and development in this space. The research's benefit to the society will concern a better understanding of the application of artificially intelligent systems for learning a user's accuracy assessments of content.
                     <br>
-                    <span class="text-h6">Risks:</span> During your participation, you may experience stress, boredom, frustration, or discomfort, especially if you perform the task for prolonged periods. However, to mitigate these risk, you are able to take a break whenever needed.
+                    <span class="text-h6">Risks:</span> We do not anticipate any risks to you as a result of participating in this study.
                 </p>
 
                 <p class="body-1">
                     <span class="text-h5">PAYMENT FOR PARTICIPATION</span>
                     <br>
-                    You will receive a payment in the amount of XXX after completing the entire user study.
+                    You will receive a payment in the amount of $17 after completing the entire user study through the Mechanical Turk platform.
                     <br>
                     Your data may be used to make new products, tests, or findings. These may have value and may be developed and owned by IBM and/or others. If this happens, there are no plans to pay you.
                 </p>
@@ -85,10 +97,17 @@
                     Identifiers might be removed from your identifiable private information, and after such removal, the information could be used for future research studies or distributed to another investigator for future research studies without your (or your legally authorized representative's) additional informed consent.
                 </p> -->
                 
+                 <p class="body-1">
+                    <span class="text-h5">DATA COLLECTION AND USE</span>
+                    <br>
+                    In addition, your data results may be used to publish papers and present in conferences. The data will be stored in IBM for 2 years since collection.
+                </p>
+
+
                 <p class="body-1">
                     <span class="text-h5">CONFIDENTIALITY</span>
                     <br>
-                    The investigators and their assistants will consider your records confidential to the extent permitted by law. Your records and results will nto be identified as pertaining to you in any publication without your expressed permission.
+                    The investigators and their assistants will consider your records confidential to the extent permitted by law. Your records and results will nto be identified as pertaining to you in any publication without your expressed permission. Although personal information will be collected at the time of participation, we will not disclose  any personally identifiable information to the extent such personally identifiable information was collected.
                     </p>
 
                 <p class="body-1">
@@ -103,20 +122,20 @@
                     <br>
                     Your participation in this study is voluntary. You may refuse to take part in this study or end your participation (withdraw consent and discontinue participation) in this study at any time without risk, penalty, or loss of benefits that you are otherwise entitled to receive.
                     <br>
-                    Although unlikely, the investigator or her assistants can also stop your continued participation in this study. For example, if you do not follow the investigator's instructions we may ask you to stop.
+                    Although unlikely, the investigator or her assistants can also stop your continued participation in this study. For example, if you do not follow the investigator's instructions we may ask you to stop. If you participated and wish for your information to be removed or you wish to cancel your participation, you will need to send an email to <a href="mailto:dakuo.wang@ibm.com">dakuo.wang@ibm.com</a>to request to remove your data from this study and cancel your participation in this study.
                 </p>
 
 
                 <p class="body-1">
                     <span class="text-h5">RIGHTS IN INFORMATION</span>
                     <br>
-                    All information, including but not limited to paper forms, computer log files, audio and video recordings, recorded or created during the session shall be the sole property of IBM Corporation and IBM Corporation shall hold the copyright. IBM Corporation shall hold the title to any inventions made during the course of the session.
+                    Subject to your right to withdraw, all information, including but not limited to paper forms, computer log files, audio and video recordings, recorded or created during the session shall be the sole property of IBM Corporation and IBM Corporation shall hold the copyright. IBM Corporation shall hold the title to any inventions made during the course of the session.
                 </p>
 
                 <p class="body-1">
                     <span class="text-h5">CONSENT</span>
                     <br>
-                    By clicking "I agree" below, you confirm that the study was explained to you, you had a chance to ask questions before beginning the study, and all your questions were answered satisfactorily. By clicking "I agree" below, you voluntarily consent to participate, and you do not give up any legal rights you have as a study participant.
+                    By clicking "I agree" below, you confirm that the study was explained to you, you had a chance to ask questions before beginning the study, and all your questions were answered satisfactorily. By clicking "I agree" below, you voluntarily consent to the collection and use of the data collected. 
                     <br>
                     You can participate in this study only once.
                 </p>
